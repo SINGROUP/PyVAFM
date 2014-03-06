@@ -1,0 +1,6 @@
+html
+
+*.log
+*.pyc
+*.o
+*.dat

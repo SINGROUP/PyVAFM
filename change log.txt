@@ -1,0 +1,79 @@
+change log
+
+20/09/2013 15:50 - Added change log
+
+23/09/2013 10:22 the commit "I think this diffe" was a typo I meant to say the file has no changes but I think some of the line spacings may have been altered so the actual code hasn't changes.
+
+23/09/2013 12:15 Added and, not and or gates.
+
+23/09/2013 13:50 Added Xor and Nor gates.
+
+23/09/2013 15:48 Added Abs and power functions
+
+25/09/2013 14:16 Added differentiation, integration, comparison and min/max circuits
+
+26/09/2013 14.28 BugFix: added "pass" in delay.Update()
+
+27/09/2013 02.00 Major changes to the main VAFM class:
+	VAFM class renamed Machine and moved to vafmcircuits.py. vafmcore is now empty
+	The Machine class now has input and output channels so it can be used as a composite circuit
+	Subcircuits inside a Machine can receive/send signals from/to the Machine input/output channels 
+	through the meta Input/Output channels.
+	Connections are handled with the Connect function, which now supports unlimited arguments, the first being
+	the channels from which the signal is taken, and all the following the channels to which send the signal.
+	Within a machine only output-to-input connections are allowed. Global input channels of a machine can be
+	connected to subcircuits input channels, and subcircuits outputs can be connected to global outputs.
+
+28/09/2013 
+	improved and added documentation
+	output circuit:
+		RegisterChannel renamed to Register
+		added an Unregister function
+		behaviour improved and extended
+
+27/09/2013 14:48 Added all signal processing circuits and added the saw tooth wave.
+
+04/10/2013 --.-- Added examples folder for input file samples
+04/10/2013 --.-- corrected some doc comments, added images folder for pretty docs
+04/10/2013 --.-- waver.sawtooth channel renamed to waver.saw
+
+2/10/2013 13:42 added flip flops
+
+3/10/2013 15:31 Added filter, PI, PID, limiter, ramper and averager
+
+4/10/2013 11:44 Added Interpolation (the cantilever file was to test I could pass the object from the main file to another file)
+
+16/10/2013 --:-- Average moved to vafmcircuits_avg.py
+				'Average' circuit remaned 'avg'
+				
+				PI and PID moved to vafmcircuits_control.py - documentation corrected
+				corrected bug in PI and PID codes
+				
+				In ActiveLowPass,  Gain->gain, Q and gain are not mandatory, default sallen key values will be used if none is given
+				
+				Limiter->limiter moved to vafmcircuits_control.py - doc and code corrected
+				in channel renamed signal
+				
+				OpAbs -> opAbs
+				OpPower ->opPow
+				
+				
+17/10/2013 --:-- removed *test*.py from Doxygen documentation
+				removed flipflop files: some circuits are not correct
+				
+18/10/2013 --:-- create vafmcircuits_output for output circuits
+				create vafmcircuits_signal_gens for signal generators circuits
+				added square circuit for square waves
+				BUGFIX! waver circuit had the incorrect frequency!!!
+				
+23-10-2013 --:-- Updated Interpolation for arbitrary force fields, added cantilever and added Scanner
+29-10-2013 --:-- Merged forks.
+30-10-2013 --:-- added test files in /examples/
+				removed the test_*.py exclusion from .gitignore
+31-10-2013 --:-- limiter circuit moved in signal_processing
+				added SetInput function to Machine
+				fixed some documentation for Machine and Circuit
+				added Dump() function to output circuit
+11-11-2013 late! logic updated, circuits renamed!
+
+
