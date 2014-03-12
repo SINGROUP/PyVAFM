@@ -46,9 +46,15 @@ class SRFlipFlop(Circuit):
 
 		self.AddInput("S")
 		self.AddInput("R")
+		self.AddInput("clock")
 
 		self.AddOutput("Q")
 		self.AddOutput("Qbar")
+		self.AddOutput("front")
+		
+		self.cCoreID = Circuit.cCore.Add_SRFlipFLop(self.machine.cCoreID)
+		
+		self.SetInputs(**keys)
 
 
 
@@ -111,10 +117,15 @@ class JKFlipFlop(Circuit):
 
 		self.AddInput("J")
 		self.AddInput("K")
+		self.AddInput("clock")
 
 		self.AddOutput("Q")
 		self.AddOutput("Qbar")
-
+		self.AddOutput("front")
+		
+		self.cCoreID = Circuit.cCore.Add_JKFlipFLop(self.machine.cCoreID)
+		
+		self.SetInputs(**keys)
 
 
 	def Initialize (self):
@@ -173,11 +184,15 @@ class DFlipFlop(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 		self.AddInput("D")
+		self.AddInput("clock")
 
 		self.AddOutput("Q")
 		self.AddOutput("Qbar")
 		self.Qprevious = 0
 
+		self.cCoreID = Circuit.cCore.Add_DFlipFLop(self.machine.cCoreID)
+		
+		self.SetInputs(**keys)
 
 	def Initialize (self):
 
