@@ -85,8 +85,14 @@ class AdvancedCantilever(Circuit):
 
 		self.AddInput("exciterz")
 		self.AddInput("excitery")
-		self.AddInput("position")
+		self.AddInput("positionx")
+		self.AddInput("positiony")
+		self.AddInput("positionz")
+
 		self.AddInput("Record")
+		self.AddInput("Holderx")
+		self.AddInput("Holdery")
+		self.AddInput("Holderz")
 
 		self.AddInput("ForceV")
 		self.AddInput("ForceL")
@@ -108,7 +114,7 @@ class AdvancedCantilever(Circuit):
 
 		for i in range(1 ,NumberOfModesL+1):
 			self.AddOutput("vL" + str(i) )
-			self.AddOutput("zL" + str(i) )
+			self.AddOutput("yL" + str(i) )
 
 
 

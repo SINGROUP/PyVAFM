@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+##!/usr/bin/env python
 import subprocess
 import sys
 sys.path.append('/Users/johntracey/Desktop/pyvafm-master/src')
+
 
 from vafmbase import ChannelType
 from vafmcircuits import Machine
@@ -19,7 +20,7 @@ def main():
 	machine.AddCircuit(type='waver',name='wave', amp=1, pushed=True )
 	
 	#low-pass filter
-	machine.AddCircuit(type='SKLP',name='sklp', fcut=100, pushed=True )
+	machine.AddCircuit(type='SKLP',name='sklp', fcut=100, pushed=True, gain=1 )
 	#amplitude detector for the filter
 	machine.AddCircuit(type='minmax', name='asklp', CheckTime=0.2, pushed=True)
 	
@@ -34,19 +35,21 @@ def main():
 	machine.AddCircuit(type='minmax', name='askbp', CheckTime=0.2, pushed=True)
 
 	#passive low pass filter
-	machine.AddCircuit(type='RCLP',name='rclp', fc=100, order=100, pushed=True )
+	machine.AddCircuit(type='RCLP',name='rclp', fc=100, order=3, pushed=True )
 	#amplitude detector for the filter
 	machine.AddCircuit(type='minmax', name='arclp', CheckTime=0.2, pushed=True)
 
 
 	#passive high pass filter
-	machine.AddCircuit(type='RCHP',name='rchp', fc=100, order=100, pushed=True )
+	machine.AddCircuit(type='RCHP',name='rchp', fc=100, order=3, pushed=True )
 	#amplitude detector for the filter
 	machine.AddCircuit(type='minmax', name='archp', CheckTime=0.2, pushed=True)
 
 
 	#connect oscillator to the filters
+	print "Hi"
 	machine.Connect("wave.sin","sklp.signal","skhp.signal","skbp.signal","rclp.signal","rchp.signal")
+	print "Hi2"
 	machine.Connect("sklp.out","asklp.signal") #filter -> amplitude detector
 	machine.Connect("skhp.out","askhp.signal") #filter -> amplitude detector
 	machine.Connect("skbp.out","askbp.signal") #filter -> amplitude detector

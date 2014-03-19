@@ -92,16 +92,69 @@ void RunCantilever(circuit *c) {
 
 }
 
+/* ******************************************
+ * inputs[0] = exciterz
+ * inputs[1] = excitery
+ * inputs[2] = positionx
+ * inputs[3] = positiony
+ * inputs[4] = positionz
+ * inputs[5] = Record
 
+ * inputs[6] = Holderx
+ * inputs[7] = Holdery
+ * inputs[8] = Holderz
+
+ * inputs[9] = ForceV
+ * inputs[10] = ForceL
+
+ * outputs[0] = zPos
+ * outputs[1] = yPos
+
+ * outputs[2] = xABSv
+ * outputs[3] = yABSv
+ * outputs[4] = zABSv
+
+ * outputs[5] = xABSl
+ * outputs[6] = yABSl
+ * outputs[7] = zABSl
+
+ * outputs[8 to 8 + NumberofmodesV] = vV
+ * outputs[9+ NumberofmodesV - 9+ NumberofmodesV*2] = zV
+
+ * outputs[10 + NumberofmodesV to 10 + NumberofmodesV + numberofmodesL] = vV
+ * outputs[11+ NumberofmodesV -11+ NumberofmodesV*2 + + numberofmodesL*2] = zV
+
+
+//ADD PARAMS
+	
+	params[0 to Vmodes] = z
+	params[Vmodes to Vmodes *2] = vV
+	params[Vmodes +1 *2 to Vmodes +1 *3] = aV
+
+	params[Vmodes +2 *3 to Vmodes +3 *3 + Lmodes] = y
+	params[Vmodes +4 *3 + Lmodes to Vmodes +4 *3 + Lmodes*2] = vL
+	params[Vmodes +5 *3 + Lmodes*2  to Vmodes +5 *3 + Lmodes*3] = aL
+
+	params[Vmodes +1 *3 + Lmodes*3 +3 to  Vmodes +1 *4 + Lmodes*4 +3] = K factors for all modes
+
+	params[Vmodes +1 *4 + Lmodes*4 +3 to Vmodes +1 *4 + Lmodes*5 +3] = K factors for all modes
+
+
+
+	
+
+
+
+ * *****************************************/
 
 int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 {
 	circuit c = NewCircuit();
 	c.nI = 6;
-	c.nO = 8+numberofmodesL+numberofmodesV;
+	c.nO = 13+numberofmodesL+numberofmodesV;
 
-
-	c.plen = 7;
+	//       variables                                   	      k              					  Q 								  f 								  M
+	c.plen = 6*numberofmodesV + 3*numberofmodesL+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL ;
 	c.params = (double*)calloc(c.plen,sizeof(double));
 
 	
