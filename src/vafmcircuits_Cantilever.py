@@ -124,41 +124,41 @@ class AdvancedCantilever(Circuit):
 
 
 	def AddK(self, *args):
-		Circuit.cCore.AddK.argtypes = [ctypes.POINTER(ctypes.c_double)]
+		Circuit.cCore.AddK.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		k=[]
 		for i in args:
 			k.append(i)
 		karray = (ctypes.c_double * len(k))(*k)
-		self.cCoreID = Circuit.cCore.AddK(karray)
+		self.cCoreID = Circuit.cCore.AddK(self.cCoreID, karray)
 
 	def AddQ(self, *args):
-		Circuit.cCore.AddQ.argtypes = [ctypes.POINTER(ctypes.c_double)]
+		Circuit.cCore.AddQ.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		Q=[]
 		for i in args:
 			Q.append(i)
 		Qarray = (ctypes.c_double * len(Q))(*Q)
-		self.cCoreID = Circuit.cCore.AddQ(Qarray)
+		self.cCoreID = Circuit.cCore.AddQ(self.cCoreID, Qarray)
 
 	def AddM(self, *args):
-		Circuit.cCore.AddM.argtypes = [ctypes.POINTER(ctypes.c_double)]
+		Circuit.cCore.AddM.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		M=[]
 		for i in args:
 			M.append(i)
 		Marray = (ctypes.c_double * len(M))(*M)
-		self.cCoreID = Circuit.cCore.AddM(Marray)
+		self.cCoreID = Circuit.cCore.AddM(self.cCoreID, Marray)
 
 	def Addf0(self, *args):
-		Circuit.cCore.AddF.argtypes = [ctypes.POINTER(ctypes.c_double)]
+		Circuit.cCore.AddF.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		f=[]
 		for i in args:
 			f.append(i)
 		farray = (ctypes.c_double * len(f))(*f)
-		self.cCoreID = Circuit.cCore.AddF(farray)
+		self.cCoreID = Circuit.cCore.AddF(self.cCoreID,farray)
 
 	def StartingPos(self, *args):
-		Circuit.cCore.StartingPoint.argtypes = [ctypes.POINTER(ctypes.c_double)]
+		Circuit.cCore.StartingPoint.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		StartingPoint=[]
 		for i in args:
 			StartingPoint.append(i)
 		StartingPointarray = (ctypes.c_double * len(StartingPoint))(*StartingPoint)
-		self.cCoreID = Circuit.cCore.StartingPoint(StartingPointarray)
+		self.cCoreID = Circuit.cCore.StartingPoint(self.cCoreID,StartingPointarray)

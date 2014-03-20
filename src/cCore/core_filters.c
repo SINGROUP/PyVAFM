@@ -255,7 +255,7 @@ int Add_RCLP(int owner, double fcut, int order) {
 
     printf("cCore: added RCHP filter\n");
 
-    c.updatef = RCHP;
+    c.updatef = RCLP;
     int index = AddToCircuits(c,owner);
 
     return index;

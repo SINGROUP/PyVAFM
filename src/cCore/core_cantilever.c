@@ -93,56 +93,60 @@ void RunCantilever(circuit *c) {
 }
 
 /* ******************************************
- * inputs[0] = exciterz
- * inputs[1] = excitery
- * inputs[2] = positionx
- * inputs[3] = positiony
- * inputs[4] = positionz
- * inputs[5] = Record
+ params
+ [0] = holderx
+ [1] = holdery
+ [2] = holderz
 
- * inputs[6] = Holderx
- * inputs[7] = Holdery
- * inputs[8] = Holderz
+ [3] = startingx
+ [4] = startingy
+ [5] = startingz
 
- * inputs[9] = ForceV
- * inputs[10] = ForceL
+ [6] = ztip
+ [7] = ztipo
 
- * outputs[0] = zPos
- * outputs[1] = yPos
+ [8] = ytip
+ [9] = ytipo
 
- * outputs[2] = xABSv
- * outputs[3] = yABSv
- * outputs[4] = zABSv
+ [10] = xtip
 
- * outputs[5] = xABSl
- * outputs[6] = yABSl
- * outputs[7] = zABSl
+ [11] = NumberOfModesV
+ [12] = NumberOfModesL
+vparams
 
- * outputs[8 to 8 + NumberofmodesV] = vV
- * outputs[9+ NumberofmodesV - 9+ NumberofmodesV*2] = zV
+    c.vpparams[0] =Kv
+    c.vpparams[1] =Qv
+    c.vpparams[2] =Fv
 
- * outputs[10 + NumberofmodesV to 10 + NumberofmodesV + numberofmodesL] = vV
- * outputs[11+ NumberofmodesV -11+ NumberofmodesV*2 + + numberofmodesL*2] = zV
+    c.vpparams[3] =Mv
+    c.vpparams[4] =Wv
+    c.vpparams[5] =Gammav
 
+    c.vpparams[6] =Vv
+    c.vpparams[7] =Av
+    c.vpparams[8] =Velocityv
 
-//ADD PARAMS
-	
-	params[0 to Vmodes] = z
-	params[Vmodes to Vmodes *2] = vV
-	params[Vmodes +1 *2 to Vmodes +1 *3] = aV
-
-	params[Vmodes +2 *3 to Vmodes +3 *3 + Lmodes] = y
-	params[Vmodes +4 *3 + Lmodes to Vmodes +4 *3 + Lmodes*2] = vL
-	params[Vmodes +5 *3 + Lmodes*2  to Vmodes +5 *3 + Lmodes*3] = aL
-
-	params[Vmodes +1 *3 + Lmodes*3 +3 to  Vmodes +1 *4 + Lmodes*4 +3] = K factors for all modes
-
-	params[Vmodes +1 *4 + Lmodes*4 +3 to Vmodes +1 *4 + Lmodes*5 +3] = K factors for all modes
+    c.vpparams[9]  =Xx
+    c.vpparams[10] =Xy
+    c.vpparams[11] =Xz
 
 
 
-	
+    c.vpparams[12] =Kl
+    c.vpparams[13] =Ql
+    c.vpparams[14] =Fl
 
+    c.vpparams[15] =Ml
+    c.vpparams[16] =Wl
+    c.vpparams[17] =Gammal
+
+    c.vpparams[18] =Vl
+    c.vpparams[19] =Al
+    c.vpparams[20] =Velocityl
+
+    c.vpparams[21] =Xl
+    c.vpparams[22] =Yl
+    c.vpparams[23] =Zl
 
 
  * *****************************************/
@@ -153,41 +157,133 @@ int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 	c.nI = 6;
 	c.nO = 13+numberofmodesL+numberofmodesV;
 
-	//       variables                                   	      k              					  Q 								  f 								  M
-	c.plen = 6*numberofmodesV + 3*numberofmodesL+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL	+	numberofmodesV+numberofmodesL ;
+	c.plen = 13;
 	c.params = (double*)calloc(c.plen,sizeof(double));
+
+	c.params[11] = numberofmodesV;
+	c.params[12] = numberofmodesL;
 
 	
 	c.updatef = RunAdvancedCantilever;
+
+
+
+    c.vplen = 24;
+    c.vpparams = (void**)malloc(c.vplen*sizeof(double*));
+
+    c.vpparams[0] = (double*)calloc(numberofmodesV,sizeof(double));  //Kv
+    c.vpparams[1] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Qv
+    c.vpparams[2] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Fv
+
+    c.vpparams[3] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Mv
+    c.vpparams[4] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Wv
+    c.vpparams[5] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Gammav
+
+    c.vpparams[6] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Vv
+    c.vpparams[7] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Av
+    c.vpparams[8] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Velocityv
+
+    c.vpparams[9] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xx
+    c.vpparams[10] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xy
+    c.vpparams[11] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xz
+
+
+
+    c.vpparams[12] = (double*)calloc(numberofmodesL,sizeof(double));  //Kl
+    c.vpparams[13] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Ql
+    c.vpparams[14] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Fl
+
+    c.vpparams[15] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Ml
+    c.vpparams[16] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Wl
+    c.vpparams[17] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Gammal
+
+    c.vpparams[18] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Vl
+    c.vpparams[19] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Al
+    c.vpparams[20] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Velocityl
+
+    c.vpparams[21] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Xl
+    c.vpparams[22] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Yl
+    c.vpparams[23] = (double*)calloc(numberofmodesL,sizeof(double)); 	//Zl
+
+
+
+
+
+
 
 	int index = AddToCircuits(c,owner);
 	printf("cCore: added advanced cantilever circuit\n");
 	return index;
 }
 
-int AddK(double *Kpointer)
+int AddK(int c, double *Kpointer)
 {
-	printf("%f\n", *(Kpointer+2));  /* print first double */
+
+	double *kv = (double*)circuits[c].vpparams[0];
+	double *kl = (double*)circuits[c].vpparams[12];
+
+
+
+	int numberofmodesV = circuits[c].params[11];
+	int numberofmodesL = circuits[c].params[12];
+
+
+
+	for (int i=0;i<numberofmodesV;i++)
+	{
+		kv[i] = *(Kpointer+i);
+	}
+
+
+	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
+	{
+		kl[i] = *(Kpointer+i);
+	}
+
+
+
 }
 
-int AddQ(double *Qpointer)
+int AddQ(int c, double *Qpointer)
 {
-	printf("%f\n", *(Qpointer+2) );  /* print first double */
+
+	double *Qv = (double*)circuits[c].vpparams[1];
+	double *Ql = (double*)circuits[c].vpparams[13];
+
+
+	int numberofmodesV = circuits[c].params[11];
+	int numberofmodesL = circuits[c].params[12];
+
+
+
+	for (int i=0;i<numberofmodesV;i++)
+	{
+		Qv[i] = *(Qpointer+i);
+		printf("%f\n", Qv[i]);  /* print first double */
+	}
+
+
+
+	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
+	{
+		Ql[i] = *(Qpointer+i);
+		printf("%f\n", Ql[i]);  /* print first double */
+	}
 }
 
-int AddF(double *fpointer)
+int AddF(int c, double *fpointer)
 {
-	printf("%f\n", *(fpointer+2) );  /* print first double */
+	
 }
 
-int AddM(double *Mpointer)
+int AddM(int c, double *Mpointer)
 {
-	printf("%f\n", *(Mpointer+2) );  /* print first double */
+	
 }
 
-int StartingPoint(double *StartingPoint)
+int StartingPoint(int c, double *StartingPoint)
 {
-	printf("%f\n", *(StartingPoint+2) );  /* print first double */
+	
 }
 
 
