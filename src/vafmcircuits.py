@@ -15,6 +15,7 @@ import threading
 import vafmcircuits_math, vafmcircuits_output, vafmcircuits_signal_gens, vafmcircuits_Cantilever
 import vafmcircuits_Logic, vafmcircuits_Filters, vafmcircuits_control, vafmcircuits_Interpolation
 import vafmcircuits_signal_processing, vafmcircuits_Scanner, vafmcircuits_FlipFlop
+import vafmcircuits_VDW
 
 
 ## \package vafmcircuits
