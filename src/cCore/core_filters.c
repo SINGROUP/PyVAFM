@@ -276,7 +276,7 @@ void RCLP( circuit *c ) {
         for (int i=0; i<order;i++)
             {   
                        
-            y[i+1] =   (x[i]) + (y[i] - x[i]) *c->params[1];
+            y[i+1] =   (y[i]) + (x[i] - y[i]) *c->params[1];
             x[i] = y[i+1];
             }
 
