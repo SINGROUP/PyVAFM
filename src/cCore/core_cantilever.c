@@ -157,11 +157,14 @@ int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 	c.nI = 6;
 	c.nO = 13+numberofmodesL+numberofmodesV;
 
-	c.plen = 13;
+	c.plen = 11;
 	c.params = (double*)calloc(c.plen,sizeof(double));
 
-	c.params[11] = numberofmodesV;
-	c.params[12] = numberofmodesL;
+
+	c.iplen = 2;
+	c.iparams = (int*)calloc(c.iplen,sizeof(int));
+	c.iparams[1] = numberofmodesV;
+	c.iparams[2] = numberofmodesL;
 
 	
 	c.updatef = RunAdvancedCantilever;
@@ -222,22 +225,22 @@ int AddK(int c, double *Kpointer)
 	double *kv = (double*)circuits[c].vpparams[0];
 	double *kl = (double*)circuits[c].vpparams[12];
 
-
-
-	int numberofmodesV = circuits[c].params[11];
-	int numberofmodesL = circuits[c].params[12];
+	int numberofmodesV = circuits[c].iparams[1];
+	int numberofmodesL = circuits[c].iparams[2];
 
 
 
 	for (int i=0;i<numberofmodesV;i++)
 	{
 		kv[i] = *(Kpointer+i);
+		//printf("%f\n", kv[i]);
 	}
 
 
 	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
 		kl[i] = *(Kpointer+i);
+		//printf("%f\n", kl[i]);
 	}
 
 
@@ -247,12 +250,14 @@ int AddK(int c, double *Kpointer)
 int AddQ(int c, double *Qpointer)
 {
 
+
 	double *Qv = (double*)circuits[c].vpparams[1];
 	double *Ql = (double*)circuits[c].vpparams[13];
 
 
-	int numberofmodesV = circuits[c].params[11];
-	int numberofmodesL = circuits[c].params[12];
+	int numberofmodesV = circuits[c].iparams[1];
+	int numberofmodesL = circuits[c].iparams[2];
+	//printf("HIIIII\n");
 
 
 
@@ -261,13 +266,13 @@ int AddQ(int c, double *Qpointer)
 		Qv[i] = *(Qpointer+i);
 		printf("%f\n", Qv[i]);  /* print first double */
 	}
-
+	//printf("HIIIII\n");
 
 
 	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
 		Ql[i] = *(Qpointer+i);
-		printf("%f\n", Ql[i]);  /* print first double */
+		//printf("%f\n", Ql[i]);  /* print first double */
 	}
 }
 
