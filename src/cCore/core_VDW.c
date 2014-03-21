@@ -69,16 +69,31 @@ int Add_VDW(int owner, double alpha, double hamaker, double radius, double offse
     return index;
     
 }
-
+/***********************************************************************
+    c.params[0] = TipAngle;
+    c.parmas[1] = TipHamak;
+    c.params[2] = TipRadius;
+    c.params[3] = TipOffset;
+    c.params[4] = g2r;
+    c.params[5] = sing;
+    c.parmas[6] = tang;
+    c.params[7] = cosg;
+    c.params[8] = cos2g;
+    c.params[9] = TR2;
+    c.params[10] = TRC;
+    c.params[11] = TRS;
+ * ********************************************************************/
 void VDW( circuit *c ) {
 
     // ztip = inputz + offset
-    double ztip = GlobalSignals[c->inputs[2]] + c->params[3];
+    double ztip = GlobalSignals[c->inputs[0]] + c->params[3];
 
     if (ztip == 0)
     {
         return;
     }
+
+
             //vdw = (TipHamak*TR2)*(1.0-sing)*(TRS-ztip*sing-TipRadius-ztip);
             double vdw = (c->params[1]*c->params[9])*(1.0-c->params[5])*(c->params[11]-ztip*c->params[5]-c->params[2]-ztip);
 

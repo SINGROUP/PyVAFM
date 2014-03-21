@@ -29,8 +29,8 @@ def main():
 
 	machine.Connect("scan.z","VDW.ztip")
 
-	scanner.Place(x=0,y=0,z=10)
-	scanner.Move(x=0,y=0,z=10.1,v=1)
+	scanner.Place(x=0,y=0,z=1)
+	scanner.Move(x=0,y=0,z=10,v=1)
 
 if __name__ == '__main__':
 	main()

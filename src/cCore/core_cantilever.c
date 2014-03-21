@@ -237,19 +237,18 @@ int AddK(int c, double *Kpointer)
 	}
 
 
-	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
+	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
 		kl[i] = *(Kpointer+i);
 		//printf("%f\n", kl[i]);
 	}
 
-
+	return c;
 
 }
 
 int AddQ(int c, double *Qpointer)
 {
-
 
 	double *Qv = (double*)circuits[c].vpparams[1];
 	double *Ql = (double*)circuits[c].vpparams[13];
@@ -257,42 +256,106 @@ int AddQ(int c, double *Qpointer)
 
 	int numberofmodesV = circuits[c].iparams[1];
 	int numberofmodesL = circuits[c].iparams[2];
-	//printf("HIIIII\n");
+
 
 
 
 	for (int i=0;i<numberofmodesV;i++)
 	{
 		Qv[i] = *(Qpointer+i);
-		printf("%f\n", Qv[i]);  /* print first double */
+		//printf("%f\n", Qv[i]);  /* print first double */
 	}
-	//printf("HIIIII\n");
 
 
-	for (int i=numberofmodesV-1;i< (numberofmodesL + numberofmodesV) ;i++)
+	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
 		Ql[i] = *(Qpointer+i);
 		//printf("%f\n", Ql[i]);  /* print first double */
 	}
+
+	return c;
 }
 
 int AddF(int c, double *fpointer)
 {
-	
+
+	double *Fv = (double*)circuits[c].vpparams[2];
+	double *Fl = (double*)circuits[c].vpparams[14];
+
+	double *Wv = (double*)circuits[c].vpparams[4];
+	double *Wl = (double*)circuits[c].vpparams[16];	
+
+	int numberofmodesV = circuits[c].iparams[1];
+	int numberofmodesL = circuits[c].iparams[2];
+
+
+
+
+	for (int i=0;i<numberofmodesV;i++)
+	{
+		Fv[i] = *(fpointer+i);
+		Wv[i] = (2*PI* (*(fpointer+i) ) );
+		//printf("%f\n", Fv[i]);  /* print first double */
+	}
+
+
+	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
+	{
+		Fl[i] = *(fpointer+i);
+		Wl[i] = (2*PI* (*(fpointer+i) ) );
+		//printf("%f\n", Fl[i]);  /* print first double */
+	}
+
+	return c;	
 }
 
 int AddM(int c, double *Mpointer)
 {
-	
+		
+	double *Mv = (double*)circuits[c].vpparams[2];
+	double *Ml = (double*)circuits[c].vpparams[14];
+
+
+	int numberofmodesV = circuits[c].iparams[1];
+	int numberofmodesL = circuits[c].iparams[2];
+
+
+
+
+	for (int i=0;i<numberofmodesV;i++)
+	{
+		Mv[i] = *(Mpointer+i);
+		//printf("%f\n", Mv[i]);  /* print first double */
+	}
+
+
+	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
+	{
+		Ml[i] = *(Mpointer+i);
+		//printf("%f\n", Ml[i]);  /* print first double */
+	}
+
+	return c;	
 }
 
 int StartingPoint(int c, double *StartingPoint)
 {
-	
+	circuits[c].params[3] = *(StartingPoint+0); //x
+	circuits[c].params[4] = *(StartingPoint+1);	//y
+	circuits[c].params[5] = *(StartingPoint+2);	//z
+	return c;
 }
 
+int setup(int c)
+{
+
+}
 
 void RunAdvancedCantilever(circuit *c)
 {
+
+
+
+
 
 }

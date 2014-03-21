@@ -21,9 +21,10 @@ def main():
 
 	canti.AddK(1.1,2.2,1.4)
 	canti.AddQ(1.2,2.3,3.4)
-	#canti.AddM(1.3,2.4)
-	#canti.Addf0(1.4,2.5)
-	#canti.StartingPos(1.5,2.6,2.7)
+	canti.Addf0(1.4,2.5,2.2)
+	canti.AddM(1.3,2.4,2.4)
+
+	canti.StartingPos(1.5,2.6,2.7)
 
 	#debug output
 	out1 = machine.AddCircuit(type='output',name='output',file='AdvCantilever.dat', dump=1000)

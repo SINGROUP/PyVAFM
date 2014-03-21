@@ -63,10 +63,4 @@ class VDW(Circuit):
 		
 		
 	def Update (self):
-		
-		result = 0
-		
-		for i in self.I.values():
-			result += i.value
-			
-		self.O['out'].value = result
+		pass
