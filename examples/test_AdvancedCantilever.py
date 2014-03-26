@@ -13,24 +13,24 @@ from customs_pll import *
 def main():
 	
 	
-	machine = Machine(name='machine', dt=0.01, pushed=True);
+	machine = Machine(name='machine', dt=0.02, pushed=True);
 	f0 = 100.0
 	
 	#Add Circuits
-	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=2,NumberOfModesL=1, pushed=True)
+	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=0,NumberOfModesL=1, pushed=True)
 
-	canti.AddK(1.1,2.2,1.4)
-	canti.AddQ(1.2,2.3,3.4)
-	canti.Addf0(1.4,2.5,2.2)
-	canti.AddM(1.3,2.4,2.4)
+	canti.AddK(1)
+	canti.AddQ(10)
+	canti.Addf0(1)
+	canti.AddM(1)
 
-	canti.StartingPos(1.5,2.6,2.7)
+	canti.StartingPos(0,0,1)
 
 	#debug output
-	out1 = machine.AddCircuit(type='output',name='output',file='AdvCantilever.dat', dump=1000)
-	out1.Register("global.time","canti.zPos")
+	out1 = machine.AddCircuit(type='output',name='output',file='AdvCantilever.dat', dump=1)
+	out1.Register("global.time","canti.yPos")
 	
-	machine.Wait(0.02)
+	machine.Wait(10)
 
 if __name__ == '__main__':
 	main()

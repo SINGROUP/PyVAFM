@@ -110,8 +110,11 @@ void RunCantilever(circuit *c) {
 
  [10] = xtip
 
- [11] = NumberOfModesV
- [12] = NumberOfModesL
+ iparams
+ [0] = NumberOfModesV
+ [1] = NumberOfModesL
+ [2] = first run check 
+
 vparams
 
     c.vpparams[0] =Kv
@@ -126,9 +129,9 @@ vparams
     c.vpparams[7] =Av
     c.vpparams[8] =Velocityv
 
-    c.vpparams[9]  =Xx
-    c.vpparams[10] =Xy
-    c.vpparams[11] =Xz
+    c.vpparams[9]  =Xv
+    c.vpparams[10] =Xv
+    c.vpparams[11] =Xv
 
 
 
@@ -154,17 +157,19 @@ vparams
 int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 {
 	circuit c = NewCircuit();
-	c.nI = 6;
+	c.nI = 11;
 	c.nO = 13+numberofmodesL+numberofmodesV;
 
 	c.plen = 11;
 	c.params = (double*)calloc(c.plen,sizeof(double));
 
-
-	c.iplen = 2;
+	// check is for first run set up
+	int check = 0;
+	c.iplen = 3;
 	c.iparams = (int*)calloc(c.iplen,sizeof(int));
-	c.iparams[1] = numberofmodesV;
-	c.iparams[2] = numberofmodesL;
+	c.iparams[0] = numberofmodesV;
+	c.iparams[1] = numberofmodesL;
+	c.iparams[2] = check;
 
 	
 	c.updatef = RunAdvancedCantilever;
@@ -186,9 +191,9 @@ int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
     c.vpparams[7] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Av
     c.vpparams[8] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Velocityv
 
-    c.vpparams[9] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xx
-    c.vpparams[10] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xy
-    c.vpparams[11] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xz
+    c.vpparams[9] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xv
+    c.vpparams[10] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xv
+    c.vpparams[11] = (double*)calloc(numberofmodesV,sizeof(double)); 	//Xv
 
 
 
@@ -225,26 +230,27 @@ int AddK(int c, double *Kpointer)
 	double *kv = (double*)circuits[c].vpparams[0];
 	double *kl = (double*)circuits[c].vpparams[12];
 
-	int numberofmodesV = circuits[c].iparams[1];
-	int numberofmodesL = circuits[c].iparams[2];
+	int numberofmodesV = circuits[c].iparams[0];
+	int numberofmodesL = circuits[c].iparams[1];
 
 
-
+	
 	for (int i=0;i<numberofmodesV;i++)
 	{
 		kv[i] = *(Kpointer+i);
-		//printf("%f\n", kv[i]);
+		//printf("%f ", kv[i]);
 	}
 
-
+	int j=0;	
 	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
-		kl[i] = *(Kpointer+i);
-		//printf("%f\n", kl[i]);
+		kl[j] = *(Kpointer+i);
+		//printf("%f ", kl[j]);
+		j++;
 	}
+	
 
-	return c;
-
+	//printf("\n");
 }
 
 int AddQ(int c, double *Qpointer)
@@ -254,8 +260,8 @@ int AddQ(int c, double *Qpointer)
 	double *Ql = (double*)circuits[c].vpparams[13];
 
 
-	int numberofmodesV = circuits[c].iparams[1];
-	int numberofmodesL = circuits[c].iparams[2];
+	int numberofmodesV = circuits[c].iparams[0];
+	int numberofmodesL = circuits[c].iparams[1];
 
 
 
@@ -263,17 +269,19 @@ int AddQ(int c, double *Qpointer)
 	for (int i=0;i<numberofmodesV;i++)
 	{
 		Qv[i] = *(Qpointer+i);
-		//printf("%f\n", Qv[i]);  /* print first double */
+		//printf("%f ", Qv[i]);  /* print first double */
 	}
 
 
+	int j=0;	
 	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
-		Ql[i] = *(Qpointer+i);
-		//printf("%f\n", Ql[i]);  /* print first double */
+		Ql[j] = *(Qpointer+i);
+		//printf("%f ", Ql[j]);  /* print first double */
+		j++;
 	}
 
-	return c;
+	//printf("\n");
 }
 
 int AddF(int c, double *fpointer)
@@ -285,8 +293,8 @@ int AddF(int c, double *fpointer)
 	double *Wv = (double*)circuits[c].vpparams[4];
 	double *Wl = (double*)circuits[c].vpparams[16];	
 
-	int numberofmodesV = circuits[c].iparams[1];
-	int numberofmodesL = circuits[c].iparams[2];
+	int numberofmodesV = circuits[c].iparams[0];
+	int numberofmodesL = circuits[c].iparams[1];
 
 
 
@@ -295,29 +303,32 @@ int AddF(int c, double *fpointer)
 	{
 		Fv[i] = *(fpointer+i);
 		Wv[i] = (2*PI* (*(fpointer+i) ) );
-		//printf("%f\n", Fv[i]);  /* print first double */
+		//printf("%f ", Fv[i]);  /* print first double */
 	}
 
-
+	int j = 0;
 	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
-		Fl[i] = *(fpointer+i);
-		Wl[i] = (2*PI* (*(fpointer+i) ) );
-		//printf("%f\n", Fl[i]);  /* print first double */
+		Fl[j] = *(fpointer+i);
+		Wl[j] = (2*PI* (*(fpointer+i) ) );
+		//printf("%f ", Fl[j]);  /* print first double */
+		j++;
 	}
 
-	return c;	
+	//printf ("\n");
+
+	
 }
 
 int AddM(int c, double *Mpointer)
 {
 		
-	double *Mv = (double*)circuits[c].vpparams[2];
-	double *Ml = (double*)circuits[c].vpparams[14];
+	double *Mv = (double*)circuits[c].vpparams[3];
+	double *Ml = (double*)circuits[c].vpparams[15];
 
 
-	int numberofmodesV = circuits[c].iparams[1];
-	int numberofmodesL = circuits[c].iparams[2];
+	int numberofmodesV = circuits[c].iparams[0];
+	int numberofmodesL = circuits[c].iparams[1];
 
 
 
@@ -325,17 +336,17 @@ int AddM(int c, double *Mpointer)
 	for (int i=0;i<numberofmodesV;i++)
 	{
 		Mv[i] = *(Mpointer+i);
-		//printf("%f\n", Mv[i]);  /* print first double */
+		//printf("%f ", Mv[i]);  /* print first double */
 	}
 
-
+	int j = 0;
 	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
 	{
-		Ml[i] = *(Mpointer+i);
-		//printf("%f\n", Ml[i]);  /* print first double */
+		Ml[j] = *(Mpointer+i);
+		//printf("%f ", Ml[j]);  /* print first double */
+		j++;
 	}
-
-	return c;	
+	//printf("\n");
 }
 
 int StartingPoint(int c, double *StartingPoint)
@@ -343,19 +354,209 @@ int StartingPoint(int c, double *StartingPoint)
 	circuits[c].params[3] = *(StartingPoint+0); //x
 	circuits[c].params[4] = *(StartingPoint+1);	//y
 	circuits[c].params[5] = *(StartingPoint+2);	//z
-	return c;
+	//printf("%f %f %f \n", circuits[c].params[3], circuits[c].params[4], circuits[c].params[5]);
+
+	double *Xv = (double*)circuits[c].vpparams[9];
+	double *Yv = (double*)circuits[c].vpparams[10];
+	double *Zv = (double*)circuits[c].vpparams[11];
+
+	double *Xl = (double*)circuits[c].vpparams[21];
+	double *Yl = (double*)circuits[c].vpparams[22];
+	double *Zl = (double*)circuits[c].vpparams[23];
+
+	int numberofmodesV = circuits[c].iparams[0];
+	int numberofmodesL = circuits[c].iparams[1];
+
+	for (int i=0;i<numberofmodesV;i++)
+	{
+		Xv[i] = circuits[c].params[3];
+		Yv[i] = circuits[c].params[4];
+		Zv[i] = circuits[c].params[5];
+
+	}
+
+	int j = 0;
+	for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
+	{
+		Xl[j] = circuits[c].params[3];
+		Yl[j] = circuits[c].params[4];
+		Zl[j] = circuits[c].params[5];
+		j++;
+	}
+
+
 }
 
-int setup(int c)
-{
-
-}
 
 void RunAdvancedCantilever(circuit *c)
 {
+        double *kv = (double*)c->vpparams[0];
+        double *kl = (double*)c->vpparams[12];
+        
+        double *Qv = (double*)c->vpparams[1];
+		double *Ql = (double*)c->vpparams[13];
+
+		double *Fv = (double*)c->vpparams[2];
+		double *Fl = (double*)c->vpparams[14];
+
+		double *Wv = (double*)c->vpparams[4];
+		double *Wl = (double*)c->vpparams[16];	
+
+		double *Mv = (double*)c->vpparams[3];
+		double *Ml = (double*)c->vpparams[15];	
+
+		double *Gammav = (double*)c->vpparams[5];
+		double *Gammal = (double*)c->vpparams[17];
+
+		double *Vv = (double*)c->vpparams[6];
+		double *Vl = (double*)c->vpparams[18];
+
+		double *Xv = (double*)c->vpparams[9];
+		double *Yv = (double*)c->vpparams[10];
+		double *Zv = (double*)c->vpparams[11];
+
+		double *Xl = (double*)c->vpparams[21];
+		double *Yl = (double*)c->vpparams[22];
+		double *Zl = (double*)c->vpparams[23];
+
+		double *Av = (double*)c->vpparams[7];
+		double *Al = (double*)c->vpparams[19];	
+
+		double *Velocityv = (double*)c->vpparams[8];
+		double *Velocityl = (double*)c->vpparams[20];				
+
+		int numberofmodesV = c->iparams[0];
+		int numberofmodesL = c->iparams[1];			
+
+		/*
+		printf("%f %f %f\n",kv[0],kv[1], kl[0]);
+		printf("%f %f %f\n",Qv[0],Qv[1], Ql[0]);
+		printf("%f %f %f\n",Fv[0],Fv[1], Fl[0]);
+		printf("%f %f %f\n",Wv[0],Wv[1], Wl[0]);
+		printf("%f %f %f\n",Mv[0],Mv[1], Ml[0]);
+		printf("%f %f %f\n",c->params[3],c->params[4],c->params[5]);
+		printf("\n");
+		*/
 
 
 
 
+		if (c->iparams[2] == 0) 
+		{
 
+				for (int i=0;i<numberofmodesV;i++)
+				{
+					// on the first run work out the gammas
+					Gammav[i] = 0.5 * Wv[i] / Qv[i];
+					//printf("%f %f %f\n",Xv[i],Yv[i],Zv[i] );
+				}
+
+
+				
+				int j = 0;
+				for (int i=numberofmodesV;i< (numberofmodesL + numberofmodesV) ;i++)
+				{
+					Gammal[j] = 0.5 * Wl[j] / Ql[j]; 
+					//printf("%f %f %f\n",Xl[j],Yl[j],Zl[j] );
+					j++;
+				}
+
+				c->iparams[2] = 1;
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// vertical modes
+		//ztip = 0
+		c->params[6] = 0;
+
+		for (int i=0; i<numberofmodesV;i++)
+		{
+			//verlet eqn
+			// z + (velocity - friction*velocity) + 0.5 * a * dt^2
+			Zv[i] = Zv[i] + Vv[i]*dt*(1 - Gammav[i]*dt ) + 0.5 * Av[i]*dt*dt;
+			// half step velocity update
+			// v = velocity - velocity*friction	
+			Vv[i] = Vv[i] * ( 1 - Gammav[i]*dt) + 0.5*Av[i]*dt;
+			c->params[6] = 	c->params[6] + Zv[i];		
+		}
+
+		//output ztip
+		GlobalBuffers[c->outputs[0]] = c->params[6];
+		//
+		Velocityv[0] = 0.5 * (c->params[6] - c->params[7])/dt;
+		//ztip0 = ztip
+		c->params[7]=c->params[6];
+
+		//output absolute pos
+		GlobalBuffers[c->outputs[6]] = GlobalSignals[c->inputs[2]] + c->params[3]; 				  //x
+		GlobalBuffers[c->outputs[7]] = GlobalSignals[c->inputs[3]] + c->params[4] + c->params[8]; //y
+		GlobalBuffers[c->outputs[8]] = GlobalSignals[c->inputs[4]] + c->params[5] + c->params[6]; //z
+
+		// total force = Force + exciterV
+		double totalforce = GlobalSignals[c->inputs[9]] + GlobalSignals[c->inputs[0]]; 
+
+
+		for (int i=0; i<numberofmodesV;i++)
+		{
+			//change in acceleration
+			//force / mass                  - z * w ^2 
+			Av[i] = totalforce / Mv[i] - Zv[i]*Wv[i]*Wv[i];
+
+			//update the half velocity
+			Vv[i] = Vv[i] *(1 - Gammav[i]*dt) + 0.5 * Av[i] * dt;
+
+			// print out V and Z for each mode
+			GlobalBuffers[c->outputs[8+i]] = Vv[i];
+			GlobalBuffers[c->outputs[8+i+numberofmodesV+1]] = Zv[i];
+			
+		}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// lateral modes
+		//ytip = 0
+		c->params[8] = 0;
+
+		for (int i=0; i<numberofmodesL;i++)
+		{
+			//verlet eqn
+			// y + (velocity - friction*velocity) + 0.5 * a * dt^2
+			Zl[i] = Zl[i] + Vl[i]*dt*(1 - Gammal[i]*dt ) + 0.5 * Al[i]*dt*dt;
+			// half step velocity update
+			// v = velocity - velocity*friction	
+			Vl[i] = Vl[i] * ( 1 - Gammal[i]*dt) + 0.5*Al[i]*dt;
+			c->params[8] = 	c->params[8] + Zl[i];		
+		}
+
+		//output ytip
+		GlobalBuffers[c->outputs[1]] = c->params[8];
+		
+		Velocityl[0] = 0.5 * (c->params[8] - c->params[9])/dt;
+		//ytip0 = ytip
+		c->params[9]=c->params[8];
+
+		//output absolute pos
+		GlobalBuffers[c->outputs[6]] = GlobalSignals[c->inputs[2]] + c->params[3]; 				  //x
+		GlobalBuffers[c->outputs[7]] = GlobalSignals[c->inputs[3]] + c->params[4] + c->params[8]; //y
+		GlobalBuffers[c->outputs[8]] = GlobalSignals[c->inputs[4]] + c->params[5] + c->params[6]; //z
+
+		// total force = Force + exciterY
+		totalforce = GlobalSignals[c->inputs[9]] + GlobalSignals[c->inputs[10]]; 
+
+
+		for (int i=0; i<numberofmodesL;i++)
+		{
+			//change in acceleration
+			//force / mass                  - z * w ^2 
+			Al[i] = totalforce / Ml[i] - Zl[i]*Wl[i]*Wl[i];
+
+			//update the half velocity
+			Vl[i] = Vl[i] *(1 - Gammal[i]*dt) + 0.5 * Al[i] * dt;
+
+			// print out V and Z for each mode
+			GlobalBuffers[c->outputs[8+i+numberofmodesV+2]] = Vl[i];
+			GlobalBuffers[c->outputs[8+i+numberofmodesV+3+numberofmodesL]] = Zl[i];
+			
+		}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
