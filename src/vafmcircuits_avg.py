@@ -74,22 +74,7 @@ class avg(Circuit):
 
 	def Update (self):
 		
-		#record the value
-		self.tot -= self._buffer[self._cnt] #remove the value to overwrite from total
-		self._buffer[self._cnt] = self.I['signal'].value #record
-		
-		#add it to the total
-		self.tot += self.I['signal'].value
-		
-		#increment the counter and refit it...
-		self._cnt = (self._cnt+1) % self._steps
-		
-		if self._moving: #if computing moving avg...
-			#output average
-			self.O['out'].value = self.tot/self._steps
-		else:
-			if self._cnt == 0:
-				self.O['out'].value = self.tot/self._steps
+		pass
 				
 		
 		

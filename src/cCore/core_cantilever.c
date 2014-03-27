@@ -449,6 +449,14 @@ void RunAdvancedCantilever(circuit *c)
 					// on the first run work out the gammas
 					Gammav[i] = 0.5 * Wv[i] / Qv[i];
 					//printf("%f %f %f\n",Xv[i],Yv[i],Zv[i] );
+
+					if (Mv[i]==0) {
+						printf("WARNING: calculating masses from omega and k for vertical eigenfrequency %i\n",i+1 );
+						Mv[i]=(Wv[i]*Wv[i] )/kv[i];
+						printf("%f\n", Wv[i]);
+							  }
+
+
 				}
 
 
@@ -458,6 +466,10 @@ void RunAdvancedCantilever(circuit *c)
 				{
 					Gammal[j] = 0.5 * Wl[j] / Ql[j]; 
 					//printf("%f %f %f\n",Xl[j],Yl[j],Zl[j] );
+					if (Ml[j]==0) {
+						printf("WARNING: calculating masses from omega and k for lateral eigenfrequency %i\n",j+1 );
+						Ml[j]=(Wl[j]*Wl[j] )/kl[j];
+							  }
 					j++;
 				}
 

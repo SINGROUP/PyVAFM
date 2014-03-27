@@ -82,6 +82,9 @@ class AdvancedCantilever(Circuit):
 		else:
 			raise NameError("No NumberOfModesL entered ")
 
+		self.NumberOfModesL = NumberOfModesL
+		self.NumberOfModesV = NumberOfModesV	
+
 
 		self.AddInput("exciterz") #0
 		self.AddInput("excitery") #1
@@ -121,6 +124,9 @@ class AdvancedCantilever(Circuit):
 
 
 	def AddK(self, *args):
+		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
+			raise NameError("Incorrect number of spring constants entered")
+
 		Circuit.cCore.AddK.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		k=[]
 		for i in args:
@@ -129,6 +135,9 @@ class AdvancedCantilever(Circuit):
 		Circuit.cCore.AddK(self.cCoreID, karray)
 
 	def AddQ(self, *args):
+		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
+			raise NameError("Incorrect number of Q factors constants entered")
+
 		Circuit.cCore.AddQ.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		Q=[]
 		for i in args:
@@ -137,6 +146,12 @@ class AdvancedCantilever(Circuit):
 		Circuit.cCore.AddQ(self.cCoreID, Qarray)
 
 	def AddM(self, *args):
+		if (len(args) == 0):
+			print "WARNING: Calculating masses from omega and k"
+
+		if (len(args) != self.NumberOfModesL + self.NumberOfModesV and len(args) != 0) :
+			raise NameError("Incorrect number of masses entered")		
+
 		#TODO Check if no mass is given and if not calculate and put into the array
 		Circuit.cCore.AddM.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		M=[]
@@ -146,6 +161,9 @@ class AdvancedCantilever(Circuit):
 		Circuit.cCore.AddM(self.cCoreID, Marray)
 
 	def Addf0(self, *args):
+		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
+			raise NameError("Incorrect number of eigenfrequencies entered")
+
 		Circuit.cCore.AddF.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		f=[]
 		for i in args:
@@ -154,6 +172,10 @@ class AdvancedCantilever(Circuit):
 		Circuit.cCore.AddF(self.cCoreID,farray)
 
 	def StartingPos(self, *args):
+		if (len(args) != 3):
+			raise NameError("Incorrect number of starting values entered")
+
+
 		Circuit.cCore.StartingPoint.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
 		StartingPoint=[]
 		for i in args:

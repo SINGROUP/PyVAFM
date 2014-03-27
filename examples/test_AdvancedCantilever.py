@@ -17,13 +17,13 @@ def main():
 	f0 = 100.0
 	
 	#Add Circuits
-	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=0,NumberOfModesL=2, pushed=True)
+	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=2,NumberOfModesL=0, pushed=True)
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
 
-
+	machine.AddCircuit(type='waver',name='wave', amp=10, freq=1, phi=1, offset=2.0, pushed=True)
 
 	canti.AddK(1,1)
-	canti.AddQ(1000000,1000000)
+	canti.AddQ(100,100)
 	canti.Addf0(1,1)
 	canti.AddM(1,1)
 
@@ -33,14 +33,16 @@ def main():
 	machine.Connect("scan.x","canti.Holderx")
 	machine.Connect("scan.y","canti.Holdery")
 	machine.Connect("scan.z","canti.Holderz")
+	machine.Connect("wave.cos","canti.ForceV")
+	machine.Connect("wave.cos","canti.ForceL")
 
 	#debug output
 	out1 = machine.AddCircuit(type='output',name='output',file='AdvCantilever.dat', dump=1)
-	out1.Register("global.time","canti.zPos","canti.yPos","canti.xABS","canti.yABS","canti.zABS","canti.yL1","canti.yL2")
+	out1.Register("global.time","canti.zPos","canti.yPos","canti.xABS","canti.yABS","canti.zABS","canti.zV1","canti.zV2")
 	
 
 	scanner.Place(x=1,y=1,z=1)
-	machine.Wait(10)
+	machine.Wait(15)
 
 if __name__ == '__main__':
 	main()
