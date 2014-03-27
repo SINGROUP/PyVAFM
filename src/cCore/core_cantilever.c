@@ -158,7 +158,7 @@ int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 {
 	circuit c = NewCircuit();
 	c.nI = 11;
-	c.nO = 13+numberofmodesL+numberofmodesV;
+	c.nO = 9+numberofmodesL*2+numberofmodesV*2;
 
 	c.plen = 11;
 	c.params = (double*)calloc(c.plen,sizeof(double));
@@ -487,13 +487,13 @@ void RunAdvancedCantilever(circuit *c)
 		//ztip0 = ztip
 		c->params[7]=c->params[6];
 
-		//output absolute pos
-		GlobalBuffers[c->outputs[6]] = GlobalSignals[c->inputs[2]] + c->params[3]; 				  //x
-		GlobalBuffers[c->outputs[7]] = GlobalSignals[c->inputs[3]] + c->params[4] + c->params[8]; //y
-		GlobalBuffers[c->outputs[8]] = GlobalSignals[c->inputs[4]] + c->params[5] + c->params[6]; //z
+		//output absolute pos        =        holder                   +  tip pos
+		GlobalBuffers[c->outputs[2]] = GlobalSignals[c->inputs[2]]; 				  //x
+		GlobalBuffers[c->outputs[3]] = GlobalSignals[c->inputs[3]] + c->params[8]; //y
+		GlobalBuffers[c->outputs[4]] = GlobalSignals[c->inputs[4]] + c->params[6]; //z
 
 		// total force = Force + exciterV
-		double totalforce = GlobalSignals[c->inputs[9]] + GlobalSignals[c->inputs[0]]; 
+		double totalforce = GlobalSignals[c->inputs[5]] + GlobalSignals[c->inputs[0]]; 
 
 
 		for (int i=0; i<numberofmodesV;i++)
@@ -506,8 +506,8 @@ void RunAdvancedCantilever(circuit *c)
 			Vv[i] = Vv[i] *(1 - Gammav[i]*dt) + 0.5 * Av[i] * dt;
 
 			// print out V and Z for each mode
-			GlobalBuffers[c->outputs[8+i]] = Vv[i];
-			GlobalBuffers[c->outputs[8+i+numberofmodesV+1]] = Zv[i];
+			GlobalBuffers[c->outputs[5+i]] = Vv[i];
+			GlobalBuffers[c->outputs[6+i+numberofmodesV]] = Zv[i];
 			
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -521,11 +521,11 @@ void RunAdvancedCantilever(circuit *c)
 		{
 			//verlet eqn
 			// y + (velocity - friction*velocity) + 0.5 * a * dt^2
-			Zl[i] = Zl[i] + Vl[i]*dt*(1 - Gammal[i]*dt ) + 0.5 * Al[i]*dt*dt;
+			Yl[i] = Yl[i] + Vl[i]*dt*(1 - Gammal[i]*dt ) + 0.5 * Al[i]*dt*dt;
 			// half step velocity update
 			// v = velocity - velocity*friction	
 			Vl[i] = Vl[i] * ( 1 - Gammal[i]*dt) + 0.5*Al[i]*dt;
-			c->params[8] = 	c->params[8] + Zl[i];		
+			c->params[8] = 	c->params[8] + Yl[i];		
 		}
 
 		//output ytip
@@ -535,27 +535,27 @@ void RunAdvancedCantilever(circuit *c)
 		//ytip0 = ytip
 		c->params[9]=c->params[8];
 
-		//output absolute pos
-		GlobalBuffers[c->outputs[6]] = GlobalSignals[c->inputs[2]] + c->params[3]; 				  //x
-		GlobalBuffers[c->outputs[7]] = GlobalSignals[c->inputs[3]] + c->params[4] + c->params[8]; //y
-		GlobalBuffers[c->outputs[8]] = GlobalSignals[c->inputs[4]] + c->params[5] + c->params[6]; //z
+		//output absolute pos        =        Holder               +  tip pos
+		GlobalBuffers[c->outputs[2]] = GlobalSignals[c->inputs[2]]; 				  //x
+		GlobalBuffers[c->outputs[3]] = GlobalSignals[c->inputs[3]] + c->params[8]; //y
+		GlobalBuffers[c->outputs[4]] = GlobalSignals[c->inputs[4]] + c->params[6]; //z
 
 		// total force = Force + exciterY
-		totalforce = GlobalSignals[c->inputs[9]] + GlobalSignals[c->inputs[10]]; 
+		totalforce = GlobalSignals[c->inputs[6]] + GlobalSignals[c->inputs[1]]; 
 
 
 		for (int i=0; i<numberofmodesL;i++)
 		{
 			//change in acceleration
 			//force / mass                  - z * w ^2 
-			Al[i] = totalforce / Ml[i] - Zl[i]*Wl[i]*Wl[i];
+			Al[i] = totalforce / Ml[i] - Yl[i]*Wl[i]*Wl[i];
 
 			//update the half velocity
 			Vl[i] = Vl[i] *(1 - Gammal[i]*dt) + 0.5 * Al[i] * dt;
 
 			// print out V and Z for each mode
-			GlobalBuffers[c->outputs[8+i+numberofmodesV+2]] = Vl[i];
-			GlobalBuffers[c->outputs[8+i+numberofmodesV+3+numberofmodesL]] = Zl[i];
+			GlobalBuffers[c->outputs[7+i+numberofmodesV]] = Vl[i];
+			GlobalBuffers[c->outputs[8+i+numberofmodesV+numberofmodesL]] = Yl[i];
 			
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////

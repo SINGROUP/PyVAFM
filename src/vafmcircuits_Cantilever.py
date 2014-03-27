@@ -85,36 +85,33 @@ class AdvancedCantilever(Circuit):
 
 		self.AddInput("exciterz") #0
 		self.AddInput("excitery") #1
-		self.AddInput("positionx") #2
-		self.AddInput("positiony") #3
-		self.AddInput("positionz") #4
 
-		self.AddInput("Record")	#5
-		self.AddInput("Holderx") #6
-		self.AddInput("Holdery") #7
-		self.AddInput("Holderz") #8
+		self.AddInput("Holderx") #2
+		self.AddInput("Holdery") #3
+		self.AddInput("Holderz") #4
 
-		self.AddInput("ForceV") #9
-		self.AddInput("ForceL") #10
+		self.AddInput("ForceV") #5
+		self.AddInput("ForceL") #6
 		
 		self.AddOutput("zPos") #0
 		self.AddOutput("yPos") #1
 
-		self.AddOutput("xABSv") #2
-		self.AddOutput("yABSv") #3
-		self.AddOutput("zABSv") #4
+		self.AddOutput("xABS") #2
+		self.AddOutput("yABS") #3
+		self.AddOutput("zABS") #4
 
-		self.AddOutput("xABSl") #5
-		self.AddOutput("yABSl") #6
-		self.AddOutput("zABSl") #7
 
-		for i in range(1 ,NumberOfModesV+1):
-			self.AddOutput("vV" + str(i) ) #8 to #8 + NumberOfModesV
-			self.AddOutput("zV" + str(i) ) #8 + NumberOfModesV  to #8 + NumberOfModesV*2
+		for i in range(1 ,NumberOfModesV+2):
+			self.AddOutput("vV" + str(i) ) #5 to #5 + NumberOfModesV
 
-		for i in range(1 ,NumberOfModesL+1):
-			self.AddOutput("vL" + str(i) ) #8 + NumberOfModesV*2 to #8 + NumberOfModesV*2 + NumberOfModesL
-			self.AddOutput("yL" + str(i) ) #8 + NumberOfModesV*2 + NumberOfModesL + #8 + NumberOfModesV*2 + NumberOfModesL*2
+		for i in range(1 ,NumberOfModesV+2):			
+			self.AddOutput("zV" + str(i) ) #5 + NumberOfModesV  to #5 + NumberOfModesV*2
+
+		for i in range(1 ,NumberOfModesL+2):
+			self.AddOutput("vL" + str(i) ) #5 + NumberOfModesV*2 to #5 + NumberOfModesV*2 + NumberOfModesL
+			
+		for i in range(1 ,NumberOfModesL+2):			
+			self.AddOutput("yL" + str(i) ) #5 + NumberOfModesV*2 + NumberOfModesL + #5 + NumberOfModesV*2 + NumberOfModesL*2
 
 
 
