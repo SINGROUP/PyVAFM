@@ -5,9 +5,6 @@ import ctypes as c
 
 import math
 
-## \package vafmcircuits_pycirc.py
-# This file contains the controller circuits.
-#
 
 
 class PYCircuit(Circuit):

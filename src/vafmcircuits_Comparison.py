@@ -45,11 +45,7 @@ class GreaterOrEqual(Circuit):
 		pass	
 
 	def Update (self):
-		result=0
-
-		if self.I["in1"].value >= self.I["in2"].value :
-			result=1
-		self.O['out'].value = result
+		pass
 
 ## \brief Less or equal to  circuit.
 #
@@ -91,11 +87,7 @@ class LessOrEqual(Circuit):
 		pass	
 
 	def Update (self):
-		result=0
-
-		if self.I["in1"].value <= self.I["in2"].value :
-			result=1
-		self.O['out'].value = result
+		pass
 
 ## \brief equal to  circuit.
 #
@@ -137,8 +129,4 @@ class Equal(Circuit):
 		pass	
 
 	def Update (self):
-		result=0
-
-		if self.I["in1"].value == self.I["in2"].value :
-			result=1
-		self.O['out'].value = result
+		pass

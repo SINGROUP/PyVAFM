@@ -68,17 +68,6 @@ class waver(Circuit):
 
 	def Update (self):
 		pass
-		'''
-		self.phase += self.machine.dt * self.I["freq"].value
-		
-		phase = 2*math.pi*self.phase
-
-		self.O['cos'].value = self.I['amp'].value*math.cos(phase) + self.I['offset'].value
-		self.O['sin'].value = self.I['amp'].value*math.sin(phase) + self.I['offset'].value
-		self.O['saw'].value = self.I['amp'].value * (self.machine.time *self.I["freq"].value - math.floor(self.machine.time *self.I["freq"].value)) + self.I['offset'].value
-		
-		if(self.phase >= 1): self.phase -= 1.0
-		'''
 
 
 ## Digital square wave generator circuit.
@@ -135,14 +124,5 @@ class square(Circuit):
 
 	def Update (self):
 
-		self.phase += self.machine.dt * self.I["freq"].value
-		#print self.phase, self.I['duty'].value
-		
-		if self.phase > self.I['duty'].value:
-			self.O['out'].value = 0
-		else:
-			self.O['out'].value = 1
-
-		if self.phase >= 1:
-			self.phase -= 1
+		pass
 		

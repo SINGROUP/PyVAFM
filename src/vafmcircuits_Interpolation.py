@@ -12,29 +12,40 @@ import ctypes
 
 ## \brief Tri-linear interpolation circuit.
 #
+# \image html i3dlin.png "schema"
+#
 # This is the circuit that calculates the interpolation of the provided force field.
-# The force field must be in the following format, but plese note that the interpolation
-# circuit is capable of taking any number of dimensions and components in,
-# but for a case where there is an unequal amount of dimensions and components the
-# unused components column must be filled with zeros.
-# Except in the case of 3 dimensions and 1 component, this can be left as it is.
-# Examples of how the force fields must be formated is shown below.: \n
-# <pre> x y z Fx Fy Fz or x y z F or x y z Fx 0 0 or x y Fx 0 <pre>
+# The force field must be in the following format, but plese note that the interpolation circuit is capable of taking any number of components in. 
 #
-# - \b Initialisation \b parameters:
-# - \a Filename = Filename of the force field input file.
-# - \a Dimensions = Number of dimensons in the force field.
-# - \a Components = Number of components of force in the force field.
+# x y z F1 F2 F3 
 #
+# The force field must also use a constant step size for each dimenson, although the force field can be in any order.
+#
+# - \b Initialisation \b parameters:.
+# 	- \a Components = Number of components of force in the force field.
+# 	- \a pushed True|False
+# - \b Initialisation \b commands:
+#	- Configure(steps=array, npoints=integer, pbc=True|False, ForceMultipler=float)
+#		- \a steps = step size of the force field must be specfied in this format [x,y,z]
+#		- \a npoints = number of points in each dimension must be specfied in this format [xn,yn,zn]
+#		- \a pbc = Perodic boundray conditions for each dimenson, must be specfied in this format [True|False,True|False,True|False]
+#		- \a ForceMultipler = A global multipler for all the force field values, use this to change the units of the force field into what ever units are desired.
+#	-  ReadData(filename = string)
+#		- \a Filename is the force field being interpolated.
 # - \b Input \b channels:
-# - \a coord : this is the coordiante to calcualte the interpolation.
-#
+#	 - \a x : this is x the coordiante to calculate the interpolation.
+#	 - \a y : this is y the coordiante to calculate the interpolation.
+#	 - \a z : this is z the coordiante to calculate the interpolation.
 # - \b Output \b channels:
-# - \a Fx: The interpolated forces where x is the component for example F1 would be first first component.
+# 	- \a Fn: The interpolated forces where n is the component for example F1 would be first first component.
 #
 # \b Example:
 # \code
-# inter = machine.AddCircuit(type='Interpolate',name='inter', Filename = 'Force.dat', Dimensions = 3, Components = 3 ,pushed=True)
+#	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=1, pushed=True)
+#	inter.Configure(steps=[0.805714285714286,0.805714285714286,0.1], npoints=[8,8,171])
+#	inter.Configure(pbc=[True,True,False])
+#	inter.Configure(ForceMultiplier=1e10)
+#	inter.ReadData('NaClforces.dat')
 # \endcode
 #
 
@@ -141,7 +152,37 @@ class i3Dlin(Circuit):
 		f.close()
 
 
-
+## \brief linear interpolation circuit.
+#
+# \image html i1dlin.png "schema"
+#
+# This is the circuit that calculates the interpolation of the provided 1D force field.
+# The force field must be in the following format, but plese note that the interpolation circuit is capable of taking any number of components in. 
+#
+# x F1
+#
+# The force field must also use a constant step size for each dimenson, although the force field can be in any order.
+#
+# - \b Initialisation \b parameters:.
+# 	- \a Components = Number of components of force in the force field.
+#	- \a step = step size for the force field.
+# 	- \a pushed True|False = push the output buffer immediately if True.
+#	- \a pbc True|False = perodic boundray conditions.
+# - \b Initialisation \b commands:
+#	- SetData(array) = arrays must be the set of forces you wish to interpolate over.
+#
+# - \b Input \b channels:
+#	 - \a x : this is x the coordiante to calculate the interpolation.
+# - \b Output \b channels:
+# 	- \a Fn: The interpolated forces where n is the component for example F1 would be first first component.
+#
+# \b Example:
+# \code
+#	inter = machine.AddCircuit(type='i1Dlin',name='inter', comp=2, step=0.1, pbc=True, pushed=True)
+#	forces = [[math.sin(2*math.pi*x/20),math.cos(2*2*math.pi*x/20)] for x in range(20)]
+#	inter.SetData(forces)
+# \endcode
+#
 
 class i1Dlin(Circuit):
     

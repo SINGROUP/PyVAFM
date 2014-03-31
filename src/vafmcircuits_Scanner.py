@@ -3,6 +3,41 @@ import math
 from vafmbase import Circuit
 from ctypes import *
 
+## \brief Scanner circuit.
+#
+#
+# \image html scanner.png "schema"
+# This is scanner circuit, it is designed to move the cantilever round the force field but in essence it just calculates paths between two points.
+#
+# \b Initialisation \b parameters:
+# 	- \a pushed = True|False  push the output buffer immediately if True
+#
+# \b Initialisation \b Commands:
+#	- Place(x=float,y=float,z=float) = Place the scanner at a given location.
+#	- Move(x=float,y=float,z=float, v=float) = Move the scanner by a give vector at a given speed.
+#	- MoveTo(x=float,y=float,z=float, v=float) = Move the scanner to a given postion at a given speed.
+#	- Direction(x=integer,y=integer,z=integer) = Set the direction of the fast scan using a tyical unit vector format.
+#	- ScanArea() = Start the auto scan (this should be set up as shown in the tutorials)
+#
+# \b Variables
+#	- Recorder = output circuit to be used with the ScanArea function
+#	- BlankLines True|False = To dictate if it will include blank lines in the output file, so the file will work with gnuplots pm3d.
+#	- Resolution = A vector of the scan resoloution eg: [30,60] woudl mean 30 lines in slow direction and 60 in fast direction
+#
+# \b Output \b channels:
+# 	- \a x = x coordinate value.
+# 	- \a y = y coordinate value.
+# 	- \a z = z coordinate value.
+#
+#\b Examples:
+# \code{.py}
+#	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
+# 	scanner.Place(x=0,y=0,z=0)
+# 	scanner.MoveTo(x=1,y=1,z=1,v=1)
+# \endcode
+#
+
+
 class Scanner(Circuit):
 
 	def __init__(self, machine, name, **keys):

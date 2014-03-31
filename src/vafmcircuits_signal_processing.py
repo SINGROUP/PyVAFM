@@ -55,7 +55,7 @@ class gain(Circuit):
 
 
 	def Update (self):		
-		self.O['out'].value  = self.I['signal'].value*self.gain
+		pass
 
 
 
@@ -113,9 +113,6 @@ class minmax(Circuit):
 
 		self.SetInputs(**keys)
 
-		#setting min and max to the first value in the input file
-		#self.min=self.I["signal"].value
-		#self.max=self.I["signal"].value
 
 	def Initialize (self):
 
@@ -123,34 +120,7 @@ class minmax(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		#if the value is greater or less than min or max then reassign the max and min values
-		if self.I["signal"].value > self.max:
-			self.max=self.I["signal"].value
-		if self.I["signal"].value < self.min:
-			self.min=self.I["signal"].value
-		#add one to the counter
-		self.counter=self.counter + 1
-		#only print out values that are not 0 when the counter is = to timesteps
-		#self.O['max'].value = 0
-		#self.O['min'].value = 0
 
-		#if the counter is equal to the amount of time steps then then output the values
-		if self.timesteps == self.counter:
-
-			self.O['max'].value = self.max
-			self.O['min'].value = self.min
-
-			self.O['amp'].value = (self.max - self.min)/2
-			self.O['offset'].value = (self.max + self.min)/2
-
-			#reset min and max for the next calculation
-			self.min=self.I["signal"].value
-			self.max=self.I["signal"].value
-
-
-			self.counter=0
-		"""
 
 
 ## \brief Differentation circuit.
@@ -202,14 +172,7 @@ class derivative(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		self.yo=self.y
-		self.y = self.I["signal"].value
 
-		result=(self.y-self.yo)/(self.machine.dt)
-
-		self.O['out'].value = result
-		"""
 
 ## \brief Integration circuit.
 #
@@ -258,12 +221,7 @@ class integral(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		self.result +=  ( (self.yo + self.I["signal"].value)*(self.machine.dt)*0.5 )
 
-		self.O['out'].value = self.result
-		self.yo = self.I["signal"].value
-		"""
 
 ## \brief Delay circuit.
 #
@@ -302,10 +260,6 @@ class delay(Circuit):
 			raise NameError("Missing DelayTime input!")
 
 		self.steps = int(self.delaytime/self.machine.dt)
-		#self.counter = 0
-		#self.counteroutput = 0
-
-		#self.bufferinput = []
 		
 		self.cCoreID = Circuit.cCore.Add_delay(machine.cCoreID, self.steps)
 		
@@ -322,18 +276,7 @@ class delay(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		if self.counter * self.machine.dt <= self.delaytime:
-			self.O["out"].value = 0
 
-		self.bufferinput.append(self.I["signal"].value)
-		self.counter = self.counter + 1
-
-		if self.counter * self.machine.dt  > self.delaytime: 
-			self.O["out"].value = self.bufferinput[self.counteroutput]
-
-			self.counteroutput = self.counteroutput+1
-		"""
 
 
 ##\brief Peak Detector circuit.
@@ -386,17 +329,7 @@ class peaker(Circuit):
 		
 		self.SetInputs(**keys)
 
-		"""
-		self.counter=0
-		self.yoo=0
-		self.yo=0
-		self.y=0
 
-		self.peak = 0
-		self.tick = 0
-		self.delay = 0
-		self.startcounter = False
-		"""
 
 	def Initialize (self):
 		pass
@@ -404,30 +337,7 @@ class peaker(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		self.yoo= self.yo
-		self.yo = self.y
-		self.y= self.I["signal"].value
-		self.tick=0
 
-		if self.yoo < self.yo and self.yo > self.y and self.upordown == True:
-			self.tick = 1 
-			self.peak = self.yo
-			self.delay = self.counter * self.machine.dt
-			self.counter=0
-
-		if self.yoo > self.yo and self.yo < self.y and self.upordown == False:
-			self.tick = 1  
-			self.peak= self.yo
-			self.delay = self.counter * self.machine.dt
-			self.counter = 0
-
-		self.counter=self.counter + 1
-
-		self.O["peak"].value = self.peak
-		self.O["tick"].value = self.tick
-		self.O["delay"].value = self.delay
-		"""
 		
 
 ##\brief Phasor circuit.
@@ -478,21 +388,7 @@ class phasor(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		if	self.I["in1"].value > 0 and self.I["in2"].value < 0:
-			self.counter = self.counter +1
-			self.check= True
 
-		#@todo are you sure these 2 lines should not be indented under the if?
-		self.O["tick"].value = 0
-		self.O["delay"].value = 0
-
-		if self.I["in2"].value > 0 and self.check == True:
-			self.O["tick"].value = 1
-			self.O["delay"].value = self.counter * self.machine.dt
-			self.counter = 0
-			self.check = False
-		"""
 
 ##  \brief Limiter circuit.
 #
@@ -540,10 +436,7 @@ class limiter(Circuit):
 
 	def Update (self):
 		pass
-		"""
-		self.O["out"].value =  max(min(self.I["signal"].value, self.I["max"].value), 
-			self.I["min"].value)
-		"""
+
 
 
 ## \brief Flip circuit.

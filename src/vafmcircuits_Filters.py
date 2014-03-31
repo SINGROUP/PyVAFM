@@ -71,19 +71,6 @@ class SKLP(Circuit):
 
 		self.SetInputs(**keys)
 
-		"""
-		self.wc = 2* math.pi * self.fc * machine.dt
-		self.gamma = self.wc/(2*self.Q)
-
-		self.wc=self.wc*self.wc
-		self.alpha=1/(1 + self.gamma + self.wc)
-
-		self.y=0
-		self.yo=0
-		self.yoo=0
-		self.x = 0
-		self.y = 0
-		"""
 
 	def Initialize (self):
 		
@@ -94,17 +81,6 @@ class SKLP(Circuit):
 		
 	def Update (self):
 		pass
-		"""
-		self.x = self.I["signal"].value 
-
-		self.y = self.Gain*self.wc*self.x + (2.0*self.yo-self.yoo) + self.gamma*self.yoo 
-		self.y = self.y * self.alpha
-		self.O["out"].value=self.y
-
-
-		self.yoo=self.yo
-		self.yo=self.y
-		"""
 
 
 
@@ -168,20 +144,6 @@ class SKHP(Circuit):
 			c_double(self.fc), c_double(self.Q), c_double(self.Gain))
 
 		
-
-		"""
-		self.wc = 2* math.pi * self.fc * machine.dt
-		self.gamma = self.wc/(2*self.Q)
-
-		self.alpha=1/(1 + self.gamma + self.wc*self.wc)
-
-		self.y=0
-		self.yo=0
-		self.yoo=0
-		self.x = 0
-		self.xo=0
-		self.xoo=0
-		"""
 	
 	def Initialize (self):
 		
@@ -192,19 +154,6 @@ class SKHP(Circuit):
 		
 	def Update (self):
 		pass
-		"""
-		self.x = self.I["signal"].value 
-		self.y = (2*self.yo-self.yoo) + self.gamma*self.yoo + self.Gain*(self.xoo-2.0*self.xo+self.x);
-		self.y=self.y*self.alpha
-
-		self.O["out"].value=self.y
-
-		self.yoo=self.yo
-		self.yo=self.y
-
-		self.xoo=self.xo
-		self.xo=self.x
-		"""
 
 ## \brief Active Band Pass Filter  circuit.
 #
@@ -263,23 +212,6 @@ class SKBP(Circuit):
 		self.cCoreID = Circuit.cCore.Add_SKBP(self.machine.cCoreID,
 			c_double(self.fc), c_double(self.band), c_double(self.Gain))
 
-		"""
-		self.gamma = self.band
-		self.wc = self.fc
-		self.gamma = self.wc/self.gamma
-
-		self.wc = 2 * math.pi * self.wc * machine.dt
-		self.gamma = self.wc /(2*self.gamma)
-
-		self.alpha = 1/(1 + self.gamma + self.wc*self.wc)
-
-		self.y=0
-		self.yo=0
-		self.yoo=0
-		self.x = 0
-		self.xo=0
-		self.xoo=0
-		"""
 		
 	def Initialize (self):
 		pass
@@ -289,21 +221,7 @@ class SKBP(Circuit):
 		
 	def Update (self):
 		pass
-		"""
-		self.x = self.I["signal"].value 
 
-		self.y = self.Gain*self.gamma*(self.x-self.xoo) + self.gamma*self.yoo + (2.0*self.yo-self.yoo)
-
-		self.y=self.y*self.alpha
-
-		self.O["out"].value=self.y
-
-		self.yoo=self.yo
-		self.yo=self.y
-
-		self.xoo=self.xo
-		self.xo=self.x
-		"""
 
 ## \brief RC low-pass filter circuit.
 #
@@ -352,15 +270,7 @@ class RCLP(Circuit):
 		else:
 			print "WARNING! No order given, using default order = "+str(self.Order)
 
-		#self.fc = 2*math.pi*self.fc # fc -> wc
-		#self.a = 2*machine.dt*self.fc # this is 2dt wc
-		#self.a = self.a/(1+self.a) # this is 2dt wc/(1+2dt wc)
-		#self.a = machine.dt/(machine.dt+(1.0/self.fc)) # this is 2dt wc
-		
-		self.y  = [0] * (self.Order +1) #this is the output at time t+dt of each filter, y[0] is the incoming signal
-		self.yo = [0] * (self.Order +1) #this is the output at time t of each filter		
-		self.yoo= [0] * (self.Order +1) #this is the output at time t-dt of each filter		
-		#print self.folds
+
 
 		self.cCoreID = Circuit.cCore.Add_RCLP(self.machine.cCoreID,
 			c_double(self.fc), self.Order)
@@ -374,17 +284,7 @@ class RCLP(Circuit):
 	def Update (self):
 		
 		
-		self.y[0] = self.I["signal"].value 
-		
-		for i in range(self.Order):
-			self.y[i+1] = self.a*self.y[i] + (1-self.a)*self.yoo[i+1]
-		
-		self.O["out"].value= self.y[self.Order]
-
-		#collect old values
-		for i in range(self.Order+1):
-			self.yoo[i] = self.yo[i]
-			self.yo[i] = self.y[i]
+		pass
 
 ## \brief RC high-pass filter circuit.
 #
@@ -434,12 +334,6 @@ class RCHP(Circuit):
 		else:
 			print "WARNING! No order given, using default order = "+str(self.Order)
 
-		#self.fc = 1/(2*math.pi * self.fc)
-		#self.a = self.fc/(machine.dt +self.fc) #what was this?
-		
-		#self.fc = 2*math.pi*self.fc # fc -> wc
-		#self.a = 2*machine.dt*self.fc # this is (2dt wc)
-		#self.a = 1.0/(1+self.a) # this is 2dt wc/(1+2dt wc)
 
 		self.y  = [0] * (self.Order +1) #this is the output at time t+dt of each filter, y[0] is the incoming signal
 		self.yo = [0] * (self.Order +1) #this is the output at time t of each filter	
@@ -454,18 +348,4 @@ class RCHP(Circuit):
 		
 	def Update (self):
 
-		
-		self.y[0] = self.I["signal"].value 
-
-		for i in range(self.Order):
-			
-			self.y[i+1] = (self.y[i]-self.yoo[i]+ self.yoo[i+1])*self.a
-			#print i+1, self.y[i+1],self.yo[i+1],self.yoo[i+1],"inputs:",self.y[i],self.yoo[i],self.a
-			#time.sleep(0.01)
-
-		for i in range (0, self.Order + 1):
-			self.yoo[i] = self.yo[i]
-			self.yo[i] = self.y[i]
-		
-		self.O["out"].value= self.y[self.Order]
-		
+		pass

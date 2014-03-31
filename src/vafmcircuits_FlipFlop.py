@@ -27,6 +27,7 @@ import math
 # \b Input \b channels: 
 # 	- \a S = set signal
 #	- \a R = reset signal
+#	- \a clock = Clock signal
 #
 # \b Output \b channels: 
 #	- \a Q =  stored bit (0|1)
@@ -66,16 +67,7 @@ class SRFlipFlop(Circuit):
 
 
 	def Update (self):
-	
-		if self.I["R"].value > 0:
-			self.O["Q"].value = 0
-			self.O["Qbar"].value = 1
-
-
-		if self.I["S"].value > 0 and self.I["R"].value <= 0:
-			self.O["Q"].value = 1
-			self.O["Qbar"].value = 0
-
+		pass
 
 
 ## \brief JK Flip Flop circuit.
@@ -97,6 +89,7 @@ class SRFlipFlop(Circuit):
 # \b Input \b channels: 
 # 	- \a J = set signal
 #	- \a K = reset signal
+#	- \a clock = Clock signal
 #
 #
 # \b Output \b channels: 
@@ -136,18 +129,7 @@ class JKFlipFlop(Circuit):
 
 
 	def Update (self):		
-		if self.I["J"].value > 0 and self.I["K"].value <= 0:
-			self.O["Q"].value = 1
-			self.O["Qbar"].value = 0
-
-		if self.I["J"].value <= 0 and self.I["K"].value > 0:
-			self.O["Q"].value = 0
-			self.O["Qbar"].value = 1
-
-		if self.I["J"].value > 0 and self.I["K"].value > 0:
-			self.O["Q"].value = self.O["Qbar"].value
-			self.O["Qbar"].value = self.O["Q"].value
-
+		pass
 
 
 ## D Flip Flop circuit.
@@ -166,6 +148,7 @@ class JKFlipFlop(Circuit):
 #
 # \b Input \b channels:
 # 	- \a D = Data Channel
+#	- \a clock = Clock signal
 #
 # \b Output \b channels: 
 #	- \a Q =  stored bit (0|1)
@@ -202,23 +185,7 @@ class DFlipFlop(Circuit):
 
 
 	def Update (self):		
-		if self.I["D"].value <= 0 and self.Qprevious <= 0:
-			self.O["Q"].value = 0
-			self.O["Qbar"].value = 1
-
-		if self.I["D"].value <= 0 and self.Qprevious > 0:
-			self.O["Q"].value = 0
-			self.O["Qbar"].value = 1
-
-		if self.I["D"].value > 0 and self.Qprevious <= 0:
-			self.O["Q"].value = 1
-			self.O["Qbar"].value = 0
-
-		if self.I["D"].value > 0 and self.Qprevious > 0:
-			self.O["Q"].value = 1
-			self.O["Qbar"].value = 0
-
-			self.Qprevious = self.O["Q"].value
+		pass
 
 
 
@@ -238,6 +205,7 @@ class DFlipFlop(Circuit):
 # \b Input \b channels: 
 # 	- \a D = Data Channel
 #	- \a R = Reset Channel
+#	- \a clock = Clock signal
 #
 # \b Output \b channels: 
 #	- \a Q =  stored bit (0|1)
