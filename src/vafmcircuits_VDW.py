@@ -11,20 +11,19 @@ import ctypes
 #
 # \b Initialisation \b parameters:
 # 	- \a pushed = True|False  push the output buffer immediately if True
-#
-# \b Input \b channels: 
 # 	- \a gamma  = tip angle
 #	- \a hamaker =  Hamaker constant
 #	- \a radius = Tip Radius
 #	- \a offset = tip offset
 #
+# \b Input \b channels: 
+#	- \a ztip = z pos of tip
 # \b Output \b channels: 
-#	- \a Q =  stored bit (0|1)
-#	- \a Qbar =  opposite of the stored bit
+#	- \a fz = force 
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='SRFlipFlop', name='sr')
+#	machine.AddCircuit(type='VDW', name='VDW', gamma=0.28658 ,hamaker=39.6e-20 ,radius=3.9487, offset=0 , pushed=True)
 # \endcode
 #
 
