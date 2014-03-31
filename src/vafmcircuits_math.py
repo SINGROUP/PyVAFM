@@ -483,11 +483,11 @@ class opCos(Circuit):
 # Outputs perlin noise
 #
 # \b Initialisation \b parameters:
-# 	- \a pushed = True|False  push the output buffer immediately if True
-# 	- \a octaves = Number of octaves to combine
-#	- \a amp 
-#	- \a persist 
-#	- \a period  
+# 	- \a pushed = True|False  push the output buffer immediately if True.
+# 	- \a octaves = Number of octaves to combine.
+#	- \a amp  = amplitude, the difference between the lowest noise value and the largest.
+#	- \a persist = Persitance of the perlin noise (how noisy the end result will be).
+#	- \a period  = period of the noise wave.
 #
 # \b Input \b channels:
 # 	- \a signal =  incoming signal
