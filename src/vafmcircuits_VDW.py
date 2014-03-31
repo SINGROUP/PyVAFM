@@ -3,6 +3,31 @@ import math
 from ctypes import c_double
 import ctypes
 
+
+## \breif Van Der Walls force circuit.
+# \image html VDW.png "schema"
+#
+# 
+#
+# \b Initialisation \b parameters:
+# 	- \a pushed = True|False  push the output buffer immediately if True
+#
+# \b Input \b channels: 
+# 	- \a gamma  = tip angle
+#	- \a hamaker =  Hamaker constant
+#	- \a radius = Tip Radius
+#	- \a offset = tip offset
+#
+# \b Output \b channels: 
+#	- \a Q =  stored bit (0|1)
+#	- \a Qbar =  opposite of the stored bit
+#
+#\b Examples:
+# \code{.py}
+# machine.AddCircuit(type='SRFlipFlop', name='sr')
+# \endcode
+#
+
 class VDW(Circuit):
     
     
@@ -10,7 +35,7 @@ class VDW(Circuit):
 		
 		super(self.__class__, self).__init__( machine, name )
 		
-		if 'alpha' in keys.keys():
+		if 'gamma' in keys.keys():
 			alpha = keys['alpha']
 			print "alpha = " +str(alpha)
 		else:

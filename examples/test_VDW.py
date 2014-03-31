@@ -18,7 +18,7 @@ def main():
 	#Add Circuits
 	
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
-	machine.AddCircuit(type='VDW', name='VDW', alpha=0.28658 ,hamaker=39.6e-20 ,radius=3.9487, offset=0 , pushed=True)
+	machine.AddCircuit(type='VDW', name='VDW', gamma=0.28658 ,hamaker=39.6e-20 ,radius=3.9487, offset=0 , pushed=True)
 
 	
 	
