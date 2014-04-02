@@ -65,7 +65,7 @@ int Add_VDW(int owner, double alpha, double hamaker, double radius, double offse
     c.updatef = VDW;
     
     int index = AddToCircuits(c,owner);
-    printf("cCore: added DRFlipFlop circuit\n");
+    printf("cCore: added VDW circuit\n");
     return index;
     
 }
