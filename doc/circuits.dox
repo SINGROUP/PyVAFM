@@ -1,0 +1,139 @@
+/*! \page page_circs Circuits
+
+
+\section sec_main Generic
+	- \link vafmcircuits.Machine Machine\endlink - <i>main virtual machine and composites</i>
+
+@htmlonly
+<div class="menuBT" >
+	<a class="anchor" id="sec_math" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('lMath',this)">-</span>Mathematics</h1>
+</div>
+<div id="lMath">
+@endhtmlonly
+	- Arithmetics
+		- \link vafmcircuits_math.opAdd opAdd\endlink - <i>sum operator</i>
+		- \link vafmcircuits_math.opSub opSub\endlink - <i>subtraction operator</i>
+		- \link vafmcircuits_math.opMul opMul\endlink - <i>multiplication operator</i>
+		- \link vafmcircuits_math.opDiv opDiv\endlink - <i>division operator</i>
+		- \link vafmcircuits_math.opLinC opLinC\endlink - <i>Linear combination operator</i>
+		- \link vafmcircuits_math.opPow opPow\endlink - <i>power operator</i>
+		- \link vafmcircuits_math.opAbs opAbs\endlink - <i>absolute value operator</i>
+	- Comparison
+		- \link vafmcircuits_Comparison.GreaterOrEqual GreaterOrEqual\endlink - <i>Greater or equal to circuit.</i>
+		- \link vafmcircuits_Comparison.LessOrEqual LessOrEqual\endlink - <i>Less or equal to circuit.</i>
+		- \link vafmcircuits_Comparison.Equal Equal\endlink - <i>equal to circuit.</i>
+
+	- Logic
+		- \link vafmcircuits_Logic.NOT NOT\endlink - <i>Not gate circuit.</i>
+		- \link vafmcircuits_Logic.AND AND\endlink - <i>And gate circuit.</i>
+		- \link vafmcircuits_Logic.OR OR\endlink - <i>Or gate circuit.</i>
+		- \link vafmcircuits_Logic.XOR XOR\endlink - <i>XOrGate gate circuit.</i>
+		- \link vafmcircuits_Logic.NOR NOR\endlink - <i>NOrGate gate circuit.</i>
+	- Average
+		- \link vafmcircuits_avg.avg avg\endlink - <i>signal averaging circuit.</i>
+
+
+@htmlonly
+</div><!-- end of math list -->
+@endhtmlonly
+
+
+\section sec_gens Signal Generators
+	- \link vafmcircuits_signal_gens.waver waver\endlink - <i>sinusoidal wave generator</i>
+	- \link vafmcircuits_signal_gens.square square\endlink - <i>square wave generator</i>
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_sigproc" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('lSigProc',this)">-</span>Signal Processing</h1>
+</div>
+<div id="lSigProc">
+@endhtmlonly
+	- Filters
+		- \link vafmcircuits_Filters.SKLP SKLP\endlink - <i>Sallen-Key lowpass filter</i>
+		- \link vafmcircuits_Filters.SKHP SKHP\endlink - <i>Sallen-Key highpass filter</i>
+		- \link vafmcircuits_Filters.SKBP SKBP\endlink - <i>Sallen-Key bandpass filter</i>
+		- \link vafmcircuits_Filters.RCLP RCLP\endlink - <i>RC lowpass filter</i>
+		- \link vafmcircuits_Filters.RCHP RCHP\endlink - <i>RC highpass filter</i>
+	- Averagers
+		- \link vafmcircuits_avg.avg avg\endlink - <i>averager circuit.</i>
+	- Misc
+		- \link vafmcircuits_signal_processing.gain gain\endlink - <i>applies a given gain to a signal</i>
+		- \link vafmcircuits_signal_processing.minmax minmax\endlink - <i>outputs max and min values of a signal over a give timespan</i>
+		- \link vafmcircuits_signal_processing.limiter limiter\endlink - <i>clamps a signal between two values</i>
+		- \link vafmcircuits_signal_processing.derivative derivative\endlink - <i>computes the derivative of a signal</i>
+		- \link vafmcircuits_signal_processing.integral integral\endlink - <i>outputs the integral of a signal</i>
+		- \link vafmcircuits_signal_processing.delay delay\endlink - <i>delays the signal by a given amount of time</i>
+		- \link vafmcircuits_signal_processing.peaker peaker\endlink - <i>detects the peaks in a signal</i>
+		- \link vafmcircuits_signal_processing.phasor phasor\endlink - <i>computes the delay between one signal becoming positive and the other signal becoming positive</i>
+		- \link vafmcircuits_signal_processing.flip flip\endlink - <i>outputs a tick when the signal changes from negative to positive.</i>
+@htmlonly
+</div><!-- end of sigproc list -->
+@endhtmlonly
+
+
+
+\section sec_control Controllers
+	- \link vafmcircuits_control.PI PI\endlink - <i>Proportional-Integral controller</i>
+	- \link vafmcircuits_control.PID PID\endlink - <i>Proportional-Integral-Derivative controller</i>
+
+\section sec_out Output
+	- \link vafmcircuits_output.output output\endlink - <i>output to file</i>
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_flips" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('lflips',this)">-</span>Flip-flops</h1>
+</div>
+<div id="lflips">
+@endhtmlonly
+	- \link vafmcircuits_FlipFlop.SRFlipFlop SRFlipFlop\endlink - <i>SRFlipFlop circuit.</i>
+	- \link vafmcircuits_FlipFlop.JKFlipFlop JKFlipFlop\endlink - <i>JKFlipFlop circuit.</i>
+	- \link vafmcircuits_FlipFlop.DFlipFlop DFlipFlop\endlink - <i>DFlipFlop circuit.</i>
+	- \link vafmcircuits_FlipFlop.DRFlipFlop DRFlipFlop\endlink - <i>DRFlipFlop circuit.</i>
+@htmlonly
+</div><!-- end of flipflop list -->
+@endhtmlonly
+
+\section sec_compos Custom composites
+	- \link customs_pll.aPLL aPLL\endlink - <i> analog PLL</i>
+
+
+
+
+
+''
+
+
+- \link vafmcircuits_Cantilever.InputQV InputQV\endlink - <i>Q factor in the vertical mode.</i>
+- \link vafmcircuits_Cantilever.InputKV InputKV\endlink - <i>K value in the vertical mode.</i>
+- \link vafmcircuits_Cantilever.InputFV InputFV\endlink - <i>fundemental eigen frequency in the vertical mode.</i>
+- \link vafmcircuits_Cantilever.InputQL InputQL\endlink - <i>Q factor in the lateral mode.</i>
+- \link vafmcircuits_Cantilever.InputKL InputKL\endlink - <i>K value in the lateral mode.</i>
+- \link vafmcircuits_Cantilever.InputFL InputFL\endlink - <i>fundemental eigen frequency in the lateral mode.</i>
+- \link vafmcircuits_Cantilever.StartingPos StartingPos\endlink - <i>The starting pos of the tip.</i>
+- \link vafmcircuits_Cantilever.MassV MassV\endlink - <i>Mass of the vertical mode.</i>
+- \link vafmcircuits_Cantilever.MassL MassL\endlink - <i>Mass of the lateral mode.</i>
+
+
+
+
+- \link vafmcircuits_Interpolate.Maxboundary Maxboundary\endlink - <i>Setting the maximum x y and z value of the force field..</i>
+- \link vafmcircuits_Interpolate.Minboundary Minboundary\endlink - <i>Setting the minimum x y and z value of the force field..</i>
+
+- \link vafmcircuits_scanner.Place Place\endlink - <i>Place the cantilever to a position instantly.</i>
+- \link vafmcircuits_scanner.Move Move\endlink - <i>move the cantilever by a given vector at a given speed.</i>
+- \link vafmcircuits_scanner.MoveTo MoveTo\endlink - <i>Place the cantilever to a position at a given speed.</i>
+- \link vafmcircuits_scanner.Wait Wait\endlink - <i>Make the cantilever hold position for a given time.</i>
+- \link vafmcircuits_scanner.Scan Scan\endlink - <i>Scans the cantilever along a given distane, in a given direction with a given speed and records points at a given interval.</i>
+
+- \link vafmcircuits_Interpolation.Interpolate Interpolate\endlink - <i>Multi-linear interpolation circuit.</i>
+
+
+
+*/
+
