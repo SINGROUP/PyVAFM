@@ -224,6 +224,7 @@ int Add_AdvancedCantilever(int owner, int numberofmodesV, int numberofmodesL)
 	return index;
 }
 
+
 int AddK(int c, double *Kpointer)
 {
 
@@ -453,7 +454,7 @@ void RunAdvancedCantilever(circuit *c)
 					if (Mv[i]==0) {
 						printf("WARNING: calculating masses from omega and k for vertical eigenfrequency %i\n",i+1 );
 						Mv[i]=(Wv[i]*Wv[i] )/kv[i];
-						printf("%f\n", Wv[i]);
+						
 							  }
 
 

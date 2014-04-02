@@ -17,24 +17,22 @@ def main():
 	f0 = 100.0
 	
 	#Add Circuits
-	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=2,NumberOfModesL=0, pushed=True)
+	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti', NumberOfModesV=2, NumberOfModesL=1 ,pushed=True)
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
 
-	machine.AddCircuit(type='waver',name='wave', amp=10, freq=1, phi=1, offset=2.0, pushed=True)
+	machine.AddCircuit(type='waver',name='wave', amp=10, freq=1, phi=1, offset=0, pushed=True)
 
-	canti.AddK(1,1)
-	canti.AddQ(100,100)
-	canti.Addf0(1,1)
-	canti.AddM(1,1)
-
+	canti.AddMode(Vertical=True, k = 1, Q=100, M=1, f0 =1)
+	canti.AddMode(Vertical=True, k = 1, Q=100, M=1, f0 =1)
+	canti.AddMode(Vertical=False, k = 1, Q=100, M=1, f0 =1)
 	canti.StartingPos(0,3,5)
-
+	canti.CantileverReady()
 
 	machine.Connect("scan.x","canti.Holderx")
 	machine.Connect("scan.y","canti.Holdery")
 	machine.Connect("scan.z","canti.Holderz")
-	machine.Connect("wave.cos","canti.ForceV")
-	machine.Connect("wave.cos","canti.ForceL")
+#	machine.Connect("wave.cos","canti.ForceV")
+#	machine.Connect("wave.cos","canti.ForceL")
 
 	#debug output
 	out1 = machine.AddCircuit(type='output',name='output',file='AdvCantilever.dat', dump=1)

@@ -100,14 +100,10 @@ class Cantilever(Circuit):
 # 	- \a NumberOfModesL = The number of lateral modes the cantilever has.
 #
 # \b Initialisation \b commands:
-#	-  Each of these commads follow the same format which is first you must entere the values for the vertical mode then the lateral. For example for
-# 		 2 vertical modes and 1 lateral .AddK(1,2,3) where 1 and 2 are the vertical modes K values and 3 is the lateral. If a mode isn't being used then simply
-# 		 only enter the values that are required. eg for 2 lateral modes and 0 vertical .AddK(1,2) where 1 and 2 are both for the lateral mode.
-# 	- \a .AddK(argument) - Assigns the spring constant for each mode. 
-# 	- \a .AddQ(argument) - Assigns the Q factor for each mode. 
-# 	- \a .Addf0(argument) - Assigns the eigen frequency for each mode. 
-# 	- \a .AddM(argument) - Assigns the mass for each mode, if this command is not used the mass is calculated automatically. 
+#	- \a .AddMode(Vertical=True|False, k=float, Q=float, M=float, f0 =float)- this is how you add a mode to the cantilever, Vertical = True means a vertical mode, Vertical = False is a lateral.
+#						k is the spring constant for that mode, Q is the Q factor, M is the mass although if tis is not included the simulation will calculate a mass for you and f0 is the eigenfrequency of the mode.
 # 	- \a .StartingPos(x,y,z) - Assigns the starting position from equilibrium for the cantilever. 
+#	- \a .CantileverReady() - use this command after you are done setting up the cantilever.
 #
 # \b Input \b channels:
 # 	- \a exciterz =  cantilever exciter for the vertical direction.
@@ -132,11 +128,11 @@ class Cantilever(Circuit):
 #\b Examples:
 # \code{.py}
 #	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=2,NumberOfModesL=0, pushed=True)
-#	canti.AddK(1,1)
-#	canti.AddQ(100,100)
-#	canti.Addf0(1,1)
-#	canti.AddM(1,1)
+#	canti.AddMode(Vertical=True, k = 1, Q=100, M=1, f0 =1)
+#	canti.AddMode(Vertical=True, k = 1, Q=100, M=1, f0 =1)
+#	canti.AddMode(Vertical=False, k = 1, Q=100, M=1, f0 =1)
 #	canti.StartingPos(0,3,5)
+#	canti.CantileverReady()
 # \endcode
 #
 
@@ -146,7 +142,7 @@ class AdvancedCantilever(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 
-
+		
 		if 'NumberOfModesV' in keys.keys():
 			NumberOfModesV = keys['NumberOfModesV']
 			print "Number of Vertical Modes = " +str(NumberOfModesV)
@@ -158,10 +154,7 @@ class AdvancedCantilever(Circuit):
 			print "Number of Lateral Modes = " +str(NumberOfModesL)
 		else:
 			raise NameError("No NumberOfModesL entered ")
-
-		self.NumberOfModesL = NumberOfModesL
-		self.NumberOfModesV = NumberOfModesV	
-
+		
 
 		self.AddInput("exciterz") #0
 		self.AddInput("excitery") #1
@@ -180,6 +173,9 @@ class AdvancedCantilever(Circuit):
 		self.AddOutput("yABS") #3
 		self.AddOutput("zABS") #4
 
+		self.NumberOfModesL = NumberOfModesL
+		self.NumberOfModesV = NumberOfModesV
+
 
 		for i in range(1 ,NumberOfModesV+2):
 			self.AddOutput("vV" + str(i) ) #5 to #5 + NumberOfModesV
@@ -192,61 +188,28 @@ class AdvancedCantilever(Circuit):
 			
 		for i in range(1 ,NumberOfModesL+2):			
 			self.AddOutput("yL" + str(i) ) #5 + NumberOfModesV*2 + NumberOfModesL + #5 + NumberOfModesV*2 + NumberOfModesL*2
+		#required vars
+		self.vertical = True
+
+		self.counterV=0
+		self.counterL=0
+
+		self.Kv=[]
+		self.Kl=[]
+
+		self.Qv=[]
+		self.Ql=[]
+
+		self.Mv=[]
+		self.Ml=[]
+
+		self.fov=[]
+		self.fol=[]
 
 
-
+		
 		self.cCoreID = Circuit.cCore.Add_AdvancedCantilever(self.machine.cCoreID, NumberOfModesV,NumberOfModesL)
-
 		self.SetInputs(**keys);
-
-
-	def AddK(self, *args):
-		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
-			raise NameError("Incorrect number of spring constants entered")
-
-		Circuit.cCore.AddK.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
-		k=[]
-		for i in args:
-			k.append(i)
-		karray = (ctypes.c_double * len(k))(*k)
-		Circuit.cCore.AddK(self.cCoreID, karray)
-
-	def AddQ(self, *args):
-		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
-			raise NameError("Incorrect number of Q factors constants entered")
-
-		Circuit.cCore.AddQ.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
-		Q=[]
-		for i in args:
-			Q.append(i)
-		Qarray = (ctypes.c_double * len(Q))(*Q)
-		Circuit.cCore.AddQ(self.cCoreID, Qarray)
-
-	def AddM(self, *args):
-		if (len(args) == 0):
-			print "WARNING: Calculating masses from omega and k"
-
-		if (len(args) != self.NumberOfModesL + self.NumberOfModesV and len(args) != 0) :
-			raise NameError("Incorrect number of masses entered")		
-
-		#TODO Check if no mass is given and if not calculate and put into the array
-		Circuit.cCore.AddM.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
-		M=[]
-		for i in args:
-			M.append(i)
-		Marray = (ctypes.c_double * len(M))(*M)
-		Circuit.cCore.AddM(self.cCoreID, Marray)
-
-	def Addf0(self, *args):
-		if (len(args) != self.NumberOfModesL + self.NumberOfModesV):
-			raise NameError("Incorrect number of eigenfrequencies entered")
-
-		Circuit.cCore.AddF.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
-		f=[]
-		for i in args:
-			f.append(i)
-		farray = (ctypes.c_double * len(f))(*f)
-		Circuit.cCore.AddF(self.cCoreID,farray)
 
 	def StartingPos(self, *args):
 		if (len(args) != 3):
@@ -259,3 +222,60 @@ class AdvancedCantilever(Circuit):
 			StartingPoint.append(i)
 		StartingPointarray = (ctypes.c_double * len(StartingPoint))(*StartingPoint)
 		Circuit.cCore.StartingPoint(self.cCoreID,StartingPointarray)
+
+
+	def AddMode(self, **kw):
+
+		if 'k' not in kw.keys():
+			raise NameError("Missing k from AddMode")
+
+		if 'Q' not in kw.keys():
+			raise NameError("Missing k from AddMode")
+
+		if 'M' not in kw.keys():
+			kw["M"]=0		
+			print "Warning Missing Mass will caulcuate from omega and k"
+
+		if 'f0' not in kw.keys():
+			raise NameError("Missing f0 from AddMode")
+
+
+		if kw["Vertical"] == True : 
+			if "k" in kw.keys(): self.Kv.append(float(kw["k"]))
+			if "Q" in kw.keys(): self.Qv.append(float(kw["Q"]))
+			if "M" in kw.keys(): self.Mv.append(float(kw["M"]))
+			if "f0" in kw.keys(): self.fov.append(float(kw["f0"]))
+			self.counterV =+ 1
+
+		if kw["Vertical"] == False : 
+			if "k" in kw.keys(): self.Kl.append(float(kw["k"]))
+			if "Q" in kw.keys(): self.Ql.append(float(kw["Q"]))
+			if "M" in kw.keys(): self.Ml.append(float(kw["M"]))
+			if "f0" in kw.keys(): self.fol.append(float(kw["f0"]))
+			self.counterL =+ 1
+
+
+	def CantileverReady(self):
+		#combine arrays
+		k = self.Kv + self.Kl
+		Q = self.Qv + self.Ql
+		M = self.Mv + self.Ml
+		f = self.fov + self.fol
+
+		if self.counterV > self.NumberOfModesV:
+			raise NameError("Incorrect number of vertical modes added check initialisation parameters")
+
+		if self.counterL > self.NumberOfModesL:
+			raise NameError("Incorrect number of lateral modes added check initialisation parameters")
+
+		karray = (ctypes.c_double * len(k))(*k)
+		Circuit.cCore.AddK(self.cCoreID, karray)
+
+		Qarray = (ctypes.c_double * len(Q))(*Q)
+		Circuit.cCore.AddQ(self.cCoreID, Qarray)
+
+		Marray = (ctypes.c_double * len(M))(*M)
+		Circuit.cCore.AddM(self.cCoreID, Marray)
+
+		farray = (ctypes.c_double * len(f))(*f)
+		Circuit.cCore.AddF(self.cCoreID,farray)		
