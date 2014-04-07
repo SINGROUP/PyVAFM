@@ -19,7 +19,8 @@ import ctypes
 #
 # x y z F1 F2 F3 
 #
-# The force field must also use a constant step size for each dimenson, although the force field can be in any order.
+# The force field must also use a constant step size for each dimenson, although the force field can be in any order. The x y and z must also be the index
+# of the point eg: 1 1 1 , 1 1 2 , 1 1 3 etc. When you configure the circuit later on you set the steps size to whatever you want it to be.
 #
 # - \b Initialisation \b parameters:.
 # 	- \a Components = Number of components of force in the force field.

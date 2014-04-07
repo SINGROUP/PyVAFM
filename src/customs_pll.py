@@ -17,7 +17,7 @@ import math
 # Also, both signals should be normalised (amplitude = 1) and their offset should be removed.
 #
 #
-# \htmlonly <div class="image"><a href="apll.png"><image src="apll.png" alt="aPLL schema" /></a> \endhtmlonly
+# \image html apll.png "schema"
 #
 # \b Initialisation \b parameters:
 # - filters = list of cutoff frequencies for PFD lowpass filters

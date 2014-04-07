@@ -28,6 +28,7 @@ from ctypes import *
 # 	- \a x = x coordinate value.
 # 	- \a y = y coordinate value.
 # 	- \a z = z coordinate value.
+#	- \a record = Will output 1 when the scanner wants to output a value.
 #
 #\b Examples:
 # \code{.py}

@@ -4,6 +4,9 @@
 \section sec_main Generic
 	- \link vafmcircuits.Machine Machine\endlink - <i>main virtual machine and composites</i>
 
+
+
+
 @htmlonly
 <div class="menuBT" >
 	<a class="anchor" id="sec_math" ></a>
@@ -31,8 +34,7 @@
 		- \link vafmcircuits_Logic.OR OR\endlink - <i>Or gate circuit.</i>
 		- \link vafmcircuits_Logic.XOR XOR\endlink - <i>XOrGate gate circuit.</i>
 		- \link vafmcircuits_Logic.NOR NOR\endlink - <i>NOrGate gate circuit.</i>
-	- Average
-		- \link vafmcircuits_avg.avg avg\endlink - <i>signal averaging circuit.</i>
+
 
 
 @htmlonly
@@ -40,9 +42,30 @@
 @endhtmlonly
 
 
-\section sec_gens Signal Generators
-	- \link vafmcircuits_signal_gens.waver waver\endlink - <i>sinusoidal wave generator</i>
-	- \link vafmcircuits_signal_gens.square square\endlink - <i>square wave generator</i>
+
+
+@htmlonly
+<div class="menuBT" >
+	<a class="anchor" id="sec_SignalGen" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('signalgen',this)">-</span>Signal Generation</h1>
+</div>
+<div id="signalgen">
+@endhtmlonly
+	- Signal Generation
+		- \link vafmcircuits_signal_gens.waver waver\endlink - <i>sinusoidal wave generator</i>
+		- \link vafmcircuits_signal_gens.square square\endlink - <i>square wave generator</i>
+
+@htmlonly
+</div><!-- end of signalgen list -->
+@endhtmlonly
+
+
+
+
+
+
+
 
 @htmlonly
 <div>
@@ -76,12 +99,53 @@
 
 
 
-\section sec_control Controllers
-	- \link vafmcircuits_control.PI PI\endlink - <i>Proportional-Integral controller</i>
-	- \link vafmcircuits_control.PID PID\endlink - <i>Proportional-Integral-Derivative controller</i>
 
-\section sec_out Output
-	- \link vafmcircuits_output.output output\endlink - <i>output to file</i>
+
+
+@htmlonly
+<div class="menuBT" >
+	<a class="anchor" id="sec_control" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('control',this)">-</span>Signal Control</h1>
+</div>
+<div id="control">
+@endhtmlonly
+	- Signal Controllers
+		- \link vafmcircuits_control.PI PI\endlink - <i>Proportional-Integral controller</i>
+		- \link vafmcircuits_control.PID PID\endlink - <i>Proportional-Integral-Derivative controller</i>
+
+@htmlonly
+</div><!-- end of control list -->
+@endhtmlonly
+
+
+
+
+
+
+
+@htmlonly
+<div class="menuBT" >
+	<a class="anchor" id="sec_output" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('output',this)">-</span>Output</h1>
+</div>
+<div id="output">
+@endhtmlonly
+	- Output
+		- \link vafmcircuits_output.output output\endlink - <i>output to file</i>
+
+@htmlonly
+</div><!-- end of ouput list -->
+@endhtmlonly
+
+
+
+
+
+
+
+
 
 @htmlonly
 <div>
@@ -91,47 +155,108 @@
 </div>
 <div id="lflips">
 @endhtmlonly
-	- \link vafmcircuits_FlipFlop.SRFlipFlop SRFlipFlop\endlink - <i>SRFlipFlop circuit.</i>
-	- \link vafmcircuits_FlipFlop.JKFlipFlop JKFlipFlop\endlink - <i>JKFlipFlop circuit.</i>
-	- \link vafmcircuits_FlipFlop.DFlipFlop DFlipFlop\endlink - <i>DFlipFlop circuit.</i>
-	- \link vafmcircuits_FlipFlop.DRFlipFlop DRFlipFlop\endlink - <i>DRFlipFlop circuit.</i>
+	- Flip Flop
+		- \link vafmcircuits_FlipFlop.SRFlipFlop SRFlipFlop\endlink - <i>SRFlipFlop circuit.</i>
+		- \link vafmcircuits_FlipFlop.JKFlipFlop JKFlipFlop\endlink - <i>JKFlipFlop circuit.</i>
+		- \link vafmcircuits_FlipFlop.DFlipFlop DFlipFlop\endlink - <i>DFlipFlop circuit.</i>
+		- \link vafmcircuits_FlipFlop.DRFlipFlop DRFlipFlop\endlink - <i>DRFlipFlop circuit.</i>
 @htmlonly
 </div><!-- end of flipflop list -->
 @endhtmlonly
 
-\section sec_compos Custom composites
-	- \link customs_pll.aPLL aPLL\endlink - <i> analog PLL</i>
+
+
+
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_Composites" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('Composites',this)">-</span>Custom Composites</h1>
+</div>
+<div id="Composites">
+@endhtmlonly
+	- Custom Composites
+		- \link customs_pll.aPLL aPLL\endlink - <i> analog PLL</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
 
 
 
 
 
-''
+@htmlonly
+<div>
+	<a class="anchor" id="sec_Cantilever" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('Cantilever',this)">-</span>Cantilever</h1>
+</div>
+<div id="Cantilever">
+@endhtmlonly
+	- Cantilever
+		- \link vafmcircuits_Cantilever.Cantilever Simple Cantilever\endlink - <i> Simple Cantilever</i>
+		- \link vafmcircuits_Cantilever.AdvancedCantilever Advanced Cantilever\endlink - <i> Advanced Cantilever</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
 
 
-- \link vafmcircuits_Cantilever.InputQV InputQV\endlink - <i>Q factor in the vertical mode.</i>
-- \link vafmcircuits_Cantilever.InputKV InputKV\endlink - <i>K value in the vertical mode.</i>
-- \link vafmcircuits_Cantilever.InputFV InputFV\endlink - <i>fundemental eigen frequency in the vertical mode.</i>
-- \link vafmcircuits_Cantilever.InputQL InputQL\endlink - <i>Q factor in the lateral mode.</i>
-- \link vafmcircuits_Cantilever.InputKL InputKL\endlink - <i>K value in the lateral mode.</i>
-- \link vafmcircuits_Cantilever.InputFL InputFL\endlink - <i>fundemental eigen frequency in the lateral mode.</i>
-- \link vafmcircuits_Cantilever.StartingPos StartingPos\endlink - <i>The starting pos of the tip.</i>
-- \link vafmcircuits_Cantilever.MassV MassV\endlink - <i>Mass of the vertical mode.</i>
-- \link vafmcircuits_Cantilever.MassL MassL\endlink - <i>Mass of the lateral mode.</i>
+
+
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_inter" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('interp',this)">-</span>Interpolation</h1>
+</div>
+<div id="interp">
+@endhtmlonly
+	- Interpolation
+		- \link vafmcircuits_Interpolation.i3Dlin i3Dlin\endlink - <i> 3d Linear interpolation circuit</i>
+		- \link vafmcircuits_Interpolation.i1Dlin i1Dlin\endlink - <i> 1d Linear interpolation circuit</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
 
 
 
 
-- \link vafmcircuits_Interpolate.Maxboundary Maxboundary\endlink - <i>Setting the maximum x y and z value of the force field..</i>
-- \link vafmcircuits_Interpolate.Minboundary Minboundary\endlink - <i>Setting the minimum x y and z value of the force field..</i>
+@htmlonly
+<div>
+	<a class="anchor" id="sec_Scanner" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('Scanner',this)">-</span>Scanner</h1>
+</div>
+<div id="Scanner">
+@endhtmlonly
+	- Scanner
+		- \link vafmcircuits_Scanner.Scanner Scanner\endlink - <i> Scanning circuit</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
 
-- \link vafmcircuits_scanner.Place Place\endlink - <i>Place the cantilever to a position instantly.</i>
-- \link vafmcircuits_scanner.Move Move\endlink - <i>move the cantilever by a given vector at a given speed.</i>
-- \link vafmcircuits_scanner.MoveTo MoveTo\endlink - <i>Place the cantilever to a position at a given speed.</i>
-- \link vafmcircuits_scanner.Wait Wait\endlink - <i>Make the cantilever hold position for a given time.</i>
-- \link vafmcircuits_scanner.Scan Scan\endlink - <i>Scans the cantilever along a given distane, in a given direction with a given speed and records points at a given interval.</i>
 
-- \link vafmcircuits_Interpolation.Interpolate Interpolate\endlink - <i>Multi-linear interpolation circuit.</i>
+
+
+
+
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_VDW" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('VDW',this)">-</span>Van Der walls Force</h1>
+</div>
+<div id="VDW">
+@endhtmlonly
+	- Van Der Walls force
+		- \link vafmcircuits_VDW.VDW VDW\endlink - <i> Van der walls force circuit</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
+
 
 
 
