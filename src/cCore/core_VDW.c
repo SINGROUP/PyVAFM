@@ -26,13 +26,13 @@ Flip-Flop circuits definitions.
     c.params[10] = TRC;
     c.params[11] = TRS;
  * ********************************************************************/
-int Add_VDW(int owner, double alpha, double hamaker, double radius, double offset) {
+int Add_VDW(int owner, double gamma, double hamaker, double radius, double offset) {
 
     circuit c = NewCircuit();
     c.nI = 1;
     c.nO = 1;
     
-    double TipAngle = alpha;
+    double TipAngle = gamma;
     double TipHamak = hamaker;
     double TipRadius = radius;
     double TipOffset = offset;
@@ -44,7 +44,7 @@ int Add_VDW(int owner, double alpha, double hamaker, double radius, double offse
     double TR2 = TipRadius*TipRadius;
     double TRC = TipRadius*cos2g;
     double TRS = TipRadius*sing;
-    TipHamak = TipHamak* 1.0e18;//converted in NANONEWTON-NANOMETER
+    //TipHamak = TipHamak* 1.0e18;//converted in NANONEWTON-NANOMETER
 
     c.plen = 12;
     c.params = (double*)calloc(c.plen,sizeof(double));
@@ -104,5 +104,76 @@ void VDW( circuit *c ) {
             vdw -= (c->params[1]*c->params[6]*(ztip*c->params[5]+c->params[11]+c->params[10]))/(6.0*c->params[7]*(c->params[2]+ztip-c->params[11])*(c->params[2]+ztip-c->params[11]));
 
             GlobalBuffers[c->outputs[0]] = vdw;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************************************
+    c.params[0] = A1
+    c.params[1] = A2
+    c.params[2] = A3
+    c.params[3] = A4
+    c.params[4] = A5
+    c.params[5] = tipoffset
+ * ********************************************************************/
+int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5,double tipoffset ) {
+
+    circuit c = NewCircuit();
+    c.nI = 1;
+    c.nO = 1;
+
+    c.plen = 6;
+    c.params = (double*)calloc(c.plen,sizeof(double));
+
+    c.params[0] = A1;
+    c.params[1] = A2;
+    c.params[2] = A3;
+    c.params[3] = A4;
+    c.params[4] = A5;
+    c.params[5] = tipoffset;
+
+    c.updatef = VDWtorn;    
+
+    int index = AddToCircuits(c,owner);
+    printf("cCore: added VDWtorn circuit\n");
+    return index;
+    
+}
+
+
+void VDWtorn( circuit *c ) {
+
+    double ztip = GlobalSignals[c->inputs[0]] + c->params[3];
+
+    if (ztip == 0)
+    {
+        return;
+    }
+
+
+    double vdw = c->params[0]*c->params[1]*exp(-c->params[1] * ztip);
+    double r3=ztip*ztip*ztip; //r^3
+    double r7=r3*r3*ztip;
+    double r11=(10*c->params[4])/(r7*r3*ztip);
+            
+    r7 = (6*c->params[2])/r7;
+    double r9 = (8*c->params[3])/(r3*r3*r3);
+
+    vdw += r11+r9+r7;
+
+    GlobalBuffers[c->outputs[0]] = vdw;    
 
 }
