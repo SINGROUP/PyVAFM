@@ -48,8 +48,8 @@ def main():
 
 
 	#Debug output
-	#out1 = machine.AddCircuit(type='output',name='output',file='Debug.dat', dump=1)
-	#out1.Register('global.time', "scan.x", "scan.y", "scan.z", 'image.record',"canti.zabs")
+	#out1 = machine.AddCircuit(type='output',name='output',file='Debug.dat', dump=1000)
+	#out1.Register('global.time', "scan.x", "scan.y", "scan.z", 'inter.F3',"canti.zabs")
 	
     #feed x and y to interpolation
 	machine.Connect("scan.x" , "inter.x")
@@ -91,8 +91,8 @@ def main():
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [64,64]
-	scanner.ImageArea(11.68,11.68)        
+	scanner.Resolution = [20,20]
+	scanner.ImageArea(11.28,11.28)        
 	#scan
 	scanner.ScanArea()
 

@@ -209,7 +209,7 @@ class Scanner(Circuit):
 		#loop for each scanline to take
 		for linenum in range(1,self.Resolution[1]+1):
 			
-			print "PY Scanner: starting line..."
+			print "PY Scanner: starting line number "+str(linenum) + "..."
 			
 			#move to the end of fast scanline
 			steps = Circuit.cCore.Scanner_Move_Record(self.cCoreID, dfast[0],dfast[1],dfast[2],

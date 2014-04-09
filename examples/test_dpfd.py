@@ -18,7 +18,7 @@ def main():
 	machine.AddCircuit(type='waver',name='osc', amp=1, freq=f0+1.3, pushed=True)
 	machine.AddCircuit(type='waver',name='vco', amp=1, freq=f0, pushed=True)
 	machine.AddCircuit(type="Machine",name='pfd', assembly=dPFD, gain=1000.0, fcut=500, 
-		KI=-0.0,KP=-0.30, pushed=True)
+		KI=-0,KP=-0.20, pushed=True)
 	
 	machine.AddCircuit(type='opAdd',name='frq', in2=f0, pushed=True)
 	

@@ -117,6 +117,7 @@ void output_dumpmessage( int index, char* message ) {
     
     //circuits[index].updatef(&(circuits[index]));
     fprintf(circuits[index].vpparams[0], "%s\n",message);
+    fflush(circuits[index].vpparams[0]);
 }
 
 /*void output_printout( circuit *c ) {

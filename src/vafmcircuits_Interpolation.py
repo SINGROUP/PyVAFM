@@ -126,6 +126,13 @@ class i3Dlin(Circuit):
 				#print "PBC ",self.pbc
 				Circuit.cCore.i3Dlin_pbc(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2])
 				self.pbcSET = True
+
+		if 'ForceMultiplier' in keys.keys():
+			self.ForceMultiplier = keys['ForceMultiplier']
+			print "ForceMultiplier = " +str(self.ForceMultiplier)
+		else:
+			self.ForceMultiplier = 1
+
 	
 	def ReadData(self,filename):
 		
@@ -147,7 +154,7 @@ class i3Dlin(Circuit):
 			k = int(words[2])-1
 			index = i*yzsize + j*zsize + k
 			for c in xrange(self.components): #convert the components to float
-				words[c+3] = ctypes.c_double(float(words[c+3]))
+				words[c+3] = ctypes.c_double(float(words[c+3]) * self.ForceMultiplier)
 				self.data[c][index] = words[c+3]
 		
 		f.close()
