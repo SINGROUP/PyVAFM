@@ -136,10 +136,17 @@ class VDWtorn(Circuit):
 		self.AddInput("ztip")
 		self.AddOutput("fz")
 
+		Circuit.cCore.Add_VDWtorn.argtypes = [
+		ctypes.c_int, #Core Id
+		ctypes.c_double, #A1
+		ctypes.c_double, #A2
+		ctypes.c_double, #A3
+		ctypes.c_double, #A4
+		ctypes.c_double, #A5
+		ctypes.c_double] #tipoffset
 
 
-
-		self.cCoreID = Circuit.cCore.Add_VDW(self.machine.cCoreID,A1,A2,A3,A4,A5,tipoffset)
+		self.cCoreID = Circuit.cCore.Add_VDWtorn(self.machine.cCoreID,A1,A2,A3,A4,A5,tipoffset)
 		
 		self.SetInputs(**keys)
 

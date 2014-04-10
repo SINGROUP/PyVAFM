@@ -22,7 +22,7 @@ scanner = machine.AddCircuit(type='Scanner',name='scan', Process = machine, push
 
 
 inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
-inter.Configure(steps=[0.805,0.805,0.1], npoints=[8,8,171])
+inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
 inter.Configure(pbc=[True,True,False])
 inter.Configure(ForceMultiplier=1e10)
 inter.ReadData('NaClforces.dat')
@@ -62,7 +62,7 @@ machine.Connect('exciter.out','canti.exciter')
 machine.Connect("scan.record","image.record")	
 	
 
-scanner.Place(x=0.805,y=0.805,z=4.5)
+scanner.Place(x=0,y=0,z=4.5)
 
 scanner.Move(x=0,y=0,z=-0.5)	
 machine.Wait(0.02)

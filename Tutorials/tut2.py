@@ -7,7 +7,7 @@ machine = Machine(machine=None, name='machine', dt=0.01)
 scan = machine.AddCircuit(type='Scanner',name='scann')
 inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3)
 
-inter.Configure(steps=[0.805,0.805,0.1], npoints=[8,8,171])
+inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
 inter.Configure(pbc=[True,True,False])
 inter.ReadData('NaClforces.dat')
 
@@ -22,7 +22,7 @@ imager.Register("scann.x", "scann.y", 'inter.F3')
 
 machine.Connect("scann.record", "image.record")
 
-scan.Place(x=0.805, y=0.805, z=4)
+scan.Place(x=0, y=0, z=4)
 #this will print an empty line after each scanline
 scan.Recorder = imager
 scan.BlankLines = True 

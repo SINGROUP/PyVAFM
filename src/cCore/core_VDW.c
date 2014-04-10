@@ -156,16 +156,16 @@ int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5
 
 void VDWtorn( circuit *c ) {
 
-    double ztip = GlobalSignals[c->inputs[0]] + c->params[3];
+    double ztip = GlobalSignals[c->inputs[0]] + c->params[5];
 
     if (ztip == 0)
     {
         return;
     }
 
-
     double vdw = c->params[0]*c->params[1]*exp(-c->params[1] * ztip);
     double r3=ztip*ztip*ztip; //r^3
+
     double r7=r3*r3*ztip;
     double r11=(10*c->params[4])/(r7*r3*ztip);
             

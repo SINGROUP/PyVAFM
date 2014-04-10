@@ -190,6 +190,7 @@ void output( circuit *c ) {
     if(c->iparams[0] <= 0) {
         //printf("asd!\n");
         if(GlobalSignals[c->inputs[0]] > 0) {
+
             output_printout(c); //do the print out
         }
         
@@ -200,7 +201,10 @@ void output( circuit *c ) {
     
     if(c->iparams[1] >= c->iparams[0]) {
         //printf("asd!\n");
-        output_printout(c); //do the print out
+
+
+            output_printout(c); //do the print out
+        
         c->iparams[1] = 0;
     
     }
