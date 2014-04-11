@@ -34,7 +34,7 @@ def main():
 
 
 	scanner.Place(x=0,y=0,z=15)
-	scanner.Move(x=0,y=0,z=-7,v=1)
+	scanner.MoveTo(x=0,y=0,z=8,v=1)
 	machine.Wait(10)
 if __name__ == '__main__':
 	main()

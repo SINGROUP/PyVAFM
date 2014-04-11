@@ -50,7 +50,7 @@ def main():
 
 
 	#Imaging output
-	imager = machine.AddCircuit(type='output',name='image',file='xe-ar-df.dat', dump=10000)
+	imager = machine.AddCircuit(type='output',name='image',file='xe-ar-df.dat', dump=0)
 	imager.Register("scan.z","pfd.df")
 
 	#debug output
@@ -65,7 +65,7 @@ def main():
 
 
     #feed z to cantilever then the ztip of canti to interpolation
-	machine.Connect("scan.z" , "canti.holderz")
+	machine.Connect("scan.x" , "canti.holderz")
 
     #feed force to canti
 		
@@ -101,26 +101,18 @@ def main():
 	#####################################################################################
 
 
-	#machine.Connect("scan.record","image.record")	
+	machine.Connect("scan.record","image.record")	
 	
 
 
 
 
 	
-	scanner.Place(x=0,y=0,z=7)
-
-
-
-	machine.Wait(0.005)
-
-
+	scanner.Place(x=0,y=0,z=15)
 	scanner.Move(x=0,y=0,z=-2)
 	machine.Wait(0.5)
 	
-
-
-	scanner.MoveTo(x=0,y=0,z=0.5,v=1)	
+	scanner.MoveRecord(x=0,y=0,z=-5,v=1,points=100)
 
 
 if __name__ == '__main__':
