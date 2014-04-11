@@ -135,6 +135,8 @@ class VDWtorn(Circuit):
 
 		self.AddInput("ztip")
 		self.AddOutput("fz")
+		self.AddOutput("debug1")
+		self.AddOutput("debug2")
 
 		Circuit.cCore.Add_VDWtorn.argtypes = [
 		ctypes.c_int, #Core Id

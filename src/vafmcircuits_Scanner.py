@@ -122,7 +122,7 @@ class Scanner(Circuit):
 		if "x" in kw.keys(): x = float(kw["x"])
 		if "y" in kw.keys(): y = float(kw["y"])
 		if "z" in kw.keys(): z = float(kw["z"])
-		if not("z" in kw.keys()):
+		if ("v" in kw.keys()):
 			v = float(kw["v"])
 		else:
 			raise NameError ("ERROR! Scanner MoveTo requires v.")

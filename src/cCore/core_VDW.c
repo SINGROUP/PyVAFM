@@ -122,12 +122,12 @@ void VDW( circuit *c ) {
 
 
 /***********************************************************************
-    c.params[0] = A1
-    c.params[1] = A2
-    c.params[2] = A3
-    c.params[3] = A4
-    c.params[4] = A5
-    c.params[5] = tipoffset
+    c.params[0] = tipoffset; 
+    c.params[1] = A1;
+    c.params[2] = A2;
+    c.params[3] = A3;
+    c.params[4] = A4;
+    c.params[5] = A5;
  * ********************************************************************/
 int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5,double tipoffset ) {
 
@@ -138,12 +138,12 @@ int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5
     c.plen = 6;
     c.params = (double*)calloc(c.plen,sizeof(double));
 
-    c.params[0] = A1;
-    c.params[1] = A2;
-    c.params[2] = A3;
-    c.params[3] = A4;
-    c.params[4] = A5;
-    c.params[5] = tipoffset;
+    c.params[0] = tipoffset; 
+    c.params[1] = A1;
+    c.params[2] = A2;
+    c.params[3] = A3;
+    c.params[4] = A4;
+    c.params[5] = A5;
 
     c.updatef = VDWtorn;    
 
@@ -156,24 +156,18 @@ int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5
 
 void VDWtorn( circuit *c ) {
 
-    double ztip = GlobalSignals[c->inputs[0]] + c->params[5];
+    double ztip = GlobalSignals[c->inputs[0]] + c->params[0];
 
     if (ztip == 0)
     {
         return;
     }
 
-    double vdw = c->params[0]*c->params[1]*exp(-c->params[1] * ztip);
-    double r3=ztip*ztip*ztip; //r^3
+    //double vdw = - A1 * A2 * exp (-A2 * x) - (10* A5 / x^11) - (8* A4 / x^9) - (6* A5 / x^7); 
+    double vdw = -c->params[1] * c->params[2] * exp(-c->params[2] * ztip) - (10* c->params[5] / pow(ztip,11) ) - (8* c->params[4] / pow(ztip,9) ) - (6* c->params[3] / pow(ztip,7) ); 
+    vdw = vdw * -1;
 
-    double r7=r3*r3*ztip;
-    double r11=(10*c->params[4])/(r7*r3*ztip);
-            
-    r7 = (6*c->params[2])/r7;
-    double r9 = (8*c->params[3])/(r3*r3*r3);
-
-    vdw += r11+r9+r7;
-
+    //printf("%e %e \n", ztip,vdw);
     GlobalBuffers[c->outputs[0]] = vdw;    
 
 }
