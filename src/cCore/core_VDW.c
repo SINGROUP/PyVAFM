@@ -163,9 +163,9 @@ void VDWtorn( circuit *c ) {
         return;
     }
 
-    //double vdw = - A1 * A2 * exp (-A2 * x) - (10* A5 / x^11) - (8* A4 / x^9) - (6* A5 / x^7); 
-    double vdw = -c->params[1] * c->params[2] * exp(-c->params[2] * ztip) - (10* c->params[5] / pow(ztip,11) ) - (8* c->params[4] / pow(ztip,9) ) - (6* c->params[3] / pow(ztip,7) ); 
-    vdw = vdw * -1;
+    //double vdw = A1 * A2 * exp (-A2 * x) + (10* A5 / x^11) + (8* A4 / x^9) + (6* A5 / x^7); 
+    double vdw = c->params[1] * c->params[2] * exp(-c->params[2] * ztip) + (10* c->params[5] / pow(ztip,11) ) + (8* c->params[4] / pow(ztip,9) ) + (6* c->params[3] / pow(ztip,7) ); 
+    //vdw = vdw * -1;
 
     //printf("%e %e \n", ztip,vdw);
     GlobalBuffers[c->outputs[0]] = vdw;    

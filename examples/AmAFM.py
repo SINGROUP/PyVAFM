@@ -19,12 +19,12 @@ def main():
 	f0 = 100000.0
 	
 	#Add Circuits
-	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,
+	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=1,
 		Q=10000, k=167.0, f0=f0, pushed=True)
 
 	machine.AddCircuit(type='delay', name='phi', DelayTime=0.5/f0, pushed=True)
 	machine.AddCircuit(type='Machine', name='ampd', assembly=aAMPD, fcut=10000, pushed=True)
-	machine.AddCircuit(type='PI', name='agc', Kp=1.1, Ki=800, set=1, pushed=True)
+	machine.AddCircuit(type='PI', name='agc', Kp=1.1, Ki=800, set=2, pushed=True)
 
 	machine.AddCircuit(type='Machine',name='pll',assembly=aPLL,filters=[10000,5000,2000],
 		gain=500.0, f0=f0, Kp=0.5, Ki=800, pushed=True)
@@ -35,7 +35,7 @@ def main():
 
 
 	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
-	inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
+	inter.Configure(steps=[0.805714285714286,0.805714285714286,0.1], npoints=[8,8,171])
 	inter.Configure(pbc=[True,True,False])
 	inter.Configure(ForceMultiplier=1e10)
 	inter.ReadData('NaClforces.dat')
@@ -43,13 +43,13 @@ def main():
 
 
 	#Imaging output
-	imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
+	imager = machine.AddCircuit(type='output',name='image',file='test.dat', dump=0)
 	imager.Register("scan.x","scan.y","pll.df")
 
 
 	#Debug output
-	#out1 = machine.AddCircuit(type='output',name='output',file='Debug.dat', dump=1000)
-	#out1.Register('global.time', "scan.x", "scan.y", "scan.z", 'inter.F3',"canti.zabs")
+	#out1 = machine.AddCircuit(type='output',name='output',file='Debug.dat', dump=1)
+	#out1.Register('global.time', "scan.x", "scan.y", "scan.z", 'image.record',"canti.zabs")
 	
     #feed x and y to interpolation
 	machine.Connect("scan.x" , "inter.x")
@@ -82,7 +82,7 @@ def main():
 
 	#machine.SetInput(channel="output.record", value=0)
 
-	scanner.Place(x=0,y=0,z=4.5)
+	scanner.Place(x=1,y=1,z=5.5)
 	
 	scanner.Move(x=0,y=0,z=-0.5)	
 	machine.Wait(0.02)
@@ -91,8 +91,8 @@ def main():
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [20,20]
-	scanner.ImageArea(11.28,11.28)        
+	scanner.Resolution = [24,24]
+	scanner.ImageArea(16,16)        
 	#scan
 	scanner.ScanArea()
 

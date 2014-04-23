@@ -55,12 +55,12 @@ def main():
 
 
 
-	machine.AddCircuit(type='VDWtorn', name='VDWtorn', A1=-226443, A2=29061.2,A3=305851,A4=-5.02288e7,A5=2.06369e9,tipoffset=0, pushed=True)
-	machine.AddCircuit(type='VDWtorn', name='TESTVDWtorn', A1=-226443, A2=29061.2,A3=305851,A4=-5.02288e7,A5=2.06369e9,tipoffset=0, pushed=True)
+	machine.AddCircuit(type='VDWtorn', name='VDWtorn', A1=-230321, A2=29644.4 ,A3=192004,A4=-4.5108e7,A5=2.28824e9,tipoffset=0, pushed=True)
+	machine.AddCircuit(type='VDWtorn', name='TESTVDWtorn',A1=-230321, A2=29644.4 ,A3=192004,A4=-4.5108e7,A5=2.28824e9,tipoffset=0, pushed=True)
 
 
 	#Imaging output
-	imager = machine.AddCircuit(type='output',name='image',file='xe-ar-df.dat', dump=0)
+	imager = machine.AddCircuit(type='output',name='image',file='xe-xe-df.dat', dump=0)
 	imager.Register("scan.z","pfd.df")
 
 	#debug output
