@@ -11,7 +11,7 @@ def main():
 
 
 	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,
-		Q=10000, k=167.0, f0=f0, pushed=True)
+		Q=10000, k=167.0, f0=150000, pushed=True)
 
 	#machine.AddCircuit(type='waver',name='wave',freq=150000,amp=1)
 
@@ -104,16 +104,16 @@ def main():
 
 
 
-	'''	
+		
 	#machine.SetInput(channel="output.record", value=1)	
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [20,1]
+	scanner.Resolution = [10,10]
 	scanner.ImageArea(11.28,11.28)        
 	#scan
 	scanner.ScanArea()
-	'''
+	
 
 if __name__ == '__main__':
         main()

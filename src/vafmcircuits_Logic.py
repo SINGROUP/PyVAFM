@@ -47,6 +47,7 @@ class NOT(Circuit):
 	def Update (self):
 		pass
 
+
 ## And Gate
 # \image html And.png "schema"
 #
@@ -103,7 +104,31 @@ class AND(Circuit):
 		pass        
 
 	def Update (self):
+		pass
 
+
+class NAND(Circuit):
+
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+
+		
+		#create input channels
+		self.AddInput("in1")
+		self.AddInput("in2")
+		
+		self.AddOutput("out")
+
+		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opNAND",2)
+
+		self.SetInputs(**keys)
+
+	def Initialize (self):
+		pass        
+
+	def Update (self):
 		pass
 
 
@@ -162,12 +187,10 @@ class OR(Circuit):
 		self.result = 0
 
 	def Initialize (self):
-
-			pass        
+		pass        
 
 	def Update (self):
-
-			pass             
+		pass             
 
 
 ## XOr Gate
@@ -281,12 +304,9 @@ class NOR(Circuit):
 
 		self.SetInputs(**keys)
 
-		self.result = 0
-
 
 	def Initialize (self):
 		pass        
 
 	def Update (self):
-	
 		pass

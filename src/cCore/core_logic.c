@@ -19,6 +19,7 @@ void INIT_LOGIC(int* counter) {
     LogicStart = i;
 
     pynames[i] = "opAND"; ufunctions[i] = opAND; i++;
+    pynames[i] = "opNAND"; ufunctions[i] = opNAND; i++;
     pynames[i] = "opOR";  ufunctions[i] = opOR;  i++;
     pynames[i] = "opNOT"; ufunctions[i] = opNOT; i++;
     pynames[i] = "opXOR"; ufunctions[i] = opXOR; i++;
@@ -64,6 +65,18 @@ void opAND( circuit *c ) {
   }
   GlobalBuffers[c->outputs[0]] = result;
 }
+
+void opNAND( circuit *c ) {
+
+  double result = 1;
+  
+  if(GlobalSignals[c->inputs[0]] > 0 && GlobalSignals[c->inputs[1]] > 0) {
+    result = 0;
+  }
+  
+  GlobalBuffers[c->outputs[0]] = result;
+}
+
 
 void opOR( circuit *c ) {
 

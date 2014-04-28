@@ -18,7 +18,7 @@ def main():
 	machine.AddCircuit(type="limiter",name='agclim', min=0,max=10, pushed=True)
 	
 	machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=dPFD, 
-		gain=1000.0, f0=150010, KP=-0.5, KI=-300, pushed=True)
+		gain=1000.0, f0=150000, KP=1.0, KI=100, pushed=True)
 	
 	machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
 	machine.AddCircuit(type='opMul',name='exc', pushed=True)
@@ -60,4 +60,3 @@ def main():
 
 if __name__ == '__main__':
         main()
-
