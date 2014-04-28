@@ -55,7 +55,17 @@ def main():
 
 
 
-	machine.AddCircuit(type='VDWtorn', name='VDWtorn', A1=-226443, A2=29061.2,A3=305851,A4=-5.02288e7,A5=2.06369e9,tipoffset=0, pushed=True)
+	#dimer
+	machine.AddCircuit(type='VDWtorn', name='Dimer',A1=-0.0166279, A2=0.22753, A3=-1819.29, A4=27055.6, A5=-106878., A6=31.8093, tipoffset=0, pushed=True)
+
+	#Surface
+	machine.AddCircuit(type='VDWtorn', name='Pyramid', A1=-1884.77, A2=619.586, A3=-1391.33, A4=22337., A5=-93389.1, A6=17.5403,tipoffset=0, pushed=True)
+ 
+	#Pyramid
+	machine.AddCircuit(type='VDWtorn', name='Surface', A1=-462.061, A2=99.2976, A3=212.33, A4=-682.216, A5=646.31, A6=-7.59327,tipoffset=0, pushed=True)
+	
+
+
 	machine.AddCircuit(type='VDWtorn', name='TESTVDWtorn', A1=-226443, A2=29061.2,A3=305851,A4=-5.02288e7,A5=2.06369e9,tipoffset=0, pushed=True)
 
 

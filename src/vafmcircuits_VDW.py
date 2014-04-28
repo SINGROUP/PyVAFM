@@ -126,6 +126,12 @@ class VDWtorn(Circuit):
 		else:
 			raise NameError("No A5 entered ")	
 
+		if 'A6' in keys.keys():
+			A6 = keys['A6']
+			print "A6 = " +str(A6)
+		else:
+			A6=0
+
 		if 'tipoffset' in keys.keys():
 			tipoffset = keys['tipoffset']
 			print "tipoffset = " +str(tipoffset)
@@ -145,10 +151,11 @@ class VDWtorn(Circuit):
 		ctypes.c_double, #A3
 		ctypes.c_double, #A4
 		ctypes.c_double, #A5
+		ctypes.c_double, #A6		
 		ctypes.c_double] #tipoffset
 
 
-		self.cCoreID = Circuit.cCore.Add_VDWtorn(self.machine.cCoreID,A1,A2,A3,A4,A5,tipoffset)
+		self.cCoreID = Circuit.cCore.Add_VDWtorn(self.machine.cCoreID,A1,A2,A3,A4,A5,A6,tipoffset)
 		
 		self.SetInputs(**keys)
 
