@@ -48,9 +48,9 @@ def main():
 	out2.Register('global.time', 'amp.amp','agc.out','pll.df','pew.delay')
 
 	machine.Wait(0.01)
-	out1.Start()
+	#out1.Start()
 	machine.Wait(0.001)
-	out1.Stop()
+	#out1.Stop()
 	machine.Wait(0.05)
 	out1.Start()
 	machine.Wait(0.001)

@@ -35,7 +35,7 @@ def main():
 	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
 	inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
 	inter.Configure(pbc=[True,True,False])
-	inter.Configure(ForceMultiplier=1e9)
+	inter.Configure(ForceMultiplier=1e10)
 	inter.ReadData('NaClforces.dat')
 
 
@@ -50,7 +50,8 @@ def main():
 
 	out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=10000)
 	out2.Register('global.time', 'canti.ztip','agc.out','pll.df',"canti.fz")
-	
+	out2.Stop()
+
 	#Imaging output
 	imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
 	imager.Register("scan.x","scan.y","pll.df")	
@@ -99,7 +100,7 @@ def main():
 	scanner.Place(x=0,y=0,z=15)
 	machine.Wait(0.5)	
 
-	scanner.Move(x=0,y=0,z=-12)
+	scanner.Move(x=0,y=0,z=-11)
 	machine.Wait(1)	
 
 
@@ -109,7 +110,7 @@ def main():
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [10,10]
+	scanner.Resolution = [20,20]
 	scanner.ImageArea(11.28,11.28)        
 	#scan
 	scanner.ScanArea()
