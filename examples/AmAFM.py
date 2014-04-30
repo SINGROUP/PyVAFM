@@ -13,7 +13,7 @@ def main():
 	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,
 		Q=10000, k=167.0, f0=150000, pushed=True)
 
-	machine.AddCircuit(type='waver',name='wave',freq=150000,amp=1)
+	machine.AddCircuit(type='waver',name='wave',freq=150000-100,amp=1)
 
 	machine.AddCircuit(type="Machine",name='amp', fcut=10000, assembly=aAMPD, 
 		pushed=True)
