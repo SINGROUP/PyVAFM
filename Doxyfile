@@ -611,7 +611,15 @@ WARN_LOGFILE           =
 
 INPUT                  = "./src/" "./doc/index.dox" "./doc/intro.dox" "./doc/circuits.dox" \
 		"./doc/credits.dox" "./doc/example_filter.dox" \
-		"./doc/tutorials.dox" "./doc/tut_basic.dox"
+		"./doc/tutorials.dox" "./doc/tut_basic.dox" \
+		"./doc/install.dox"  "./doc/quickstart.dox" \
+		"./doc/running.dox"  "./doc/documentation.dox" \
+		"./doc/design.dox"  "./doc/anatomy.dox" \
+		"./doc/circuitsman.dox"  "./doc/tutadd.dox" \
+		"./doc/tutint.dox"  "./doc/tutcomp.dox" \
+		"./doc/tut1ddf.dox"  "./doc/tutnacldf.dox"
+
+ 
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 

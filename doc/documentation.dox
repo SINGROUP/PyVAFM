@@ -1,0 +1,8 @@
+/*! \page page_documentation Documentation
+
+Documentation
+========
+
+The documentation comes in 2 parts, the first part is this manual which will give a general over view of the PyVAFM and also includes some tutorials to help get new users started. The second part is the documentation [webpage] (http://johnt447.github.io/pyvafm/index.html), this contains all the documentation on individual components of the PyVAFM, as well as examples on how to use them.
+
+*/

@@ -1,9 +1,11 @@
 /*! \page page_tutorial Tutorials
 
-ASDASDa!
+Tutorials
 
- -# \subpage page_tut_basic
- -# \subpage page_quickstart
- -# \subpage page_quickstart
+ -# \subpage page_tutadd
+ -# \subpage page_tutint
+ -# \subpage page_tutcomp
+ -# \subpage page_tut1ddf
+ -# \subpage page_tutnacldf
 
 */

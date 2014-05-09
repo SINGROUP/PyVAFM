@@ -1,0 +1,286 @@
+/*! \page page_tutnacldf 3d FM-AFM tutorials
+
+Running a full FM-AFM simulation of NaCl
+============================
+
+Now for a full simulation using most of the things you have learned in the past few tutorials so the explanation will be more brief. Definitely do not use this tutorial as a starting point, it is recommended that you have went through the previous tutorials first.\\
+\linebreak
+As always lets add our mandatory modules, including the \href{http://johnt447.github.io/pyvafm/namespacecustoms__pll.html#a3146b17af98ddc221f7404f1dd60148d}[phase lock loop (PLL)] composite circuit that is required in AFM setups;
+
+~~~~~~~~~~~~~{.py}
+from vafmcircuits import Machine
+from customs_pll import *
+~~~~~~~~~~~~~
+
+Lets initialise our machine;
+
+~~~~~~~~~~~~~{.py}
+machine = Machine(machine=None, name='machine', dt=5.0e-8)
+~~~~~~~~~~~~~
+
+
+
+Lets add our \href{http://johnt447.github.io/pyvafm/classvafmcircuits__Cantilever_1_1Cantilever.html}[simple cantilever] circuit, the parameters are described in the documentation but for now lets use these values;
+
+
+~~~~~~~~~~~~~{.py}
+canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,Q=10000, k=167.0, f0=150000, pushed=True)
+~~~~~~~~~~~~~
+
+
+Since we need to be able to measure amplitude we should include the amplitude detector composite circuit;
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type="Machine",name='amp', fcut=10000, assembly=aAMPD, pushed=True)
+~~~~~~~~~~~~~
+
+We need to know just how much we must excite the cantilever so we can do this using a PI circuit;
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type='PI', name='agc', Kp=1.1, Ki=800, set=1, pushed=True)
+~~~~~~~~~~~~~
+
+It often safe practice to limit the agc signal so it doesn't get to high or negative so to do this we will implement a limiter circuit. 
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type="limiter",name='agclim', min=0,max=10, pushed=True)
+~~~~~~~~~~~~~
+
+The most important part of an AFM set up is the PLL (Phase lock loop) as this is the device that actually gives us the change in frequency. Again we have a PLL composite circuit all set up already so simply follow the parameters given below;
+
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, pushed=True)
+~~~~~~~~~~~~~
+
+
+We need the excitation signal to be off phase by $\pi /2$. Since the output of the pll will be out of phase by $-\pi /2$ (a cosine output wave compared to a sine input wave), so we will invert the cos wave in order to give us a phase shift of $\pi /2$.
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
+~~~~~~~~~~~~~
+
+
+in order for us to excite the cantilever we must multiply the output of the PLL with the output of the PI circuit to ensure we get an appropriate excitation circuit, hence we must add a multiplication circuit;
+
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type='opMul',name='exc', pushed=True)
+~~~~~~~~~~~~~
+
+We need to be able to move our cantilever so lets add the scanner circuit;
+
+~~~~~~~~~~~~~{.py}
+scanner = machine.AddCircuit(type='Scanner',name='scan', Process = machine, pushed=True)
+~~~~~~~~~~~~~
+
+We have a 3d force field for the NaCl included in the tutorial, the details of how to add an interpolation circuit was covered in tutorial 6.2 so I will simply state what is required here. One thing to note is the ForceMultiplier parameter this allows you to change the units of your force field to what ever it is you require;
+
+~~~~~~~~~~~~~{.py}
+inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
+inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
+inter.Configure(pbc=[True,True,False])
+inter.Configure(ForceMultiplier=1e10)
+inter.ReadData('NaClforces.dat')
+~~~~~~~~~~~~~
+
+We require an output circuit this is set up in the same way as described in tutorial 6.2. This time the channels we will register are "x" , "y" and the change in frequency "df".
+
+~~~~~~~~~~~~~{.py}
+imager = machine.AddCircuit(type='output',name='image',file='test.dat', dump=0)
+imager.Register("scan.x","scan.y","pll.df")
+~~~~~~~~~~~~~
+
+So we have added all the circuits we need for this FM-AFM setup so lets connect our circuits now. so lets hook up or x and y channel of the scanner to the x and y channel of the interpolation circuit;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("scan.x" , "inter.x")
+machine.Connect("scan.y" , "inter.y")
+~~~~~~~~~~~~~
+
+The z channel is a little more involved since the cantilever oscillates in that dimension we must connect the absolute position (position of the holder + oscillation of the cantilever)  of the cantilever, so firstly lets connect the scanners z channel to the holder position of the cantilever;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("scan.z" , "canti.holderz")
+~~~~~~~~~~~~~
+
+Next lets connect the absolute position of the cantilever (zabs) to the interpolation circuit, hence giving us the force where the tip is;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("canti.zabs" , "inter.z")
+~~~~~~~~~~~~~
+
+now lets connect the third force component of the force field (the z component) to the force channel of the cantilever;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("inter.F3" , "canti.fz")
+~~~~~~~~~~~~~
+
+So we need to measure the amplitude of the tip so lets connect the tip position to our amplitude detector;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect('canti.ztip','amp.signal')
+~~~~~~~~~~~~~
+
+
+So the amplitude detector is capable of outputting the amplitude of the wave or a normalised version of that wave. Since we need to know but how much to excite the wave by lets connect the amplitude to the PI circuit so we can measure that;
+
+\begin{lstlisting}
+machine.Connect('amp.amp','agc.signal')
+\end{lstlisting}
+
+
+So now we have to hook up our pll circuit, the pll must have a feedback by using the cos output of the pll and have the normalised cantilever as an input
+
+~~~~~~~~~~~~~{.py}
+machine.Connect('amp.norm','pll.signal1')
+machine.Connect('pll.cos","pll.signal2')
+~~~~~~~~~~~~~
+
+So now we can multiply the output from the PI circuit and the cos output of the pll circuit in order to create an excitation circuit and then connect this signal to the cantilever excitation channel;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect('agc.out','agclim.signal')
+machine.Connect('agclim.out','exc.in1')
+machine.Connect('pll.cos','pllinv.in1')
+machine.Connect('pllinv.out','exc.in2')
+~~~~~~~~~~~~~
+
+Lets also connect the scanner record channel to the output recording channel;
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("scan.record","image.record")	
+~~~~~~~~~~~~~
+
+Now we have connected all our circuits and all that is left is to issue commands to the scanner in order to move the cantilever; Lets start by placing our cantilever at position 0,0,15 , please note that the distances are in angstroms since the force field is given in angstroms, also lets wait for 0.5 seconds;
+
+~~~~~~~~~~~~~{.py}
+scanner.Place(x=0,y=0,z=15)
+machine.Wait(0.5)	
+~~~~~~~~~~~~~
+
+Next lets move scanner down by 11 angstroms and have it wait for 1 seconds this will allow the pll to settle down before we start scanning;
+
+
+~~~~~~~~~~~~~{.py}
+scanner.Move(x=0,y=0,z=-11)	
+machine.Wait(1)
+~~~~~~~~~~~~~
+
+Lets now set up our ScanArea function like we did in in tutorial 6.2, except this time we want 64 points per line and 64 lines over an image area of 11.68 by 11.68 angstroms. If you are using gnuplot leave the blanklines as  True but if you choose to use another plotting program that doesn't use the blank lines feel free to set it to False, finally use the ScanArea() function to begin your scan.
+
+~~~~~~~~~~~~~{.py}
+scanner.Recorder = imager
+scanner.BlankLines = True 
+scanner.Resolution = [20,20]
+scanner.ImageArea(11.28,11.28)        
+scanner.ScanArea()
+~~~~~~~~~~~~~
+
+So the final input file should look like this;
+
+~~~~~~~~~~~~~{.py}
+#!/usr/bin/env python
+from vafmcircuits import Machine
+from customs_pll import *
+
+
+machine = Machine(machine=None, name='machine', dt=5.0e-8)
+
+
+canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,Q=10000, k=167.0, f0=150000, pushed=True)
+
+
+machine.AddCircuit(type="Machine",name='amp', fcut=10000, assembly=aAMPD, pushed=True)
+	
+machine.AddCircuit(type='PI', name='agc', Kp=1.1, Ki=800, set=1, pushed=True)
+machine.AddCircuit(type="limiter",name='agclim', min=0,max=10, pushed=True)
+	
+machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, pushed=True)
+	
+machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
+machine.AddCircuit(type='opMul',name='exc', pushed=True)
+
+scanner = machine.AddCircuit(type='Scanner',name='scan', Process = machine, pushed=True)
+
+
+inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
+inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])
+inter.Configure(pbc=[True,True,False])
+inter.Configure(ForceMultiplier=1e10)
+inter.ReadData('NaClforces.dat')
+
+
+
+
+	
+#Outputs
+out1 = machine.AddCircuit(type='output',name='output',file='testafm.out', dump=2)
+out1.Register('global.time', 'canti.zabs','amp.norm','pll.cos','pll.sin','exc.in2')
+out1.Stop()
+
+out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=10000)
+out2.Register('global.time', 'canti.ztip','agc.out','pll.df',"canti.fz")
+out2.Stop()
+
+#Imaging output
+imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
+imager.Register("scan.x","scan.y","pll.df")	
+
+
+#feed x and y to interpolation
+machine.Connect("scan.x" , "inter.x")
+machine.Connect("scan.y" , "inter.y")
+machine.Connect("scan.z" , "canti.holderz")
+machine.Connect("canti.zabs" , "inter.z")
+
+#Force
+machine.Connect("inter.F3" , "canti.fz")	
+	
+machine.Connect('canti.ztip','amp.signal')
+machine.Connect('amp.amp','agc.signal')
+machine.Connect('amp.norm','pll.signal1')
+machine.Connect('pll.cos','pll.signal2')
+	
+machine.Connect('agc.out','agclim.signal')
+machine.Connect('agclim.out','exc.in1')
+machine.Connect('pll.cos','pllinv.in1')
+machine.Connect('pllinv.out','exc.in2')
+	
+machine.Connect('exc.out','canti.exciter')
+
+machine.Connect("scan.record","image.record")	
+	
+
+
+
+scanner.Place(x=0,y=0,z=15)
+machine.Wait(0.5)	
+
+scanner.Move(x=0,y=0,z=-11)
+machine.Wait(1)	
+
+scanner.Recorder = imager
+scanner.BlankLines = True 
+#resolution of the image [# points per line, # lines]
+scanner.Resolution = [20,20]
+scanner.ImageArea(11.28,11.28)        
+#scan
+scanner.ScanArea()
+\end{lstlisting}
+
+This scan will most likely take a long time you can reduce the time it will take by altering the resolution parameter. After it has finished running plot an intensity plot, if you are using gnuplot you can use the following commands;
+
+\begin{lstlisting}[language=bash]
+set pm3d
+set size square
+set palette rgbformula 34,35,36
+sp "tut5.dat" using 1:2:3
+~~~~~~~~~~~~~
+
+Your results should look similar to the image below;
+
+\image html tut5.png "Tutorial 5 output"
+
+
+*/
