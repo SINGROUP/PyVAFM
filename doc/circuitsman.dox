@@ -1,6 +1,6 @@
-/*! \page page_circuitsman Circuits Manual
+/*! \page page_circuitsman Circuits User Guide
 
-Circuits Manual
+Circuits User Guide
 ================
 
 Circuits are the real beef of the PyVAFM, these are designed to be black boxes that are connected to create any simulation the user desires. 

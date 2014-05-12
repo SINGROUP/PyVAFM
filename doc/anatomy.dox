@@ -54,20 +54,20 @@ It may look a bit of a mess right now but each part does follow a common pattern
 machine = Machine(name='machine', dt=0.0001, pushed=True)
 ~~~~~~~~~~~~~
 
-This part of the code is required for all input scripts, it essentially sets up the PyVAFM and should alwyas be included first. As well as setting up the PyVAFM this also lets you define the timestep for the simulation, in this case it is set as dt=0.001, finally you can decide if the machine is pushed or not, again more detail on what pushing in the circuits section of this manual.
+This part of the code is required for all input scripts, it essentially sets up the PyVAFM and should alwyas be included first. As well as setting up the PyVAFM this also lets you define the timestep for the simulation, in this case it is set as dt=0.001, finally you can decide if the machine is pushed or not, again more detail on what pushing in the Circuits User Guide section.
 
 
 ~~~~~~~~~~~~~{.py}
 machine.AddCircuit(type='waver',name='wave', amp=1, freq=2, phi=1, offset=2.0, pushed=True)
 ~~~~~~~~~~~~~
 
-This is the command used to add a circuit to the PyVAFM system. The details of the nature of these circuits will be demonstrated in section 4 but for now lets just consider a general form. A circuit is simply a black box that takes input and produces an output. The idea is that these black boxes simulate some process and are then connected together to build the simulation. Circuits are named separately and may have initialisation parameters like this one. this particular circuit outputs waves such as sin, cos etc. So we have assigned the type of circuit as 'waver', the name of the circuit as 'wave' and initialisation parameters amplitude (amp), frequency (freq), phi and offset. This has been a very loose explnation on how the circuits work but this is covered in more detail in the circuits section of this manual.
+This is the command used to add a circuit to the PyVAFM system. The details of the nature of these circuits will be demonstrated in section 4 but for now lets just consider a general form. A circuit is simply a black box that takes input and produces an output. The idea is that these black boxes simulate some process and are then connected together to build the simulation. Circuits are named separately and may have initialisation parameters like this one. this particular circuit outputs waves such as sin, cos etc. So we have assigned the type of circuit as 'waver', the name of the circuit as 'wave' and initialisation parameters amplitude (amp), frequency (freq), phi and offset. This has been a very loose explnation on how the circuits work but this is covered in more detail in the Circuits User Guide section. 
 
 ~~~~~~~~~~~~~{.py}
 machine.Connect("wave.sin","Add.in1")
 ~~~~~~~~~~~~~
 
-This is how you connect circuits, you must connect the output of one circuit to the input of another for example in this case the circuit named wave with the output sin (wave.sin) is connected to circuit named Add that has the input in1 (Add.in1), Again more details in the circuits section of this manual.
+This is how you connect circuits, you must connect the output of one circuit to the input of another for example in this case the circuit named wave with the output sin (wave.sin) is connected to circuit named Add that has the input in1 (Add.in1), Again more details in the Circuits User Guide.
 
 ~~~~~~~~~~~~~{.py}
 out1 = machine.AddCircuit(type='output',name='output',file='wavers.log', dump=1)
