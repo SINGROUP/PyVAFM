@@ -1,6 +1,6 @@
-/*! \page page_circuitsman circuits
+/*! \page page_circuitsman Circuits Manual
 
-Circuits
+Circuits Manual
 ================
 
 Circuits are the real beef of the PyVAFM, these are designed to be black boxes that are connected to create any simulation the user desires. 
@@ -14,7 +14,7 @@ In order to use circuits first the user must add them.
 machine.AddCircuit(type,name, initialisation parameters}
 ~~~~~~~~~~~~~
 
-when adding a circuit there are 3 parts that are required, first is the type of circuit you are adding for example "opAdd" (\url{http://johnt447.github.io/pyvafm/classvafmcircuits__math_1_1opAdd.html}). Next is the name, this is how the user will refer to the circuit from now on in the input file and this must unique to each new circuit, hence allowing multiple circuits of the same type to be added. Finally some circuits require initialisation parameters when they are added, an example of such parameters would be frequency in the wave generation circuit. A fully complete example of how to add a circuit is shown below:
+when adding a circuit there are 3 parts that are required, first is the type of circuit you are adding for example ["opAdd"](http://johnt447.github.io/pyvafm/classvafmcircuits__math_1_1opAdd.html). Next is the name, this is how the user will refer to the circuit from now on in the input file and this must unique to each new circuit, hence allowing multiple circuits of the same type to be added. Finally some circuits require initialisation parameters when they are added, an example of such parameters would be frequency in the wave generation circuit. A fully complete example of how to add a circuit is shown below:
 
 ~~~~~~~~~~~~~{.py}
 machine.AddCircuit(type='waver', name='wgen', amp=1.2, freq=12000)
@@ -50,6 +50,6 @@ machine.Connect("wave.sin","sklp.signal","skhp.signal","skbp.signal")
 Composite Circuits
 --------------------
 
-Composite circuits are user made combinations of circuits, you can think of it as a template of circuits that can be saved and used again. An example of this a Phase locked loop, that is a fairly complicated collection of filters and various other electronic components that would be untidy to include in every input script its required but it is much tidier to have this in a separated file and added as a composite circuit. Adding composite circuits resembles the same way normal circuits work as in they have input and output channels that can be connected. A tutorial on how to build a compisite circuit is found in section 6.4.
+Composite circuits are user made combinations of circuits, you can think of it as a template of circuits that can be saved and used again. An example of this a Phase locked loop, that is a fairly complicated collection of filters and various other electronic components that would be untidy to include in every input script its required but it is much tidier to have this in a separated file and added as a composite circuit. Adding composite circuits resembles the same way normal circuits work as in they have input and output channels that can be connected. A tutorial on how to build a compisite circuit is found in the circuits manual section.
 
 */

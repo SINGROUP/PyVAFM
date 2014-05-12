@@ -4,7 +4,7 @@
 Design Philosophy
 ===========
 
-The PyVAFM although designed for simulating atomic force microscopy can actually be used to simulate any electronic system. The main principle behind the PyVAFM is to allow the user to essentially connect many black boxes, known as "circuits" together to build a simulation but also allowing users to integrate their own black boxes if they have the need to. As well as this goal it is also important that the PyVAFM is intuitive and fairly easy to use. Hence why an Python script is chosen as an input since this allows for ease of use flexibility as shown in the tutorial located in section 5.5. We believe we have achieved these goals  regardless feedback is still appreciated on how we can improve the system. 
+The PyVAFM although designed for simulating atomic force microscopy can actually be used to simulate any electronic system. The main principle behind the PyVAFM is to allow the user to essentially connect many black boxes, known as "circuits" together to build a simulation but also allowing users to integrate their own black boxes if they have the need to. As well as this goal it is also important that the PyVAFM is intuitive and fairly easy to use. Hence why an Python script is chosen as an input since this allows for ease of use flexibility as shown in the tutorial section. We believe we have achieved these goals  regardless feedback is still appreciated on how we can improve the system. 
 
 A Note about Units
 ---------
