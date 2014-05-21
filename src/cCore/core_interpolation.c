@@ -118,10 +118,17 @@ void i3Dlin( circuit *c ) {
 	}
     }
     
+    
     if( pos[2] >= (c->iparams[2+1]-1)*c->params[2])
     {
+
     	oob = 1;
+    for (int comp=0; comp<c->iparams[0]; comp++)
+	    GlobalBuffers[c->outputs[comp]] = 0;
+	return;
     }
+
+	
 
     //outputs 0 if out of bounds
     if(oob == 0) {
