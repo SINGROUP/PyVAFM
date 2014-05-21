@@ -11,7 +11,8 @@ all: container cantilever siggen scanner interpo outputs rsa flops maths logics 
 	rm *.o
 	cp vafmcore.so ../.
 	cp vafmcore.so ../../examples/.
-	cp vafmcore.so ../../Tutorials/.	
+	cp vafmcore.so ../../Tutorials/.
+	cp vafmcore.so ../../Work/.	
 main.o:
 	$(CC) $(CFLAGS) main.c
 cantilever:

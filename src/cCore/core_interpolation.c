@@ -118,6 +118,11 @@ void i3Dlin( circuit *c ) {
 	}
     }
     
+    if( pos[2] >= (c->iparams[2+1]-1)*c->params[2])
+    {
+    	oob = 1;
+    }
+
     //outputs 0 if out of bounds
     if(oob == 0) {
 	printf("WARNING! i3Dlin OOB!\n");

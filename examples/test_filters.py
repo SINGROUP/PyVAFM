@@ -47,9 +47,7 @@ def main():
 
 
 	#connect oscillator to the filters
-	print "Hi"
 	machine.Connect("wave.sin","sklp.signal","skhp.signal","skbp.signal","rclp.signal","rchp.signal")
-	print "Hi2"
 	machine.Connect("sklp.out","asklp.signal") #filter -> amplitude detector
 	machine.Connect("skhp.out","askhp.signal") #filter -> amplitude detector
 	machine.Connect("skbp.out","askbp.signal") #filter -> amplitude detector

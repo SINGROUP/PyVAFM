@@ -17,7 +17,7 @@ def main():
 	
 	machine.AddCircuit(type='waver',name='osc', amp=1, freq=f0+4, pushed=True)
 	machine.AddCircuit(type="Machine",name='pll', assembly=aPLL, filters=[10000,5000,2000],
-		gain=600.0, f0=f0, Kp=0.5, Ki=800, pushed=True)
+		gain=1000.0, f0=f0, Kp=0.5, Ki=800, pushed=True)
 	
   	
 	machine.Connect("osc.cos","pll.signal1")
@@ -32,7 +32,7 @@ def main():
 	machine.Wait(0.01)
 	machine.circuits['osc'].I['freq'].Set(f0-100)
 	machine.Wait(0.01)
-	machine.circuits['osc'].I['freq'].Set(f0-300)
+	machine.circuits['osc'].I['freq'].Set(f0-500)
 	machine.Wait(0.01)
 		
 if __name__ == '__main__':
