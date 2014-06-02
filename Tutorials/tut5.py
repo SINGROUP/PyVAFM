@@ -70,7 +70,7 @@ machine.Wait(1)
 scanner.Recorder = imager
 scanner.BlankLines = True 
 #resolution of the image [# points per line, # lines]
-scanner.Resolution = [20,20]
+scanner.Resolution = [64,64]
 scanner.ImageArea(11.28,11.28)        
 #scan
 scanner.ScanArea()

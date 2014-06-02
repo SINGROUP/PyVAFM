@@ -10,10 +10,10 @@ def main():
 #		Q=20000, k=26.4, f0=150000, startingz=1, pushed=True)
 
 
-	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,
-		Q=10000, k=167.0, f0=150000, pushed=True)
+	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=1,
+		Q=10000, k=167.0, f0=15000, pushed=True)
 
-	#machine.AddCircuit(type='waver',name='wave',freq=150000,amp=1)
+	machine.AddCircuit(type='waver',name='wave',freq=15000,amp=1)
 
 	machine.AddCircuit(type="Machine",name='amp', fcut=10000, assembly=aAMPD, 
 		pushed=True)
@@ -23,7 +23,7 @@ def main():
 	machine.AddCircuit(type="limiter",name='agclim', min=0,max=10, pushed=True)
 	
 	machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, 
-		filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, 
+		filters=[10000,5000,2000], gain=600.0, f0=15000, Kp=0.5, Ki=700, 
 		pushed=True)
 	
 	machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
@@ -33,7 +33,7 @@ def main():
 
 
 	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
-	inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,171])
+	inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])
 	inter.Configure(pbc=[True,True,False])
 	inter.Configure(ForceMultiplier=1e10)
 	inter.ReadData('NaClforces.dat')
@@ -48,9 +48,9 @@ def main():
 	#out1.Register('global.time', 'wave.cos','pll.cos','pll.sin','exc.in2')
 	out1.Stop()
 
-	out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=10000)
+	out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=100)
 	out2.Register('global.time', 'canti.ztip','agc.out','pll.df',"canti.fz")
-	out2.Stop()
+	#out2.Stop()
 
 	#Imaging output
 	imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
@@ -70,11 +70,11 @@ def main():
 	machine.Connect('amp.amp','agc.signal')
 	machine.Connect('amp.norm','pll.signal1')
 	#machine.Connect('wave.cos','pll.signal1')
-	machine.Connect('pll.cos','pll.signal2')
+	machine.Connect('pll.sin','pll.signal2')
 	
 	machine.Connect('agc.out','agclim.signal')
 	machine.Connect('agclim.out','exc.in1')
-	machine.Connect('pll.cos','pllinv.in1')
+	machine.Connect('pll.sin','pllinv.in1')
 	machine.Connect('pllinv.out','exc.in2')
 	
 	machine.Connect('exc.out','canti.exciter')
@@ -98,7 +98,7 @@ def main():
 	#u should see 3 distinct waves, canti peaks are in the middle between the other 2
 
 	scanner.Place(x=0,y=0,z=15)
-	machine.Wait(0.5)	
+	machine.Wait(0.2)	
 
 	scanner.Move(x=0,y=0,z=-11)
 	machine.Wait(1)	
@@ -110,7 +110,7 @@ def main():
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [20,20]
+	scanner.Resolution = [64,64]
 	scanner.ImageArea(11.28,11.28)        
 	#scan
 	scanner.ScanArea()

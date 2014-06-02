@@ -22,9 +22,9 @@ def main():
 	machine.AddCircuit(type='PI', name='agc', Kp=1.1, Ki=800, set=1, pushed=True)
 	machine.AddCircuit(type="limiter",name='agclim', min=0,max=10, pushed=True)
 	
-#	machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, 
-#		filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, 
-#		pushed=True)
+	machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, 
+		filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, 
+		pushed=True)
 	
 	machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
 	machine.AddCircuit(type='opMul',name='exc', pushed=True)
