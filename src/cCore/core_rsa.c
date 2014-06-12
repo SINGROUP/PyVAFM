@@ -19,7 +19,7 @@ Resonance Shear Apparatus definitions.
  * inputs[2]	= friction coeff
  * output[0]	= xcm
  * output[1]	= ycm
- * output[2]	= angle
+ * output[2]	= theta
  * output[3]	= x2
  * params[0-2]	= 1/M1, 1/M2, 1/Mrot
  * params[3-5]	= K1, K1z, K2

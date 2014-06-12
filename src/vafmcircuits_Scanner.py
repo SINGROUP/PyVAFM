@@ -7,7 +7,7 @@ from ctypes import *
 #
 #
 # \image html scanner.png "schema"
-# This is scanner circuit, it is designed to move the cantilever round the force field but in essence it just calculates paths between two points.
+# The scanner circuit is designed to move the cantilever over time.
 #
 # \b Initialisation \b parameters:
 # 	- \a pushed = True|False  push the output buffer immediately if True
@@ -123,6 +123,7 @@ class Scanner(Circuit):
 		if "x" in kw.keys(): x = float(kw["x"])
 		if "y" in kw.keys(): y = float(kw["y"])
 		if "z" in kw.keys(): z = float(kw["z"])
+
 		if ("v" in kw.keys()):
 			v = float(kw["v"])
 		else:
@@ -241,6 +242,7 @@ class Scanner(Circuit):
 		
 		print "done!"
 
+
 	def MoveRecord(self, **kw):
 		#finds out where the scanner is by asking cCore
 		params = self.GetParams(self.cCoreID);
@@ -265,4 +267,5 @@ class Scanner(Circuit):
 		steps = Circuit.cCore.Scanner_Move_Record(self.cCoreID, c_double(x), c_double(y), c_double(z), c_double(v), c_int(npts)) 
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
+
 

@@ -40,14 +40,6 @@ def main():
 	
 	machine.Wait(10)
 	
-	#print compo1.I.keys()
-	#print compo1.cCoreID
-	#print machine.cCoreID
-	
-	#machine.cCore.DebugCircuit(osc.cCoreID);
-	#machine.cCore.DebugCircuit(compo1.cCoreID);
-	#machine.cCore.DebugCircuit(7);
-	
 
 if __name__ == '__main__':
 	main()

@@ -1,25 +1,24 @@
-/*! \page page_install Install
+/*! \page page_install Installation
 
+\link docindex Documentation \endlink > Installation
 
 Prerequisites 
-========================
-
-
-Python
 ------------------------
 
 
-In order to use the PyVAFM a working knowledge of how to use python is recommended although it is not mandatory since one can make input scripts by looking at the examples but life will be a lot easier if you know at least some python as well as some knowledge object oriented programming. The core of the PyVAFM uses C so if the user wants to add to the PyVAFM and speed is required then knowledge of C is mandatory. As well as this the following must be installed and working:
+In order to use \progname a working knowledge of how to use python is recommended although it is not mandatory since one can make input scripts by looking at the examples. Life will be a lot easier if you know at least some python as well as some knowledge object oriented programming.
+The following libraries and programs must be installed:
 
 
 - Python 2.7
-- gcc compiler
+- gcc compiler (developed with v4.6.1)
 - scipy and numpy
 
 
-Installing
+Installation
 ------------------------
 
-Navigate to the ./src/cCore directory and simply type "make" into the console to compile the program. 
+Navigate to the ./src/cCore directory and simply type "make all" into the console to compile the core library. 
+The ./src directory must be in the list of python import paths, as well as in the $LD_LIBRARY_PATH (not sure about this).
 
 */

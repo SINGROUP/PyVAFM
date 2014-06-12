@@ -1,12 +1,6 @@
 #!/usr/bin/env python
-import sys
-sys.path.append('/Users/johntracey/Desktop/pyvafm-master/src')
 
-
-from vafmbase import ChannelType
 from vafmcircuits import Machine
-
-import vafmcircuits
 
 
 def main():
@@ -14,9 +8,7 @@ def main():
 	
 	machine = Machine(name='machine', dt=0.01, pushed=True);
 	
-	
 	#Add Circuits
-	
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
 	machine.AddCircuit(type='Perlin', name='nx', octaves=3, persist=0.3, amp=0.05, period=1.23, pushed=True)
 	machine.AddCircuit(type='Perlin', name='ny', octaves=3, persist=0.3, amp=0.05, period=1.23, pushed=True)
@@ -31,11 +23,11 @@ def main():
 	
 	
 	#debug output
-	out1 = machine.AddCircuit(type='output',name='output',file='test_scanner.log', dump=1)
+	out1 = machine.AddCircuit(type='output',name='output',file='test_scanner.out', dump=1)
 	out1.Register('global.time', "scan.x", "scan.y", "scan.z", 'add.out')
 	
 	#image output
-	imager = machine.AddCircuit(type='output',name='image',file='test_scanner_image.log', dump=0)
+	imager = machine.AddCircuit(type='output',name='image',file='test_scanner_image.out', dump=0)
 	imager.Register("scan.x", "scan.y", 'add.out')
 	
 	machine.Connect("scan.record","image.record")

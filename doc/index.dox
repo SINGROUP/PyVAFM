@@ -1,18 +1,22 @@
 /*! \mainpage
+@anchor docindex
 
-Welcome to the \b user documentation for pyVAFM.
+Welcome to the \progname documentation.
 
+ -# \subpage page_about
+  -# \ref Info 
+  -# \ref Features
+  -# \ref Units
  -# \subpage page_install
- -# \subpage page_quickstart
+ -# Quickstart (show here a very basic input file, and how to run it)
  -# \subpage page_tutorial
  -# \subpage page_circs
 
- latest PyVafm version Download [Link](https://github.com/johnt447/pyvafm/archive/master.zip)
+The latest \progname version can be downloaded [here](https://github.com/fullmetalfelix/pyvafm/archive/pyvafm.zip)
 
-A pdf of the install, user manual and tutorial can be found [here](https://drive.google.com/file/d/0By1_HYSmWg5nU2dXLUZlYUI3UGs/edit?usp=sharing)
+A pdf of this documentation can be found [here](https://drive.google.com/file/d/0By1_HYSmWg5nU2dXLUZlYUI3UGs/edit?usp=sharing)
 
 */
-
 
 
 

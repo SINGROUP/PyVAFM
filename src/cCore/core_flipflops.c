@@ -29,7 +29,7 @@ int Add_DRFlipFLop(int owner) {
 
     circuit c = NewCircuit();
     c.nI = 3;
-    c.nO = 3;
+    c.nO = 2;
     
     c.iplen = 2;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
@@ -51,7 +51,7 @@ void DRFlipFlop( circuit *c ) {
     //printf("%lf %d %d \n",GlobalSignals[c->inputs[2]],c->iparams[1],clock);
     
     c->iparams[1] = (GlobalSignals[c->inputs[2]] > 0)? 1:0; //store the current clock value
-    GlobalBuffers[c->outputs[2]] = clock;   
+    //GlobalBuffers[c->outputs[2]] = clock;   
     
     
     //if reset is high...
@@ -96,7 +96,7 @@ int Add_JKFlipFLop(int owner) {
 
     circuit c = NewCircuit();
     c.nI = 3;
-    c.nO = 3;
+    c.nO = 2;
     
     c.iplen = 3;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
@@ -119,7 +119,7 @@ void JKFlipFlop( circuit *c ) {
     //printf("%lf %d %d \n",GlobalSignals[c->inputs[2]],c->iparams[1],clock);
 
     c->iparams[2] = (GlobalSignals[c->inputs[2]] > 0)? 1:0; //store the current clock value
-    GlobalBuffers[c->outputs[2]] = clock;   
+    //GlobalBuffers[c->outputs[2]] = clock;   
 
 
     if(clock == 0) //if the clock has no front, do nothing!
@@ -175,7 +175,7 @@ int Add_DFlipFLop(int owner) {
 
     circuit c = NewCircuit();
     c.nI = 2;
-    c.nO = 3;
+    c.nO = 2;
     
     c.iplen = 4;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
@@ -197,7 +197,7 @@ void DFlipFlop( circuit *c ) {
     //printf("%lf %d %d \n",GlobalSignals[c->inputs[2]],c->iparams[1],clock);
     
     c->iparams[3] = (GlobalSignals[c->inputs[1]] > 0)? 1:0; //store the current clock value
-    GlobalBuffers[c->outputs[1]] = clock;   
+    //GlobalBuffers[c->outputs[1]] = clock;   
 
 
 
@@ -259,7 +259,7 @@ int Add_SRFlipFLop(int owner) {
 
     circuit c = NewCircuit();
     c.nI = 3;
-    c.nO = 3;
+    c.nO = 2;
     
     c.iplen = 2;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
@@ -281,7 +281,7 @@ void SRFlipFlop( circuit *c ) {
     //printf("%lf %d %d \n",GlobalSignals[c->inputs[2]],c->iparams[1],clock);
     
     c->iparams[1] = (GlobalSignals[c->inputs[2]] > 0)? 1:0; //store the current clock value
-    GlobalBuffers[c->outputs[2]] = clock;   
+    //GlobalBuffers[c->outputs[2]] = clock;   
     
     
     //if reset is high...
@@ -304,3 +304,4 @@ void SRFlipFlop( circuit *c ) {
     }
     
 }
+

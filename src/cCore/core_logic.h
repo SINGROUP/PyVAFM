@@ -10,3 +10,4 @@ void opNOR( circuit *c );
 
 
 #endif
+

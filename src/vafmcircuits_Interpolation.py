@@ -49,7 +49,6 @@ import ctypes
 #	inter.ReadData('NaClforces.dat')
 # \endcode
 #
-
 class i3Dlin(Circuit):
     
     
@@ -256,8 +255,6 @@ class i1Dlin(Circuit):
 		else:
 			test_arr = (ctypes.c_double * npts)(*datapoints)
 			Circuit.cCore.i1Dlin_SetData(self.cCoreID, 0,test_arr,npts)
-
-
 
 
 

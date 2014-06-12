@@ -310,3 +310,5 @@ class NOR(Circuit):
 
 	def Update (self):
 		pass
+
+

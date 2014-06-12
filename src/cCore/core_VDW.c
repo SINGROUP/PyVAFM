@@ -1,5 +1,5 @@
 /**********************************************************
-Flip-Flop circuits definitions.
+VDW force circuits definitions.
 *********************************************************/
 
 #ifndef CIRCUIT
@@ -26,13 +26,13 @@ Flip-Flop circuits definitions.
     c.params[10] = TRC;
     c.params[11] = TRS;
  * ********************************************************************/
-int Add_VDW(int owner, double gamma, double hamaker, double radius, double offset) {
+int Add_VDW(int owner, double alpha, double hamaker, double radius, double offset) {
 
     circuit c = NewCircuit();
     c.nI = 1;
     c.nO = 1;
     
-    double TipAngle = gamma;
+    double TipAngle = alpha;
     double TipHamak = hamaker;
     double TipRadius = radius;
     double TipOffset = offset;
@@ -44,6 +44,7 @@ int Add_VDW(int owner, double gamma, double hamaker, double radius, double offse
     double TR2 = TipRadius*TipRadius;
     double TRC = TipRadius*cos2g;
     double TRS = TipRadius*sing;
+
     //TipHamak = TipHamak* 1.0e18;//converted in NANONEWTON-NANOMETER
 
     c.plen = 12;
@@ -65,10 +66,12 @@ int Add_VDW(int owner, double gamma, double hamaker, double radius, double offse
     c.updatef = VDW;
     
     int index = AddToCircuits(c,owner);
+
     printf("cCore: added VDW circuit\n");
     return index;
     
 }
+
 /***********************************************************************
     c.params[0] = TipAngle;
     c.parmas[1] = TipHamak;
@@ -93,32 +96,18 @@ void VDW( circuit *c ) {
         return;
     }
 
+    //vdw = (TipHamak*TR2)*(1.0-sing)*(TRS-ztip*sing-TipRadius-ztip);
+    double vdw = (c->params[1]*c->params[9])*(1.0-c->params[5])*(c->params[11]-ztip*c->params[5]-c->params[2]-ztip);
 
-            //vdw = (TipHamak*TR2)*(1.0-sing)*(TRS-ztip*sing-TipRadius-ztip);
-            double vdw = (c->params[1]*c->params[9])*(1.0-c->params[5])*(c->params[11]-ztip*c->params[5]-c->params[2]-ztip);
+    //vdw/= (6.0*(ztip*ztip)*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
+    vdw /= (6.0*(ztip*ztip)*(c->params[2]+ztip-c->params[11])*(c->params[2]+ztip-c->params[11]));
 
-            //vdw/= (6.0*(ztip*ztip)*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
-            vdw /= (6.0*(ztip*ztip)*(c->params[2]+ztip-c->params[11])*(c->params[2]+ztip-c->params[11]));
+    //vdw-= (TipHamak*tang*(ztip*sing+TRS+TRC))/(6.0*cosg*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
+    vdw -= (c->params[1]*c->params[6]*(ztip*c->params[5]+c->params[11]+c->params[10]))/(6.0*c->params[7]*(c->params[2]+ztip-c->params[11])*(c->params[2]+ztip-c->params[11]));
 
-            //vdw-= (TipHamak*tang*(ztip*sing+TRS+TRC))/(6.0*cosg*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
-            vdw -= (c->params[1]*c->params[6]*(ztip*c->params[5]+c->params[11]+c->params[10]))/(6.0*c->params[7]*(c->params[2]+ztip-c->params[11])*(c->params[2]+ztip-c->params[11]));
-
-            GlobalBuffers[c->outputs[0]] = vdw;
+    GlobalBuffers[c->outputs[0]] = vdw;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /***********************************************************************
@@ -159,7 +148,7 @@ void VDWtorn( circuit *c ) {
 
     double ztip = GlobalSignals[c->inputs[0]] + c->params[0];
 
-    if (ztip == 0)
+    if (ztip <= 0)
     {
         return;
     }
@@ -172,3 +161,4 @@ void VDWtorn( circuit *c ) {
     GlobalBuffers[c->outputs[0]] = vdw;    
 
 }
+

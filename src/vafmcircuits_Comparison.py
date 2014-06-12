@@ -22,7 +22,7 @@ import math
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='GreaterOrEqual', name='GreaterOrEqual',pushed = 'True')
+# machine.AddCircuit(type='GreaterOrEqual', name='geq', pushed=True)
 # \endcode
 #
 class GreaterOrEqual(Circuit):
@@ -64,7 +64,7 @@ class GreaterOrEqual(Circuit):
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='LessOrEqual', name='LessOrEqual',pushed = 'True')
+# machine.AddCircuit(type='LessOrEqual', name='leq', pushed=True)
 # \endcode
 #
 class LessOrEqual(Circuit):
@@ -106,7 +106,7 @@ class LessOrEqual(Circuit):
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='Equal', name='Equal',pushed = 'True')
+# machine.AddCircuit(type='Equal', name='eq', pushed=True)
 # \endcode
 #
 class Equal(Circuit):
@@ -130,3 +130,5 @@ class Equal(Circuit):
 
 	def Update (self):
 		pass
+
+

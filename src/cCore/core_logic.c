@@ -132,3 +132,4 @@ void opNOR( circuit *c ) {
 
   GlobalBuffers[c->outputs[0]] = result;
 }
+

@@ -71,14 +71,8 @@ class SKLP(Circuit):
 
 		self.SetInputs(**keys)
 
-
 	def Initialize (self):
-		
 		pass
-		
-		
-		
-		
 	def Update (self):
 		pass
 
@@ -144,13 +138,8 @@ class SKHP(Circuit):
 			c_double(self.fc), c_double(self.Q), c_double(self.Gain))
 
 		
-	
 	def Initialize (self):
-		
 		pass
-		
-		
-		
 		
 	def Update (self):
 		pass
@@ -161,8 +150,8 @@ class SKHP(Circuit):
 # Takes a signal in and passes it through a Band pass filter using the Sallen-Key topology
 #
 # \b Initialisation \b parameters:
-# 	- \a gain =  Integer  How much gain the signal will recive 
-#	- \a fc = the frequency cut off for the circuit
+# 	- \a gain = output gain
+#	- \a fc = the central frequency
 #	- \a band = The band of frequncies that will be filtered.
 # 	- \a pushed = True|False  push the output buffer immediately if True
 #
@@ -212,13 +201,10 @@ class SKBP(Circuit):
 		self.cCoreID = Circuit.cCore.Add_SKBP(self.machine.cCoreID,
 			c_double(self.fc), c_double(self.band), c_double(self.Gain))
 
-		
+
 	def Initialize (self):
 		pass
-		
-		
-		
-		
+
 	def Update (self):
 		pass
 
@@ -258,32 +244,25 @@ class RCLP(Circuit):
 
 
 		self.fc=0
-		if 'fc' in keys.keys():
-			self.fc = keys['fc']
+
+		if 'fcut' in keys.keys():
+			self.fc = keys['fcut']
 		else:
 			raise NameError("Missing fcut!")
-
 
 		self.Order=1
 		if 'order' in keys.keys():
 			self.Order = keys['order']
 		else:
-			print "WARNING! No order given, using default order = "+str(self.Order)
-
-
+			print "WARNING! Filter order not specified, using default order = "+str(self.Order)
 
 		self.cCoreID = Circuit.cCore.Add_RCLP(self.machine.cCoreID,
 			c_double(self.fc), self.Order)
 		
 	def Initialize (self):
-		
 		pass
-		
-		
 	
 	def Update (self):
-		
-		
 		pass
 
 ## \brief RC high-pass filter circuit.
@@ -322,8 +301,8 @@ class RCHP(Circuit):
 
 
 		self.fc=0
-		if 'fc' in keys.keys():
-			self.fc = keys['fc']
+		if 'fcut' in keys.keys():
+			self.fc = keys['fcut']
 		else:
 			raise NameError("Missing fcut!")
 
@@ -334,18 +313,12 @@ class RCHP(Circuit):
 		else:
 			print "WARNING! No order given, using default order = "+str(self.Order)
 
-
-		self.y  = [0] * (self.Order +1) #this is the output at time t+dt of each filter, y[0] is the incoming signal
-		self.yo = [0] * (self.Order +1) #this is the output at time t of each filter	
-		self.yoo = [0] * (self.Order +1) #this is the output at time t-dt of each filter	
-
 		self.cCoreID = Circuit.cCore.Add_RCHP(self.machine.cCoreID,
 			c_double(self.fc), self.Order)
 		
 	def Initialize (self):
-		
 		pass
 		
 	def Update (self):
-
 		pass
+

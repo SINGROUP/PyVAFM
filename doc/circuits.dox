@@ -1,5 +1,6 @@
 /*! \page page_circs Circuits
 
+\link docindex Documentation \endlink > Circuits
 
 \section sec_main Generic
 	- \link vafmcircuits.Machine Machine\endlink - <i>main virtual machine and composites</i>
@@ -251,14 +252,15 @@
 </div>
 <div id="VDW">
 @endhtmlonly
-	- Van Der Walls force
-		- \link vafmcircuits_VDW.VDW VDW\endlink - <i> Van der walls force circuit</i>
+	- Van Der Waals force
+		- \link vafmcircuits_VDW.VDW VDW\endlink - <i> Van Der waals force circuit</i>
 @htmlonly
 </div><!-- end of Composites list -->
 @endhtmlonly
 
 
-
+\link docindex Documentation \endlink > Circuits
 
 */
+
 

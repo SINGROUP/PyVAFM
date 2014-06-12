@@ -1,44 +1,42 @@
 from vafmbase import Circuit
 import math
-from ctypes import c_double
 import ctypes
 
-
-## \breif Van Der Walls force circuit.
+## \breif Van Der Waals force circuit.
 # \image html VDW.png "schema"
 #
 # 
 #
 # \b Initialisation \b parameters:
 # 	- \a pushed = True|False  push the output buffer immediately if True
-# 	- \a gamma  = tip angle
+# 	- \a alpha  = tip angle
 #	- \a hamaker =  Hamaker constant
 #	- \a radius = Tip Radius
 #	- \a offset = tip offset
 #
 # \b Input \b channels: 
-#	- \a ztip = z pos of tip
+#	- \a ztip = z posisiton of the tip
+#
 # \b Output \b channels: 
 #	- \a fz = force 
 #
 #\b Examples:
 # \code{.py}
-#	machine.AddCircuit(type='VDW', name='VDW', gamma=0.28658 ,hamaker=39.6e-20 ,radius=3.9487, offset=0 , pushed=True)
+#	machine.AddCircuit(type='VDW', name='vdw', alpha=0.28658 ,hamaker=39.6e-20 ,radius=3.9487, offset=0 , pushed=True)
 # \endcode
 #
-
 class VDW(Circuit):
-    
-    
+
+
 	def __init__(self, machine, name, **keys):
-		
+
 		super(self.__class__, self).__init__( machine, name )
-		
-		if 'gamma' in keys.keys():
-			gamma = keys['gamma']
-			print "gamma = " +str(gamma)
+
+		if 'alpha' in keys.keys():
+			alpha = keys['alpha']
+			print "alpha = " +str(alpha)
 		else:
-			raise NameError("No gamma entered ")
+			raise NameError("No alpha entered ")
 
 
 		if 'hamaker' in keys.keys():
@@ -59,31 +57,26 @@ class VDW(Circuit):
 			offset = keys['offset']
 			print "offset = " +str(offset)
 		else:
-			raise NameError("No radius entered ")			
+			raise NameError("No offset entered ")	
 
-		
 		self.AddInput("ztip")
 		self.AddOutput("fz")
 
-
 		Circuit.cCore.Add_VDW.argtypes = [
-		ctypes.c_int, #Core Id
-		ctypes.c_double, #gamma
-		ctypes.c_double, #hamaker
-		ctypes.c_double, #radius
-		ctypes.c_double] #offset
+			ctypes.c_int, #Core Id
+			ctypes.c_double, #alpha
+			ctypes.c_double, #hamaker
+			ctypes.c_double, #radius
+			ctypes.c_double] #offset
 
-		self.cCoreID = Circuit.cCore.Add_VDW(self.machine.cCoreID,gamma,hamaker,radius,offset)
+		self.cCoreID = Circuit.cCore.Add_VDW(self.machine.cCoreID,alpha,hamaker,radius,offset)
 
-		
-		
 		self.SetInputs(**keys)
 
 	def Initialize (self):
-		
 		pass
-			
-		
+
+
 	def Update (self):
 		pass
 
@@ -160,9 +153,9 @@ class VDWtorn(Circuit):
 		self.SetInputs(**keys)
 
 	def Initialize (self):
-		
 		pass
 				
 		
 	def Update (self):
 		pass		
+

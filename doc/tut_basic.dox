@@ -1,4 +1,6 @@
-/*! \page page_tut_basic Basics
+/*! \page page_tut_basic Addition
+
+\link docindex Documentation \endlink > \ref page_tutorial > Addition
 
 In this basic tutorial we will setup a virtual machine that sums two sinusoidal signals.
 First we need to create a virtual machine:
@@ -72,9 +74,12 @@ The full python input file is:
 
 
 and the output is then plotted (gnuplot) as follows:
-\image html tutorial_basic_1.png
+
+\htmlonly
+<img src="tutorial_basic_1.png" width=400>
+\endhtmlonly
 
 
-
+\link docindex Documentation \endlink > \ref page_tutorial > Addition
 
 */

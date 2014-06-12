@@ -15,6 +15,7 @@ import threading
 import vafmcircuits_math, vafmcircuits_output, vafmcircuits_signal_gens, vafmcircuits_Cantilever
 import vafmcircuits_Logic, vafmcircuits_Filters, vafmcircuits_control, vafmcircuits_Interpolation
 import vafmcircuits_signal_processing, vafmcircuits_Scanner, vafmcircuits_FlipFlop
+import vafmcircuits_pycirc, vafmcircuits_Comparison, vafmcircuits_avg
 import vafmcircuits_VDW
 
 
@@ -25,9 +26,22 @@ import vafmcircuits_VDW
 
 ## Virtual %Machine main class.
 #
-# The vitual machine is effectively a \link vafmbase.Circuit circuit \endlink, with input/output channels,
-# but it also contains an internal assembly of circuits that run during the \ref Update
-# cycle. Every machine always has the output channel \a 'time' created during initialisation.
+# This is the main virtual machine object. It can also be used as a conventional \link vafmbase.Circuit circuit \endlink, acting as a
+# circuit container. Every Machine circuit has one default output channel \a 'time', but other input/output
+# channels can be added.
+#
+#
+# \b Initialisation \b parameters:
+#	- \a dt = timestep (only for main machine)
+#	- \a assembly = constructor function (only for composites)
+# 	- \a pushed = True|False  push the output buffer immediately if True
+#
+# \b Input \b channels:
+# 	- custom inputs (only for composites)
+#
+# \b Output \b channels:
+# 	- \a time = global simulation time
+# 	- custom outputs (only for composites)
 #
 #
 # \b Example:
@@ -36,7 +50,7 @@ import vafmcircuits_VDW
 # machine = Machine(name='machine', dt=1.0e-8)
 #
 # #create a machine circuit inside the main machine
-# composite = machine.AddCircuit(type="Machine", name='pll', ...)
+# composite = machine.AddCircuit(type="Machine", name='pll', assembly=PLL, ...)
 # 
 # \endcode
 #
@@ -395,6 +409,7 @@ class Machine(Circuit):
 		self.circuits[cname] = instance
 		return instance
 
+	##\internal
 	## Find the channel with the given tag among the subcircuits.
 	# The tag of a channel is a string containing the name of the circuit to which it belongs
 	# and the name of the channel separated by a dot.
@@ -558,6 +573,7 @@ class Machine(Circuit):
 			return False
 
 
+	## \internal
 	## Connect the output of a circuit to the input of another.
 	#
 	# The I/O channels to connect are specified with the syntax: "circuit.channel", in the *args arguments
@@ -638,6 +654,7 @@ class Machine(Circuit):
 			Circuit.cCore.Connect(ccSrcID,ccSrcCH, ccDstID, ccDstCH)
 
 			print 'PY: connection done!'
+
 	def Connect(self, *args):
 
 		#if the output is a global, then it means that we want to connect
@@ -694,9 +711,8 @@ class Machine(Circuit):
 
 			#print 'PY: connection done!'
 
-	## Disconnect one or more input channels.
-	#
-	# This is the same as Disconnect, but it can take multiple "circuit.channel" arguments.
+	# Disconnects the input channels listed in the arguments. Each channel must be given as
+	# a string in the format "circuit.channel".
 	#
 	# @param *args Input channels given as list of strings of format: "circuit.channel"
 	#
@@ -757,6 +773,7 @@ class Machine(Circuit):
 		for kw in self.circuits.keys():
 			self.circuits[kw].Initialize()
 
+	## \internal
 	## Update cycle.
 	#
 	# Calls the update routine of each circuit in the setup.
@@ -820,14 +837,20 @@ class Machine(Circuit):
 				self.circuits[kw].Push()
 
 
+	## Integrate the machine.
+	#
+	# Calls the update routine of each circuit in the setup for a given amount of time.
+	# 
 	def Wait(self, dtime):
 		
-		#for i in range(int(math.floor(dtime/self.dt))): self.Update()
 		Circuit.cCore.Update(c_int(int(math.floor(dtime/self.dt))))
 	
+	## Integrate the machine.
+	#
+	# Calls the update routine of each circuit in the setup for a given amount of steps.
+	# 
 	def WaitSteps(self, nsteps):
-		
-		#for i in range(int(math.floor(dtime/self.dt))): self.Update()
+
 		Circuit.cCore.Update(c_int(nsteps))
 		
 	def Wait2(self, dtime):

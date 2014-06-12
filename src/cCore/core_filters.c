@@ -213,7 +213,6 @@ void SKBP( circuit *c ) {
 }
 
 
-
 /*********************************************************
 * passive low pass filter.
     //[0]=fcut
@@ -234,68 +233,54 @@ int Add_RCLP(int owner, double fcut, int order) {
     c.iparams = (int*)calloc(c.plen,sizeof(double));
     
     fcut = 1/(2*PI*fcut);
-  
-   double a = dt/(fcut+dt);
-    
+
+    double a = dt/(fcut+dt);
     
     c.params[0] = fcut;
     c.params[1] = a;
     //printf("%f",a);
     c.iparams[0] = order;
-
-
-
-
     
     c.vplen = 2;
     c.vpparams = (void**)malloc(c.vplen*sizeof(double*));
     c.vpparams[0] = (double*)calloc(order+2,sizeof(double)); //this is x
     c.vpparams[1] = (double*)calloc(order+2,sizeof(double)); //this is y
 
-
-    printf("cCore: added RCHP filter\n");
-
     c.updatef = RCLP;
     int index = AddToCircuits(c,owner);
+
+    printf("cCore: added RCHP filter\n");
 
     return index;
 }
 
 void RCLP( circuit *c ) {
-        
-        double *x = (double*)c->vpparams[0];
-        double *y = (double*)c->vpparams[1];
-        int order = c->iparams[0];
-      
+    
+    double *x = (double*)c->vpparams[0];
+    double *y = (double*)c->vpparams[1];
+    int order = c->iparams[0];
+  
+    y[0] = (double)GlobalSignals[c->inputs[0]];
 
+    for (int i=0; i<order;i++)
+    {
+        y[i+1] = (x[i]) + (y[i] - x[i]) *c->params[1];
+        x[i] = y[i+1];
+    }
 
-        y[0] = (double)GlobalSignals[c->inputs[0]];
-
-
-
-        for (int i=0; i<order;i++)
-            {   
-                       
-            y[i+1] =   (x[i]) + (y[i] - x[i]) *c->params[1];
-            x[i] = y[i+1];
-            }
-
-
-        GlobalBuffers[c->outputs[0]]  = y[order];   
-
+    GlobalBuffers[c->outputs[0]] = y[order];
+    
 }
-
 
 
 
 /*********************************************************
 * passive low pass filter.
-    //[0]=fcut
-    //[1]=a
-    // vparams[0] = x (notation from wiki)
-    // vparams[1] = y
+    params[0] = fcut
+    params[1] = a
+    vparams[0] = x (notation from wiki)
+    vparams[1] = y
 * ******************************************************/
-
 int Add_RCHP(int owner, double fcut, int order) {
     
     circuit c = NewCircuit();
@@ -317,10 +302,6 @@ int Add_RCHP(int owner, double fcut, int order) {
     c.params[1] = a;
     //printf("%f",a);
     c.iparams[0] = order;
-
-
-
-
     
     c.vplen = 2;
     c.vpparams = (void**)malloc(c.vplen*sizeof(double*));
@@ -338,27 +319,23 @@ int Add_RCHP(int owner, double fcut, int order) {
 
 void RCHP( circuit *c ) {
 
-        double *x = (double*)c->vpparams[0];
-        double *y = (double*)c->vpparams[1];
-        int order = c->iparams[0];
-      
+    double *x = (double*)c->vpparams[0];
+    double *y = (double*)c->vpparams[1];
+    int order = c->iparams[0];
+  
+    y[0] = (double)GlobalSignals[c->inputs[0]];
 
+    for (int i=1; i<order+1;i++)
+    {
+        y[i] = ( x[i] + y[i-1] - x[i-1] ) *c->params[1];
+    }
 
-        y[0] = (double)GlobalSignals[c->inputs[0]];
+    for (int i=0; i<order+1;i++)
+    {
+        x[i] = y[i];
+    }
 
+    GlobalBuffers[c->outputs[0]] = y[order];
 
-
-        for (int i=1; i<order+1;i++)
-            {   
-                       
-            y[i] =   ( y[i-1] + x[i] -x[i-1] ) *c->params[1];
-            }
-
-        for (int i=0; i<order+1;i++)
-            {   
-            x[i] =   y[i];
-            }
-
-        GlobalBuffers[c->outputs[0]]  = y[order];      
 }
 

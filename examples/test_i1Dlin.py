@@ -1,16 +1,9 @@
 #!/usr/bin/env python
-import vafmcircuits
-import math
-from customs_pll import *
-#!/usr/bin/env python
 
-from vafmbase import ChannelType
 from vafmcircuits import Machine
-
-
+import math
 
 def main():
-	
 	
 	machine = Machine(name='machine', dt=0.01, pushed=True);
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True)
@@ -30,19 +23,6 @@ def main():
 	#scanner.Move(0,0,-5)	
 	#machine.Wait(0.02)
 	scanner.Move(x=2,v=1)
-
-	'''
-	#machine.SetInput(channel="output.record", value=1)	
-	scanner.Recorder = imager
-	scanner.BlankLines = True 
-	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [30,1]
-	
-	scanner.ImageArea(5.64,5.64)        
-	scanner.FastSpeed = 10
-	scanner.SlowSpeed = 20
-	scanner.ScanArea()
-	'''
 
 
 if __name__ == '__main__':

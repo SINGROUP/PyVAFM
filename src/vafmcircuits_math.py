@@ -68,7 +68,6 @@ class opAdd(Circuit):
 		
 		
 	def Update (self):
-		
 		pass
 
 ## \brief Arithmetic subtraction circuit.
@@ -115,7 +114,6 @@ class opSub(Circuit):
 		
         
 	def Update (self):
-		
 		pass
 
 ## \brief Arithmetic multiplier circuit.
@@ -168,15 +166,12 @@ class opMul(Circuit):
 		
 
 	def Initialize (self):
-		
 		pass
-		
-		
 		
 		
 	def Update (self):
-		
 		pass
+
 
 
 ## \brief Arithmetic division circuit.
@@ -223,9 +218,7 @@ class opDiv(Circuit):
 		
         
 	def Update (self):
-		
 		pass
-
 
 ## \brief Arithmetic linear-combo circuit.
 #
@@ -279,14 +272,9 @@ class opLinC(Circuit):
 		
 
 	def Initialize (self):
-		
 		pass
 		
-		
-		
-		
 	def Update (self):
-		
 		pass
 
 
@@ -328,13 +316,9 @@ class opAbs(Circuit):
 		self.SetInputs(**keys)
 
 	def Initialize (self):
-		
 		pass
-		
-		
-		
+	
 	def Update (self):
-		
 		pass
 
 
@@ -381,14 +365,11 @@ class opPow(Circuit):
 		self.SetInputs(**keys)
 
 	def Initialize (self):
-		
 		pass
-		
-		
-		
+	
 	def Update (self):
-		
 		pass
+
 
 
 ## \brief Sin operator circuit.
@@ -428,7 +409,6 @@ class opSin(Circuit):
 		self.SetInputs(**keys)
 
 	def Initialize (self):
-		
 		pass
 	
 	def Update (self):
@@ -493,14 +473,13 @@ class opCos(Circuit):
 # 	- \a signal =  incoming signal
 #
 # \b Output \b channels:
-# 	- \a out = \f$cos(in)\f$
+# 	- \a out = signal plus noise
 #
 #\b Examples:
 # \code{.py}
 # machine.AddCircuit(type='opCos', name='cos')
 # \endcode
 #
-
 class Perlin(Circuit):
 	
 	def __init__(self, machine, name, **keys):
@@ -546,3 +525,4 @@ class Perlin(Circuit):
 	
 	def Update (self):
 		pass
+

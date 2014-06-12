@@ -73,8 +73,6 @@ class avg(Circuit):
 	
 
 	def Update (self):
-		
 		pass
-				
-		
-		
+
+
