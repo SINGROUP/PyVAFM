@@ -399,7 +399,7 @@ void i4Dlin(circuit* c) {
     for (int i = 0; i < c->iparams[0]; i++) {
     //Set up pointer to array
     double *datao;
-    datao = (double*)c->vpparams[0];
+    datao = (double*)c->vpparams[i];
 
 
     //Index = i + J*sizeI + k*sizei*sizej + V*Vsize
@@ -484,7 +484,8 @@ void i4Dlin(circuit* c) {
 ///////////////////////////////////////////////////////////////////////////////////
 	//Interpolate across the fields
     double Field3 = Field1*(1-vdo) + Field2*vdo;
-   // printf("%f %f\n ", Field3, vdo);  
-
+   // printf("%f %f\n ", Field3, vdo); 
+   GlobalBuffers[c->outputs[i]] = Field3; 
+    }
 
 }
