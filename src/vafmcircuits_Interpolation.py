@@ -9,6 +9,7 @@ import math
 from vafmbase import Circuit
 from scipy.interpolate import LinearNDInterpolator
 import ctypes
+import sys
 
 ## \brief Tri-linear interpolation circuit.
 #
@@ -258,3 +259,125 @@ class i1Dlin(Circuit):
 
 
 
+
+class i4Dlin(Circuit):
+    
+    
+	def __init__(self, machine, name, **keys):        
+			
+		super(self.__class__, self).__init__( machine, name )
+		
+		if 'components' in keys.keys():
+			self.components = keys['components']
+			print "components = " +str(self.components)
+		else:
+			raise NameError("No components entered ")
+
+		Circuit.cCore.Add_i4Dlin.argtypes = [ctypes.c_int,ctypes.c_int]
+		self.cCoreID = Circuit.cCore.Add_i4Dlin(machine.cCoreID, self.components)
+		self.BiasStep=0
+		self.StartingV=-1
+
+		self.AddInput("x")
+		self.AddInput("y")
+		self.AddInput("z")
+		self.AddInput("V")
+
+
+		for i in range(0,self.components):
+			self.AddOutput("F"+str(i+1))
+
+		self.SetInputs(**keys)
+
+	def ReadVASPData(self,*filename):
+
+		if self.BiasStep == 0:
+			raise NameError ("Error: BiasStep must be defined first ")
+
+		if self.StartingV == -1:
+			raise NameError ("Error: StartingV must be defined first ")
+
+		Density=[]
+
+
+
+
+		for j in range(0,len(filename)):
+			f = open(filename[j], "r")
+			print "Reading in file: "+ filename[j]
+			size=[0,0,0]
+
+			NumberOfPoints=[0,0,0]
+
+			#Number of points required to obtain given res
+			Points=[0,0,0]
+
+			NumberOfAtoms=0
+
+			
+
+			counter=[1,1,1]
+		
+			for linenumber, line in enumerate(f):
+				#Find super cell size
+				if linenumber == 2:
+					size[0] = float(line.split()[0])
+				
+				if linenumber == 3:
+					size[1] = float(line.split()[1])
+
+				if linenumber == 4:
+					size[2] = float(line.split()[2])
+
+				#Find number of atoms
+				if linenumber == 6:
+					for i in range(0, (len(line.split()))  ):
+						NumberOfAtoms += float(line.split()[i])
+					
+
+				#find number of points
+				if linenumber == NumberOfAtoms+9:
+
+					NumberOfPoints[0]= float(line.split()[0])
+					NumberOfPoints[1]= float(line.split()[1])
+					NumberOfPoints[2]= float(line.split()[2])
+
+				if linenumber > NumberOfAtoms+9:
+					for i in range(0, (len(line.split()))  ):
+						#Divide by volume 
+						#/ (size[0]*size[1]*size[2])
+						Density.append( float(line.split()[i])  )
+					
+					if len(line.split()) < 10:
+						break
+
+			f.close()
+			
+		#Find step size
+		dx = float(size[0]/NumberOfPoints[0])
+		dy = float(size[1]/NumberOfPoints[1])
+		dz = float(size[2]/NumberOfPoints[2])
+		dv = float(self.BiasStep)
+		#Find number of points
+		nx = int(NumberOfPoints[0])
+		ny = int(NumberOfPoints[1])
+		nz = int(NumberOfPoints[2])
+		nv = int(len(filename))
+
+		#Set up Ctypes
+		Circuit.cCore.i4Dlin_SetUpData.restype =  ctypes.POINTER(ctypes.POINTER(ctypes.c_double))
+		Circuit.cCore.i4Dlin_SetUpData.argtypes = [ctypes.c_int 
+												  ,ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, 
+												   ctypes.c_double,  ctypes.c_double,  ctypes.c_double,  ctypes.c_double
+												   ,  ctypes.c_double]
+		#Pass some data to C
+		self.data = Circuit.cCore.i4Dlin_SetUpData(self.cCoreID, nx , ny , nz, nv , dx, dy, dz , dv,  self.StartingV)
+
+		#Move array from python to C
+		for c in range(0,self.components):
+			for index in range(0, len(Density)):
+
+				self.data[c][index] = Density[index + c*index]
+
+		#Clear array to free up memory
+		del Density[0:len(Density)]
