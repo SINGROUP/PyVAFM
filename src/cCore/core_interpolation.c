@@ -361,6 +361,9 @@ void i4Dlin(circuit* c) {
     double z = GlobalSignals[c->inputs[2]];
     double V = GlobalSignals[c->inputs[3]];
     
+    //Find box the point is in
+    int BoxNumberx = (int)floor(x/ (c->params[]) )
+
 
     //Since the array starts at 0 this is designed to reduce 
     double Voffset = c->params[4];

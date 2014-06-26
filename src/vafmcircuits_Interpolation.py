@@ -345,8 +345,8 @@ class i4Dlin(Circuit):
 				if linenumber > NumberOfAtoms+9:
 					for i in range(0, (len(line.split()))  ):
 						#Divide by volume 
-						#/ (size[0]*size[1]*size[2])
-						Density.append( float(line.split()[i])  )
+						#
+						Density.append( float(line.split()[i])/ (size[0]*size[1]*size[2])  )
 					
 					if len(line.split()) < 10:
 						break

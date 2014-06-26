@@ -20,7 +20,7 @@ def main():
 	machine.Connect("scan.z","inter.z")
 
 
-	machine.circuits['inter'].I['V'].Set(1.9)
+	machine.circuits['inter'].I['V'].Set(1.0)
 	scanner.Place(x=0,y=0,z=0)
 
 #	machine.Wait(0.01)
