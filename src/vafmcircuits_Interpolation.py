@@ -277,7 +277,7 @@ class i4Dlin(Circuit):
 		self.cCoreID = Circuit.cCore.Add_i4Dlin(machine.cCoreID, self.components)
 		self.BiasStep=0
 		self.StartingV=-1
-
+		self.pbcSET = False
 		self.AddInput("x")
 		self.AddInput("y")
 		self.AddInput("z")
@@ -289,13 +289,38 @@ class i4Dlin(Circuit):
 
 		self.SetInputs(**keys)
 
+	def ConfigureVASP(self, **keys):
+				#check for pbc
+		if 'pbc' in keys.keys():
+			if len(keys['pbc']) != 4:
+				raise ValueError("ERROR! the PBC is not a triplet!")
+			else:
+				self.pbc = [0,0,0,0]
+				for i in xrange(len(keys['pbc'])):
+					if keys['pbc'][i] == True:
+						self.pbc[i] = 1
+					else:
+						self.pbc[i] = 0
+				#print "PBC ",self.pbc
+				Circuit.cCore.i4DLinPBC(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2], self.pbc[3])
+				self.pbcSET = True
+
+
+
 	def ReadVASPData(self,*filename):
+
+		if self.pbcSET == False:
+			raise NameError ("Error: PBC must be defined first ")
+
 
 		if self.BiasStep == 0:
 			raise NameError ("Error: BiasStep must be defined first ")
 
 		if self.StartingV == -1:
 			raise NameError ("Error: StartingV must be defined first ")
+
+		
+
 
 		Density=[]
 
@@ -345,13 +370,15 @@ class i4Dlin(Circuit):
 				if linenumber > NumberOfAtoms+9:
 					for i in range(0, (len(line.split()))  ):
 						#Divide by volume 
-						#
-						Density.append( float(line.split()[i])/ (size[0]*size[1]*size[2])  )
+						# 
+						Density.append( float(line.split()[i])/ (size[0]*size[1]*size[2]) )
 					
 					if len(line.split()) < 10:
 						break
 
 			f.close()
+
+
 			
 		#Find step size
 		dx = float(size[0]/NumberOfPoints[0])

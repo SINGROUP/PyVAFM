@@ -44,7 +44,7 @@ void STM( circuit *c ) {
 
 
     // I = n^2 * k^2 * S^2 * C
-    GlobalBuffers[c->outputs[0]] = GlobalSignals[c->inputs[2]]*GlobalSignals[c->inputs[2]] * k*k * S*S * C
+    GlobalBuffers[c->outputs[0]] = GlobalSignals[c->inputs[2]]*GlobalSignals[c->inputs[2]] * k*k * S*S * C;
 
 }
 

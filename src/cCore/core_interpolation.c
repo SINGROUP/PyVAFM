@@ -287,6 +287,11 @@ void i1Dlin_periodic(circuit* c) {
 //iparams[2] = ny
 //iparams[3] = nz
 //iparams[4] = nv
+//iparams[5] = PBCx
+//iparams[6] = PBCy
+//iparams[7] = PBCz
+//iparams[8] = PBCv
+
 
 
 //params[0] = dx
@@ -304,7 +309,7 @@ int Add_i4Dlin( int owner, int components) {
 
     c.updatef = i4Dlin;
     
-    c.iplen = 5;
+    c.iplen = 9;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
     c.iparams[0] = components;
 
@@ -329,7 +334,17 @@ int Add_i4Dlin( int owner, int components) {
 	
 }
 
+int i4DLinPBC(int c, int PBCx, int PBCy, int PBCz, int PBCv){
+
+	circuits[c].iparams[5] = PBCx;
+	circuits[c].iparams[6] = PBCy;
+	circuits[c].iparams[7] = PBCz;
+    circuits[c].iparams[8] = PBCv;
+	return 0;
+}
+
 double**  i4Dlin_SetUpData(int c, int nx, int ny , int nz, int nv, double dx, double dy, double dz, double dv, double Voffset){
+
 
 	    circuits[c].iparams[1] = nx;//number of points
 	    circuits[c].iparams[2] = ny;
@@ -351,7 +366,7 @@ double**  i4Dlin_SetUpData(int c, int nx, int ny , int nz, int nv, double dx, do
     }
 
         //Return pointer back to python to fill the array
-	    return circuits[c].vpparams;;
+	    return circuits[c].vpparams;
 
 }
 
@@ -360,11 +375,38 @@ void i4Dlin(circuit* c) {
     double y = GlobalSignals[c->inputs[1]];
     double z = GlobalSignals[c->inputs[2]];
     double V = GlobalSignals[c->inputs[3]];
-    
+
+    int PBCx = c->iparams[5];
+	int PBCy = c->iparams[6];
+	int PBCz = c->iparams[7];    
+    int PBCv = c->iparams[8];
+
+
+	if (PBCx == 1){
     //Find box the point is in
-    int BoxNumberx = (int)floor(x/ (c->params[]) )
+       
+    int BoxNumberx = (int)floor(x/ (c->params[0]*c->iparams[1]) );
+    // x - boxNumber-1 * boxsize 
+    x = x - (BoxNumberx)* (c->params[0]*c->iparams[1]);
+        
+	}
 
+	if (PBCy == 1)	{
+    int BoxNumbery = (int)floor(y/ (c->iparams[2]*c->params[1]) );
+    y = y - (BoxNumbery)* (c->iparams[2]*c->params[1]);
+	}
 
+	if (PBCz == 1){
+    int BoxNumberz = (int)floor(z/ (c->iparams[3]*c->params[2]) );
+    z = z - (BoxNumberz)* (c->iparams[3]*c->params[2]);    
+	}
+
+    if (PBCv == 1){
+    int BoxNumberV = (int)floor(V/ (c->iparams[4]*c->params[3]) );
+    z = z - (BoxNumberV)* (c->iparams[4]*c->params[3]);    
+    }
+
+   
     //Since the array starts at 0 this is designed to reduce 
     double Voffset = c->params[4];
 
