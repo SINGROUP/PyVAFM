@@ -381,13 +381,47 @@ void i4Dlin(circuit* c) {
 	int PBCz = c->iparams[7];    
     int PBCv = c->iparams[8];
 
+    int oob = 0;
+
+    if (PBCx =! 1 && x >= c->params[0]*c->iparams[1] || x < 0){
+        oob = 1;
+    }
+
+    if (PBCy =! 1 && y >= c->params[1]*c->iparams[2] || y < 0){
+        oob = 1;
+    }
+
+    if (PBCz != 1 && z <0){
+        oob = 1;
+    }
+
+    if (PBCz != 1 && z >= c->params[2]*c->iparams[3]){
+        for (int comp=0; comp<c->iparams[0]; comp++){
+        GlobalBuffers[c->outputs[comp]] = 0;}
+        return;   
+    }
+
+
+    if (PBCv =! 1 && V >= c->params[3]*c->iparams[4] || V < 0){
+        oob = 1;
+    }
+
+
+    if (oob == 1){
+        printf("WARNING i4Dlin OOB!\n");
+
+        for (int comp=0; comp<c->iparams[0]; comp++){
+        GlobalBuffers[c->outputs[comp]] = 0;}
+        return;
+    }
+
 
 	if (PBCx == 1){
     //Find box the point is in
        
-    int BoxNumberx = (int)floor(x/ (c->params[0]*c->iparams[1]) );
+    int BoxNumberx = (int)floor(x/ (c->iparams[1]*c->params[0]) );
     // x - boxNumber-1 * boxsize 
-    x = x - (BoxNumberx)* (c->params[0]*c->iparams[1]);
+    x = x - (BoxNumberx)* (c->iparams[1]*c->params[0]);
         
 	}
 

@@ -22,7 +22,7 @@ class STM(Circuit):
 			self.WaveFunctionOverlap=2
 
 
-		self.cCoreID = Circuit.cCore.Add_STM(machine.cCoreID, c_double(self.WorkFunction), c_double(self.WaveFunctionOverlap) )
+		self.cCoreID = Circuit.cCore.Add_STM(machine.cCoreID, ctypes.c_double(self.WF), ctypes.c_double(self.WaveFunctionOverlap) )
 
 
 		self.AddInput("Density")

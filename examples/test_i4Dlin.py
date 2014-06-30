@@ -27,7 +27,7 @@ def main():
 
 
 	machine.circuits['inter'].I['V'].Set(1.0)
-	scanner.Place(x=0,y=0,z=0)
+	scanner.Place(x=0,y=0,z=15)
 	#scanner.Move(x=16, v=1)
 	
 	scanner.Recorder = imager

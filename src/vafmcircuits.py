@@ -17,6 +17,7 @@ import vafmcircuits_Logic, vafmcircuits_Filters, vafmcircuits_control, vafmcircu
 import vafmcircuits_signal_processing, vafmcircuits_Scanner, vafmcircuits_FlipFlop
 import vafmcircuits_pycirc, vafmcircuits_Comparison, vafmcircuits_avg
 import vafmcircuits_VDW
+import vafmcircuits_STM
 
 
 ## \package vafmcircuits
