@@ -22,7 +22,7 @@ def main():
 
 
 	imager = machine.AddCircuit(type='output',name='image',file='STM.dat', dump=0)
-	imager.Register("scan.x","scan.y",'STM.Current')	
+	imager.Register("scan.x","scan.y",'STM.Current','inter.F1')	
 
 	machine.Connect("scan.x","inter.x")
 	machine.Connect("scan.y","inter.y")
@@ -32,11 +32,9 @@ def main():
 
 
 	machine.circuits['inter'].I['V'].Set(2)
-	scanner.Place(x=0,y=0,z=2324)
+	scanner.Place(x=0,y=0,z=0)
 
-	scanner.Move(z=17,v=1)
-
-	'''	
+	
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
@@ -44,6 +42,6 @@ def main():
 	scanner.ImageArea(18,16)        
 	#scan
 	scanner.ScanArea()
-	'''
+	
 if __name__ == '__main__':
         main()
