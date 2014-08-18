@@ -40,7 +40,7 @@ void STM( circuit *c ) {
     double k = sqrt(2*c->params[0]);
     double S = c->params[1];
     // C = 4 pi e / hbar 
-    double C = 1;
+    double C = 7.82e-4;
 
     // Charge density / electron charge = electron density
     double n = GlobalSignals[c->inputs[0]]/1.6e-19;
