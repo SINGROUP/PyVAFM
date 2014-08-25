@@ -5,13 +5,16 @@ Welcome to the \progname documentation.
 
 
  -# \subpage page_install
+ 	-# \ref Prerequisites
+ 	-# \ref Installation
+ 	-# \ref Running
  -# \subpage page_Quickstart
  -# \subpage page_UserManual
  	-# \ref Circuits
  	-# \ref Connections
  	-# \ref Pushing
- 	-# \ref ForceFields
- 	-# \ref AnatomyOfASimulation
+ 	-# \ref Units
+ 	-# \ref sec_main
  -# \subpage page_circs
  -# \subpage page_tutorial
 
@@ -20,6 +23,3 @@ The latest \progname version can be downloaded [here](https://github.com/fullmet
 
 
 */
-
-
-

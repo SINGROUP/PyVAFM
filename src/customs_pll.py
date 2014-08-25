@@ -66,7 +66,7 @@ def aPLL(compo,**keys):
   	compo.AddCircuit(type='opMul',name='pfd', pushed=True)
   	for i in range(len(filters)):
 		f = filters[i]
-		compo.AddCircuit(type='SKLP',name='lp'+str(i+1),fcut=f, pushed=True)
+		compo.AddCircuit(type='SKLP',name='lp'+str(i+1),fc=f, pushed=True)
 	    
   	compo.AddCircuit(type='PI',name='pump', Kp=keys['Kp'],Ki=keys['Ki'], set=0, pushed=True)
 	compo.AddCircuit(type='gain',name='dfgain', gain=keys['gain'], pushed=True)
@@ -126,7 +126,7 @@ def dPFD(compo,**keys):
     
     compo.AddCircuit(type='opSub',name='sub', pushed=True)
     compo.AddCircuit(type='gain',name='dfgain', gain=keys["gain"], pushed=True)
-    compo.AddCircuit(type='SKLP',name='lowpass', fcut=keys["fcut"], pushed=True)
+    compo.AddCircuit(type='SKLP',name='lowpass', fc=keys["fcut"], pushed=True)
     
     compo.AddCircuit(type='PI',name='pi', set=0, pushed=True)
     
@@ -162,7 +162,7 @@ def aAMPD(compo, **keys):
     compo.AddOutput("norm")
     
     compo.AddCircuit(type='opAbs',name='abs', pushed=True)
-    compo.AddCircuit(type='SKLP', name='lp', fcut=keys["fcut"], pushed=True)
+    compo.AddCircuit(type='SKLP', name='lp', fc=keys["fcut"], pushed=True)
     compo.AddCircuit(type='opDiv', name='nrm', pushed=True)
     compo.AddCircuit(type='limiter', name='lim', min=-1, max=1, pushed=True)
     

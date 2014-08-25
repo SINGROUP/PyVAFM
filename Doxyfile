@@ -617,7 +617,9 @@ INPUT                  = "./src/" "./doc/index.dox" "./doc/intro.dox" "./doc/cir
 		"./doc/design.dox"  "./doc/anatomy.dox" \
 		"./doc/circuitsman.dox"  "./doc/tutadd.dox" \
 		"./doc/tutint.dox"  "./doc/tutcomp.dox" \
-		"./doc/tut1ddf.dox"  "./doc/tutnacldf.dox"
+		"./doc/tut1ddf.dox"  "./doc/tutnacldf.dox" \
+		"./doc/UserManual.dox"
+		
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
