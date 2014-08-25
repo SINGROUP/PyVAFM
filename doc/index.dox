@@ -3,7 +3,7 @@
 
 Welcome to the \progname documentation.
 
-
+ 
  -# \subpage page_install
  	-# \ref Prerequisites
  	-# \ref Installation
@@ -11,10 +11,12 @@ Welcome to the \progname documentation.
  -# \subpage page_Quickstart
  -# \subpage page_UserManual
  	-# \ref Circuits
- 	-# \ref Connections
+ 	-# \ref channels
+ 	-# \ref comp 	
  	-# \ref Pushing
  	-# \ref Units
- 	-# \ref sec_main
+ 	-# \ref Anatomy
+ 	-# \ref input
  -# \subpage page_circs
  -# \subpage page_tutorial
 

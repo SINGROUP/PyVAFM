@@ -3,28 +3,27 @@
 \link docindex Documentation \endlink > UserManual
 
 \section Circuits
------------------------
+The whole simulator is designed to be a modular system allowing any experiment to be simulated. For a basic user these modules are essentially black boxes that simulated some physical process, for example a low pass filter or a cantilever. In the pyVAFM these black boxes are reffered to as circuits, the pyVAFM comes with many commonly used circuits required to simulate AFM experiments as standard, a complete list can be found \link doccirc here \endlink. 
 
 
-herp a derp
+\subsection channels Channels and initialisation paramaters
+Circuits have two main aspects intialisation paramaters and channels, the initialisation paramters are required by some circuits in order to add them to a simulation, an example of this is the spring constnat for the cantilever. Channels is how data is transfered from one circuit to another, circuits have input and output channels which allow data to be transfered into one circuit (Input) and transfered out of a circuit after it has been processed (output). So by connecting one circuits output to another circuits input it is possible to transfer processed data across a simulation. The philosphy behind the pyVAFM is to allow any simulation to be created and this is accomplished by connecting these various circuits together in order to create various kinda of AFM experiments. 
 
-\section Connections
------------------------
-
-
-\section Circuits
------------------------
+\subsection comp Compisite Circuits
 
 
-\section Pushing
------------------------
+\subsection Pushing
+
 
 
 \section Units
------------------------
 
-\section sec_main Generic
------------------------
-grrr
+
+\section Anatomy Anatomy of a Simulation
+
+\subsection input Input File Structure
+
+
+
 
 */

@@ -1,7 +1,7 @@
 /*! \page page_circs Circuits
 
 \link docindex Documentation \endlink > Circuits
-
+@anchor doccirc
 \section sec_main Generic
 	- \link vafmcircuits.Machine Machine\endlink - <i>main virtual machine and composites</i>
 

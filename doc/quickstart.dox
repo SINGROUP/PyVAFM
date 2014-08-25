@@ -2,8 +2,8 @@
 
 \link docindex Documentation \endlink > QuickStart
 
-\section Quick Start 
-------------------------
+\section Quick Quick Start 
+
 
 In this basic quick start guide we will setup a virtual machine that sums two sinusoidal signals.
 First we need to create a virtual machine:
