@@ -3,18 +3,21 @@
 
 Welcome to the \progname documentation.
 
- -# \subpage page_about
-  -# \ref Info 
-  -# \ref Features
-  -# \ref Units
+
  -# \subpage page_install
- -# Quickstart (show here a very basic input file, and how to run it)
- -# \subpage page_tutorial
+ -# \subpage page_Quickstart
+ -# \subpage page_UserManual
+ 	-# \ref Circuits
+ 	-# \ref Connections
+ 	-# \ref Pushing
+ 	-# \ref ForceFields
+ 	-# \ref AnatomyOfASimulation
  -# \subpage page_circs
+ -# \subpage page_tutorial
+
 
 The latest \progname version can be downloaded [here](https://github.com/fullmetalfelix/pyvafm/archive/pyvafm.zip)
 
-A pdf of this documentation can be found [here](https://drive.google.com/file/d/0By1_HYSmWg5nU2dXLUZlYUI3UGs/edit?usp=sharing)
 
 */
 

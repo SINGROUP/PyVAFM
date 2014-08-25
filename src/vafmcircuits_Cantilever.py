@@ -231,7 +231,7 @@ class AdvancedCantilever(Circuit):
 			raise NameError("Missing k from AddMode")
 
 		if 'Q' not in kw.keys():
-			raise NameError("Missing k from AddMode")
+			raise NameError("Missing Q from AddMode")
 
 		if 'M' not in kw.keys():
 			kw["M"]=0		

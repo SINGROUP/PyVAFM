@@ -258,7 +258,37 @@ class i1Dlin(Circuit):
 			Circuit.cCore.i1Dlin_SetData(self.cCoreID, 0,test_arr,npts)
 
 
-
+## \brief quad-linear interpolation circuit.
+#
+# \image html i4dlin.png "schema"
+#
+# This is the circuit that calculates the interpolation of 4d PARCHG data that is outputted from VASP and is used for STM images.
+#
+# - \b Initialisation \b parameters:.
+# 	- \a Components = Number of components of force in the force field.
+# 	- \a pushed True|False
+# - \b Initialisation \b commands:
+#	 - \a BiasStep  = The stepsize of the bias between the VASP files.
+#	 - \a StartingV = The starting value of the voltage.
+#	 - \a ConfigureVASP 
+#			-\a pbc = True|False True|False True|False The perodic boundary condition for x y and z.
+# - \b Input \b channels:
+#	 - \a x : this is x the coordiante to calculate the interpolation.
+#	 - \a y : this is y the coordiante to calculate the interpolation.
+#	 - \a z : this is z the coordiante to calculate the interpolation.
+#	 - \a V : this ist he voltage of the STM.
+# - \b Output \b channels:
+# 	- \a Fn: The interpolated forces where n is the component for example F1 would be first first component.
+#
+# \b Example:
+# \code
+#	inter = machine.AddCircuit(type='i4Dlin',name='inter', components=1, pushed=True)
+#	inter.BiasStep=0.5
+#	inter.StartingV=1
+#	inter.ConfigureVASP(pbc=[True,True,False,False])
+#	inter.ReadVASPData("parchg.1.0")
+# \endcode
+#
 
 class i4Dlin(Circuit):
     

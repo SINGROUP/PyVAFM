@@ -16,7 +16,7 @@ from ctypes import c_double
 # \b Initialisation \b parameters:
 # 	- \a gain =  Integer:  How much gain the signal will recive 
 # 	- \a Q = the Q value of the filter
-#	- \a fcut = the frequency cut off for the circuit
+#	- \a fc = the frequency cut off for the circuit
 # 	- \a pushed = True|False  push the output buffer immediately if True
 #
 # \b Input \b channels:
@@ -28,8 +28,8 @@ from ctypes import c_double
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='SKLP', name='filter', fcut=150)
-# machine.AddCircuit(type='SKLP', name='filter', gain=10, Q=2, fcut=50, pushed='True')
+# machine.AddCircuit(type='SKLP', name='filter', fc=150)
+# machine.AddCircuit(type='SKLP', name='filter', gain=10, Q=2, fc=50, pushed='True')
 # \endcode
 #
 class SKLP(Circuit):
@@ -59,10 +59,10 @@ class SKLP(Circuit):
 
 
 		self.fc=0
-		if 'fcut' in keys.keys():
-			self.fc = keys['fcut']
+		if 'fc' in keys.keys():
+			self.fc = keys['fc']
 		else:
-			raise NameError("Missing fcut!")
+			raise NameError("Missing fc!")
 
 		
 		
@@ -86,7 +86,7 @@ class SKLP(Circuit):
 # \b Initialisation \b parameters:
 # 	- \a gain =  Integer  How much gain the signal will recive 
 # 	- \a Q = the Q value of the filter
-#	- \a fcut = the frequency cut off for the circuit
+#	- \a fc = the frequency cut off for the circuit
 # 	- \a pushed = True|False  push the output buffer immediately if True
 #
 # \b Input \b channels:
@@ -98,8 +98,8 @@ class SKLP(Circuit):
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='SKHP', name='filter', fcut=50, pushed='True')
-# machine.AddCircuit(type='SKHP', name='filter', gain=10, Q=2, fcut=50)
+# machine.AddCircuit(type='SKHP', name='filter', fc=50, pushed='True')
+# machine.AddCircuit(type='SKHP', name='filter', gain=10, Q=2, fc=50)
 # \endcode
 #
 class SKHP(Circuit):
@@ -129,10 +129,10 @@ class SKHP(Circuit):
 
 
 		self.Fcutoff=0
-		if 'fcut' in keys.keys():
-			self.fc = keys['fcut']
+		if 'fc' in keys.keys():
+			self.fc = keys['fc']
 		else:
-			raise NameError("Missing fcut!")
+			raise NameError("Missing fc!")
 
 		self.cCoreID = Circuit.cCore.Add_SKHP(self.machine.cCoreID,
 			c_double(self.fc), c_double(self.Q), c_double(self.Gain))
@@ -215,7 +215,7 @@ class SKBP(Circuit):
 # Pass a signal through a series of \a order RC low pass filters with transfer function:... .
 #
 # \b Initialisation \b parameters:
-#	- \a fcut = the frequency cut off for the circuit
+#	- \a fc = the frequency cut off for the circuit
 #	- \a order = the order of the filter
 # 	- \a pushed = True|False  push the output buffer immediately if True
 #
@@ -227,8 +227,8 @@ class SKBP(Circuit):
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='RCLP', name='lp', fcut=150, pushed='True')
-# machine.AddCircuit(type='RCLP', name='lp', order=2, fcut=50)
+# machine.AddCircuit(type='RCLP', name='lp', fc=150, pushed='True')
+# machine.AddCircuit(type='RCLP', name='lp', order=2, fc=50)
 # \endcode
 #
 class RCLP(Circuit):
@@ -245,10 +245,10 @@ class RCLP(Circuit):
 
 		self.fc=0
 
-		if 'fcut' in keys.keys():
-			self.fc = keys['fcut']
+		if 'fc' in keys.keys():
+			self.fc = keys['fc']
 		else:
-			raise NameError("Missing fcut!")
+			raise NameError("Missing fc!")
 
 		self.Order=1
 		if 'order' in keys.keys():
@@ -272,7 +272,7 @@ class RCLP(Circuit):
 # Pass a signal through a series of \a order RC high pass filters with transfer function:... .
 #
 # \b Initialisation \b parameters:
-#	- \a fcut = the frequency cut off for the circuit
+#	- \a fc = the frequency cut off for the circuit
 #	- \a order = the order of the filter
 # 	- \a pushed = True|False  push the output buffer immediately if True
 #
@@ -284,8 +284,8 @@ class RCLP(Circuit):
 #
 #\b Examples:
 # \code{.py}
-# machine.AddCircuit(type='RCHP', name='hp', fcut=50, pushed='True')
-# machine.AddCircuit(type='RCHP', name='hp', order=2, Q=2, fcut=50)
+# machine.AddCircuit(type='RCHP', name='hp', fc=50, pushed='True')
+# machine.AddCircuit(type='RCHP', name='hp', order=2, Q=2, fc=50)
 # \endcode
 #
 class RCHP(Circuit):
@@ -301,10 +301,10 @@ class RCHP(Circuit):
 
 
 		self.fc=0
-		if 'fcut' in keys.keys():
-			self.fc = keys['fcut']
+		if 'fc' in keys.keys():
+			self.fc = keys['fc']
 		else:
-			raise NameError("Missing fcut!")
+			raise NameError("Missing fc!")
 
 
 		self.Order=1

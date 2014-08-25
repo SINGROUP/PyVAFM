@@ -217,6 +217,7 @@
 	- Interpolation
 		- \link vafmcircuits_Interpolation.i3Dlin i3Dlin\endlink - <i> 3d Linear interpolation circuit</i>
 		- \link vafmcircuits_Interpolation.i1Dlin i1Dlin\endlink - <i> 1d Linear interpolation circuit</i>
+		- \link vafmcircuits_Interpolation.i4Dlin i4Dlin\endlink - <i> 4d Linear interpolation circuit</i>
 @htmlonly
 </div><!-- end of Composites list -->
 @endhtmlonly
@@ -258,6 +259,22 @@
 </div><!-- end of Composites list -->
 @endhtmlonly
 
+
+
+
+@htmlonly
+<div>
+	<a class="anchor" id="sec_STM" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('STM',this)">-</span>Scanning Tunneling Microscope</h1>
+</div>
+<div id="STM">
+@endhtmlonly
+	- Scanning Tunneling Microscope
+		- \link vafmcircuits_STM.STM STM\endlink - <i> Scanning Tunneling Microscope Circuit</i>
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
 
 \link docindex Documentation \endlink > Circuits
 

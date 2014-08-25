@@ -39,14 +39,14 @@ void STM( circuit *c ) {
 
     double k = sqrt(2*c->params[0]);
     double S = c->params[1];
-    // C = 4 pi e / hbar 
+ 
     double C = 7.82e-4;
 
-    // Charge density / electron charge = electron density
-    double n = GlobalSignals[c->inputs[0]]/1.6e-19;
+    
+    double n = GlobalSignals[c->inputs[0]];
     // I = n^2 * k^2 * S^2 * C
     GlobalBuffers[c->outputs[0]] = n*n * k*k * S*S * C;
-
+    
 }
 
 

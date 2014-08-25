@@ -19,6 +19,6 @@ Installation
 ------------------------
 
 Navigate to the ./src/cCore directory and simply type "make all" into the console to compile the core library. 
-The ./src directory must be in the list of python import paths, as well as in the $LD_LIBRARY_PATH (not sure about this).
+<!-- The ./src directory must be in the list of python import paths, as well as in the $LD_LIBRARY_PATH (not sure about this). -->
 
 */

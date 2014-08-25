@@ -397,6 +397,7 @@ void i4Dlin(circuit* c) {
 
     if (PBCz != 1 && z >= c->params[2]*c->iparams[3]){
         for (int comp=0; comp<c->iparams[0]; comp++){
+            
         GlobalBuffers[c->outputs[comp]] = 0;}
         return;   
     }

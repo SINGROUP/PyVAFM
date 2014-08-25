@@ -2,6 +2,35 @@ from vafmbase import Circuit
 import math
 import ctypes
 
+## \package vafmcircuits_STM
+# This file contains the Scanning Tunneling Microscope circuit.
+#
+
+
+## \brief STM circuit.
+#
+# \image html STM.png "schema"
+# Takes in a charge density and outputs current
+# 
+#
+# \b Initialisation \b parameters:
+# - pushed = True|False  push the output buffer immediately if True
+# - WorkFunction = float Workfunction of the tip (Default value = 4eV).
+# - WaveFunctionOverlap = float Wavefunction overlap of the tip and the sample (Default Value = 2 Angstrom). 
+#
+# \b Input \b channels:
+# - \a Density 
+#
+# \b Output \b channels:
+# - \a Current =  C \Delta S^2 k^2 n^2 
+#
+# 
+# \b Example:
+# \code{.py}
+# machine.AddCircuit(type='STM',name='STM', pushed=True)
+# \endcode
+#
+
 class STM(Circuit):
 
 
