@@ -7,7 +7,7 @@ def main():
 
 	machine = Machine(machine=None, name='machine', dt=5.0e-8)
 #	canti = machine.AddCircuit(type='Cantilever',name='canti', 
-#		Q=20000, k=26.4, f0=150000, startingz=1, pushed=True)
+#		Q=20000, k=26.5, f0=150000, startingz=1, pushed=True)
 
 
 	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5,
