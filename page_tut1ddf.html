@@ -86,7 +86,7 @@ function toggleMenu(objID, button) {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;limiter&quot;</span>,name=<span class="stringliteral">&#39;agclim&#39;</span>, min=0,max=10, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>The most important part of an AFM set up is the PLL (Phase lock loop) as this is the device that actually gives us the change in frequency. Again we have a PLL composite circuit all set up already so simply follow the parameters given below;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;pll&#39;</span>, assembly=dPFD, gain=1000.0, fcut=500, KI=3,KP=0.5, f0=f0  , pushed=<span class="keyword">True</span>)</div>
-</div><!-- fragment --><p>We need the excitation signal to be off phase by $ /2$. Since we are using a digital pll we find that the signal and the reference will be 0 when they are both exactly in phase (unlike the analogue pll where the signal and reference are out of phase by $ /2$) so in order for us to excite the cantilever with a phase of $ /2$ we must simply invert the sin channel of the pll to give us a peak at the correct phase.</p>
+</div><!-- fragment --><p>We need the excitation signal to be off phase by pi/2. Since we are using a digital pll we find that the signal and the reference will be 0 when they are both exactly in phase (unlike the analogue pll where the signal and reference are out of phase by pi/2) so in order for us to excite the cantilever with a phase of pi/2 we must simply invert the sin channel of the pll to give us a peak at the correct phase.</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;opMul&#39;</span>,name=<span class="stringliteral">&#39;pllinv&#39;</span>,in2=-1, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>in order for us to excite the cantilever we must multiply the output of the PLL with the output of the PI circuit to ensure we get an appropriate excitation circuit, hence we must add a multiplication circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;opMul&#39;</span>,name=<span class="stringliteral">&#39;exc&#39;</span>, pushed=<span class="keyword">True</span>)</div>
@@ -102,13 +102,13 @@ function toggleMenu(objID, button) {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;canti.ztip&#39;</span>,<span class="stringliteral">&#39;amp.signal&#39;</span>)</div>
 </div><!-- fragment --><p>So lets connect the amplitude to the agc circuit</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;amp.amp&#39;</span>,<span class="stringliteral">&#39;agc.signal&#39;</span>)</div>
-</div><!-- fragment --><p>Next we must hook up the pll (this is a digital one compared to the analogue one used in tutorial 6.5 so the inside mechanics are different). We need to connect the normalised cantilever signal and the cos channel of the pll to the vco channel of the pll.</p>
+</div><!-- fragment --><p>Next we must hook up the pll (this is a digital one compared to the analogue one used in the full NaCl FM-AFM tutorial, so the inside mechanics are different). We need to connect the normalised cantilever signal and the cos channel of the pll to the vco channel of the pll.</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;amp.norm&#39;</span>,<span class="stringliteral">&#39;pll.ref&#39;</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;machine.Connect(<span class="stringliteral">&#39;pll.cos&#39;</span>,<span class="stringliteral">&#39;pll.vco&#39;</span>)</div>
 </div><!-- fragment --><p>We need to take our agc signal pass it to the limiter then to to the excitation multiplier;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;agc.out&#39;</span>,<span class="stringliteral">&#39;agclim.signal&#39;</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;machine.Connect(<span class="stringliteral">&#39;agclim.out&#39;</span>,<span class="stringliteral">&#39;exc.in1&#39;</span>)</div>
-</div><!-- fragment --><p>Since we want to excite with a wave of $/2$ we must invert the sin wave and pass it through to the exciter multiplier and finally to the cantilever excitation channel.</p>
+</div><!-- fragment --><p>Since we want to excite with a wave of pi/2 we must invert the sin wave and pass it through to the exciter multiplier and finally to the cantilever excitation channel.</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;pll.sin&#39;</span>,<span class="stringliteral">&#39;pllinv.in1&#39;</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;machine.Connect(<span class="stringliteral">&#39;pllinv.out&#39;</span>,<span class="stringliteral">&#39;exc.in2&#39;</span>)</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;machine.Connect(<span class="stringliteral">&#39;exc.out&#39;</span>,<span class="stringliteral">&#39;canti.exciter&#39;</span>)</div>
@@ -189,18 +189,16 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;out3.Start()</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;scanner.MoveRecord(x=0,y=0,z=-9.5,v=1,points=200)</div>
-</div><!-- fragment --><p>The output should look something like this;</p>
-<div class="image">
-<img src="tut4.png" alt="tut4.png"/>
-<div class="caption">
-Tutorial 4 output</div></div>
-</div></div><!-- contents -->
+</div><!-- fragment --><p>The output should look like this;</p>
+ 
+<img src="tut4.png" width="800px">
+ </div></div><!-- contents -->
 
 <hr size="1"><address style="text-align: right;">
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Mon Aug 25 2014 16:43:25 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Mon Sep 1 2014 16:45:39 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->

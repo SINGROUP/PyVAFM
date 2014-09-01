@@ -104,7 +104,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Assembly function for analog PLL composite circuit. The Phase-Frequency Detector (PFD) multiplies the signals, and the result is passed to a series of lowpass Sallen-Key filters. The mount of filters and their cutoff frequencies are taken from the input parameter <em>filters</em>.</p>
 <dl class="section note"><dt>Note</dt><dd>For this to work, the output <em>sin</em> should be connected to <em>signal2</em> in the parent circuit (as shown in example). Also, both signals should be normalised (amplitude = 1) and their offset should be removed.</dd></dl>
- <div class="image"><a href="apll.png"><image src="apll.png" alt="aPLL schema" /></a> <p><b>Initialisation</b> <b>parameters:</b> </p>
+<div class="image">
+<img src="apll.png" alt="apll.png"/>
+<div class="caption">
+schema</div></div>
+<p> <b>Initialisation</b> <b>parameters:</b> </p>
 <ul>
 <li>filters = list of cutoff frequencies for PFD lowpass filters</li>
 <li>Kp = proportional constant of the charge pump</li>
@@ -140,7 +144,7 @@ Functions</h2></td></tr>
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Mon Aug 25 2014 16:43:25 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Mon Sep 1 2014 16:45:39 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->

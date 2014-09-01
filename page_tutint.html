@@ -73,14 +73,22 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> vafmcircuits</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;machine = Machine(machine=<span class="keywordtype">None</span>, name=<span class="stringliteral">&#39;machine&#39;</span>, dt=0.01)</div>
-</div><!-- fragment --><p>So now we must add both the {<a href="http://johnt447.github.io/pyvafm/classvafmcircuits__Interpolation_1_1i3Dlin.html">http://johnt447.github.io/pyvafm/classvafmcircuits__Interpolation_1_1i3Dlin.html</a>}[interpolation] and the {<a href="http://johnt447.github.io/pyvafm/classvafmcircuits__Scanner_1_1Scanner.html">http://johnt447.github.io/pyvafm/classvafmcircuits__Scanner_1_1Scanner.html</a>}[scanning] circuit in the usual manner;</p>
+</div><!-- fragment --><p>So now we must add both the <a class="el" href="classvafmcircuits__Interpolation_1_1i3Dlin.html">Interpolation</a> and the <a class="el" href="classvafmcircuits__Scanner_1_1Scanner.html">Scanner </a> circuit in the usual manner;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scan = machine.AddCircuit(type=<span class="stringliteral">&#39;Scanner&#39;</span>,name=<span class="stringliteral">&#39;scann&#39;</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;inter = machine.AddCircuit(type=<span class="stringliteral">&#39;i3Dlin&#39;</span>,name=<span class="stringliteral">&#39;inter&#39;</span>, components=3)</div>
 </div><!-- fragment --><p>The only thing here worth noting is the "components" parameter, this is how many components we have in the force field, so in this case (as we will see later on) we have 3 (fx,fy and fz).</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])</div>
 </div><!-- fragment --><p>Lets start configuring the interpolation circuit, first we must set the step size with the steps parameter. The force field is in the format of :</p>
-<p>1 1 1 fx fy fz 1 1 2 fx fy fz .. .. .. .. .. .. .. .. .. .. x y z fx fy fz</p>
-<p>Where x y and z are the index of that particular point in the force field, so in order to allow the scanner to moved in the correct units we must change these indexes to what ever the correct step size is. In this case the step in x and y is 0.805 and the step in z in 0.1. Next we must define the number of points in each dimension using the "npoints" parameter in this case we know that the x and y axis both contain 8 points each and the z direction contains 171 points.</p>
+<blockquote class="doxtable">
+<p>1 1 1 fx fy fz <br/>
+ 1 1 2 fx fy fz <br/>
+ .. .. .. .. .. <br/>
+ .. .. .. .. .. <br/>
+ x y z fx fy fz <br/>
+</p>
+<p></p>
+</blockquote>
+<p>Where x y and z are the index of that particular point in the force field, so in order to allow the scanner to moved in the correct units we must change these indexes to what ever the correct step size is. In this case the step in x and y is 0.705 and the step in z in 0.1. Next we must define the number of points in each dimension using the "npoints" parameter in this case we know that the x and y axis both contain 8 points each and the z direction contains 201 points.</p>
 <p>At this point we are going to set the periodic boundary conditions using the "pbc" parameter;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;inter.Configure(pbc=[<span class="keyword">True</span>,<span class="keyword">True</span>,<span class="keyword">False</span>])</div>
 </div><!-- fragment --><p>So here we have set the boundary conditions to be periodic in the x and y direction but not in the z. Next we have to tell the interpolation circuit what the force field is called;</p>
@@ -95,7 +103,8 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;imager.Register(<span class="stringliteral">&quot;scann.x&quot;</span>, <span class="stringliteral">&quot;scann.y&quot;</span>, <span class="stringliteral">&#39;inter.F3&#39;</span>)</div>
 </div><!-- fragment --><p>Since we plan to use the ScanArea feature we must now connect the record output channel of the scanner to the record input channel of the output circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&quot;scann.record&quot;</span>, <span class="stringliteral">&quot;image.record&quot;</span>)</div>
-</div><!-- fragment --><p>Now that we have finally set up our machine we can now start issuing commands to it, we will only be using a hand full of the scanner commands although more can be found on the documentation webpage. \  lets start by placing our scanner in the force field at position 0,0,4;</p>
+</div><!-- fragment --><p>Now that we have finally set up our machine we can now start issuing commands to it, we will only be using a hand full of the scanner commands although more can be found on the documentation webpage.</p>
+<p>lets start by placing our scanner in the force field at position 0,0,4;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scan.Place(x=0, y=0, z=4)</div>
 </div><!-- fragment --><p>In order to use the ScanArea function we must also tell the scanner what output circuit we plan to use with the Recorder command;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scan.Recorder = imager</div>
@@ -151,17 +160,15 @@ set size square
 set palette rgbformula 34,35,36
 sp "tut2.dat" using 1:2:3
 </pre><p>You should get something that looks like this;</p>
-<div class="image">
-<img src="tut2.png" alt="tut2.png"/>
-<div class="caption">
-Tutorial 2 output</div></div>
-</div></div><!-- contents -->
+ 
+<img src="tut2.png" width="800px">
+ </div></div><!-- contents -->
 
 <hr size="1"><address style="text-align: right;">
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Mon Aug 25 2014 16:43:25 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Mon Sep 1 2014 16:45:39 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->

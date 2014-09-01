@@ -66,12 +66,13 @@ function toggleMenu(objID, button) {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1>Running a full FM-AFM simulation of NaCl </h1>
-<p>Now for a full simulation using most of the things you have learned in the past few tutorials so the explanation will be more brief. Definitely do not use this tutorial as a starting point, it is recommended that you have went through the previous tutorials first.\  As always lets add our mandatory modules, including the {<a href="http://johnt447.github.io/pyvafm/namespacecustoms__pll.html#a3146b17af98ddc221f7404f1dd60148d">http://johnt447.github.io/pyvafm/namespacecustoms__pll.html#a3146b17af98ddc221f7404f1dd60148d</a>}[phase lock loop (PLL)] composite circuit that is required in AFM setups;</p>
+<p>Now for a full simulation using most of the things you have learned in the past few tutorials so the explanation will be more brief. Definitely do not use this tutorial as a starting point, it is recommended that you have went through the previous tutorials first.</p>
+<p>As always lets add our mandatory modules, including the phase lock loop (PLL) composite circuit that is required in AFM setups;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">from</span> vafmcircuits <span class="keyword">import</span> Machine</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> customs_pll <span class="keyword">import</span> *</div>
 </div><!-- fragment --><p>Lets initialise our machine;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine = Machine(machine=<span class="keywordtype">None</span>, name=<span class="stringliteral">&#39;machine&#39;</span>, dt=5.0e-8)</div>
-</div><!-- fragment --><p>Lets add our {<a href="http://johnt447.github.io/pyvafm/classvafmcircuits__Cantilever_1_1Cantilever.html">http://johnt447.github.io/pyvafm/classvafmcircuits__Cantilever_1_1Cantilever.html</a>}[simple cantilever] circuit, the parameters are described in the documentation but for now lets use these values;</p>
+</div><!-- fragment --><p>Lets add our <a class="el" href="classvafmcircuits__Cantilever_1_1Cantilever.html">Cantilever </a> circuit, the parameters are described in the documentation but for now lets use these values;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;canti = machine.AddCircuit(type=<span class="stringliteral">&#39;Cantilever&#39;</span>,name=<span class="stringliteral">&#39;canti&#39;</span>, startingz=0.5,Q=10000, k=167.0, f0=150000, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>Since we need to be able to measure amplitude we should include the amplitude detector composite circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;amp&#39;</span>, fcut=10000, assembly=aAMPD, pushed=<span class="keyword">True</span>)</div>
@@ -81,19 +82,19 @@ function toggleMenu(objID, button) {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;limiter&quot;</span>,name=<span class="stringliteral">&#39;agclim&#39;</span>, min=0,max=10, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>The most important part of an AFM set up is the PLL (Phase lock loop) as this is the device that actually gives us the change in frequency. Again we have a PLL composite circuit all set up already so simply follow the parameters given below;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;pll&#39;</span>, fcut=1000, assembly=aPLL, filters=[10000,5000,2000], gain=600.0, f0=150000, Kp=0.5, Ki=700, pushed=<span class="keyword">True</span>)</div>
-</div><!-- fragment --><p>We need the excitation signal to be off phase by $ /2$. Since the output of the pll will be out of phase by $- /2$ (a cosine output wave compared to a sine input wave), so we will invert the cos wave in order to give us a phase shift of $ /2$.</p>
+</div><!-- fragment --><p>We need the excitation signal to be off phase by pi /2. Since the output of the pll will be out of phase by -pi /2 (a cosine output wave compared to a sine input wave), so we will invert the cos wave in order to give us a phase shift of pi /2).</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;opMul&#39;</span>,name=<span class="stringliteral">&#39;pllinv&#39;</span>,in2=-1, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>in order for us to excite the cantilever we must multiply the output of the PLL with the output of the PI circuit to ensure we get an appropriate excitation circuit, hence we must add a multiplication circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;opMul&#39;</span>,name=<span class="stringliteral">&#39;exc&#39;</span>, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>We need to be able to move our cantilever so lets add the scanner circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scanner = machine.AddCircuit(type=<span class="stringliteral">&#39;Scanner&#39;</span>,name=<span class="stringliteral">&#39;scan&#39;</span>, Process = machine, pushed=<span class="keyword">True</span>)</div>
-</div><!-- fragment --><p>We have a 3d force field for the NaCl included in the tutorial, the details of how to add an interpolation circuit was covered in tutorial 6.2 so I will simply state what is required here. One thing to note is the ForceMultiplier parameter this allows you to change the units of your force field to what ever it is you require;</p>
+</div><!-- fragment --><p>We have a 3d force field for the NaCl included in the tutorial, the details of how to add an interpolation circuit was covered in <a class="el" href="page_tutint.html">this </a> tutorial so I will simply state what is required here. One thing to note is the ForceMultiplier parameter this allows you to change the units of your force field to what ever it is you require;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;inter = machine.AddCircuit(type=<span class="stringliteral">&#39;i3Dlin&#39;</span>,name=<span class="stringliteral">&#39;inter&#39;</span>, components=3, pushed=<span class="keyword">True</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;inter.Configure(pbc=[<span class="keyword">True</span>,<span class="keyword">True</span>,<span class="keyword">False</span>])</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;inter.Configure(ForceMultiplier=1e10)</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;inter.ReadData(<span class="stringliteral">&#39;NaClforces.dat&#39;</span>)</div>
-</div><!-- fragment --><p>We require an output circuit this is set up in the same way as described in tutorial 6.2. This time the channels we will register are "x" , "y" and the change in frequency "df".</p>
+</div><!-- fragment --><p>We require an output circuit this is set up in the same way as as before, this time the channels we will register are "x" , "y" and the change in frequency "df".</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;imager = machine.AddCircuit(type=<span class="stringliteral">&#39;output&#39;</span>,name=<span class="stringliteral">&#39;image&#39;</span>,file=<span class="stringliteral">&#39;test.dat&#39;</span>, dump=0)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;imager.Register(<span class="stringliteral">&quot;scan.x&quot;</span>,<span class="stringliteral">&quot;scan.y&quot;</span>,<span class="stringliteral">&quot;pll.df&quot;</span>)</div>
 </div><!-- fragment --><p>So we have added all the circuits we need for this FM-AFM setup so lets connect our circuits now. so lets hook up or x and y channel of the scanner to the x and y channel of the interpolation circuit;</p>
@@ -108,8 +109,8 @@ function toggleMenu(objID, button) {
 </div><!-- fragment --><p>So we need to measure the amplitude of the tip so lets connect the tip position to our amplitude detector;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;canti.ztip&#39;</span>,<span class="stringliteral">&#39;amp.signal&#39;</span>)</div>
 </div><!-- fragment --><p>So the amplitude detector is capable of outputting the amplitude of the wave or a normalised version of that wave. Since we need to know but how much to excite the wave by lets connect the amplitude to the PI circuit so we can measure that;</p>
-<p>{lstlisting} machine.Connect('amp.amp','agc.signal') {lstlisting}</p>
-<p>So now we have to hook up our pll circuit, the pll must have a feedback by using the cos output of the pll and have the normalised cantilever as an input</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;amp.amp&#39;</span>,<span class="stringliteral">&#39;agc.signal&#39;</span>)</div>
+</div><!-- fragment --><p>So now we have to hook up our pll circuit, the pll must have a feedback by using the cos output of the pll and have the normalised cantilever as an input</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.Connect(<span class="stringliteral">&#39;amp.norm&#39;</span>,<span class="stringliteral">&#39;pll.signal1&#39;</span>)</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;machine.Connect(<span class="stringliteral">&#39;pll.cos&quot;,&quot;pll.signal2&#39;</span>)</div>
 </div><!-- fragment --><p>So now we can multiply the output from the PI circuit and the cos output of the pll circuit in order to create an excitation circuit and then connect this signal to the cantilever excitation channel;</p>
@@ -125,7 +126,7 @@ function toggleMenu(objID, button) {
 </div><!-- fragment --><p>Next lets move scanner down by 11 angstroms and have it wait for 1 seconds this will allow the pll to settle down before we start scanning;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scanner.Move(x=0,y=0,z=-11) </div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;machine.Wait(1)</div>
-</div><!-- fragment --><p>Lets now set up our ScanArea function like we did in in tutorial 6.2, except this time we want 64 points per line and 64 lines over an image area of 11.68 by 11.68 angstroms. If you are using gnuplot leave the blanklines as True but if you choose to use another plotting program that doesn't use the blank lines feel free to set it to False, finally use the ScanArea() function to begin your scan.</p>
+</div><!-- fragment --><p>Lets now set up our ScanArea function like we did in <a class="el" href="page_tutint.html">this </a> tutorial, except this time we want 64 points per line and 64 lines over an image area of 11.68 by 11.68 angstroms. If you are using gnuplot leave the blanklines as True but if you choose to use another plotting program that doesn't use the blank lines feel free to set it to False, finally use the ScanArea() function to begin your scan.</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;scanner.Recorder = imager</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;scanner.BlankLines = <span class="keyword">True</span> </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;scanner.Resolution = [20,20]</div>
@@ -229,17 +230,15 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;set palette rgbformula 34,35,36</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;sp <span class="stringliteral">&quot;tut5.dat&quot;</span> using 1:2:3</div>
 </div><!-- fragment --><p>Your results should look similar to the image below;</p>
-<div class="image">
-<img src="tut5.png" alt="tut5.png"/>
-<div class="caption">
-Tutorial 5 output</div></div>
-</div></div><!-- contents -->
+ 
+<img src="tut5.png" width="800px">
+ </div></div><!-- contents -->
 
 <hr size="1"><address style="text-align: right;">
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Mon Aug 25 2014 16:43:25 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Mon Sep 1 2014 16:45:39 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->
