@@ -3,9 +3,9 @@
 Running a full FM-AFM simulation of NaCl
 ============================
 
-Now for a full simulation using most of the things you have learned in the past few tutorials so the explanation will be more brief. Definitely do not use this tutorial as a starting point, it is recommended that you have went through the previous tutorials first.\\
-\linebreak
-As always lets add our mandatory modules, including the \href{http://johnt447.github.io/pyvafm/namespacecustoms__pll.html#a3146b17af98ddc221f7404f1dd60148d}[phase lock loop (PLL)] composite circuit that is required in AFM setups;
+Now for a full simulation using most of the things you have learned in the past few tutorials so the explanation will be more brief. Definitely do not use this tutorial as a starting point, it is recommended that you have went through the previous tutorials first.
+
+As always lets add our mandatory modules, including the phase lock loop (PLL) composite circuit that is required in AFM setups;
 
 ~~~~~~~~~~~~~{.py}
 from vafmcircuits import Machine
@@ -20,7 +20,7 @@ machine = Machine(machine=None, name='machine', dt=5.0e-8)
 
 
 
-Lets add our \href{http://johnt447.github.io/pyvafm/classvafmcircuits__Cantilever_1_1Cantilever.html}[simple cantilever] circuit, the parameters are described in the documentation but for now lets use these values;
+Lets add our \link vafmcircuits_Cantilever.Cantilever Cantilever \endlink circuit, the parameters are described in the documentation but for now lets use these values;
 
 
 ~~~~~~~~~~~~~{.py}
@@ -54,7 +54,7 @@ machine.AddCircuit(type="Machine",name='pll', fcut=1000, assembly=aPLL, filters=
 ~~~~~~~~~~~~~
 
 
-We need the excitation signal to be off phase by $\pi /2$. Since the output of the pll will be out of phase by $-\pi /2$ (a cosine output wave compared to a sine input wave), so we will invert the cos wave in order to give us a phase shift of $\pi /2$.
+We need the excitation signal to be off phase by pi /2. Since the output of the pll will be out of phase by -pi /2 (a cosine output wave compared to a sine input wave), so we will invert the cos wave in order to give us a phase shift of pi /2).
 
 ~~~~~~~~~~~~~{.py}
 machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
@@ -74,7 +74,7 @@ We need to be able to move our cantilever so lets add the scanner circuit;
 scanner = machine.AddCircuit(type='Scanner',name='scan', Process = machine, pushed=True)
 ~~~~~~~~~~~~~
 
-We have a 3d force field for the NaCl included in the tutorial, the details of how to add an interpolation circuit was covered in tutorial 6.2 so I will simply state what is required here. One thing to note is the ForceMultiplier parameter this allows you to change the units of your force field to what ever it is you require;
+We have a 3d force field for the NaCl included in the tutorial, the details of how to add an interpolation circuit was covered in \link page_tutint this \endlink tutorial so I will simply state what is required here. One thing to note is the ForceMultiplier parameter this allows you to change the units of your force field to what ever it is you require;
 
 ~~~~~~~~~~~~~{.py}
 inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True)
@@ -84,7 +84,7 @@ inter.Configure(ForceMultiplier=1e10)
 inter.ReadData('NaClforces.dat')
 ~~~~~~~~~~~~~
 
-We require an output circuit this is set up in the same way as described in tutorial 6.2. This time the channels we will register are "x" , "y" and the change in frequency "df".
+We require an output circuit this is set up in the same way as as before, this time the channels we will register are "x" , "y" and the change in frequency "df".
 
 ~~~~~~~~~~~~~{.py}
 imager = machine.AddCircuit(type='output',name='image',file='test.dat', dump=0)
@@ -125,9 +125,9 @@ machine.Connect('canti.ztip','amp.signal')
 
 So the amplitude detector is capable of outputting the amplitude of the wave or a normalised version of that wave. Since we need to know but how much to excite the wave by lets connect the amplitude to the PI circuit so we can measure that;
 
-\begin{lstlisting}
+~~~~~~~~~~~~~{.py}
 machine.Connect('amp.amp','agc.signal')
-\end{lstlisting}
+~~~~~~~~~~~~~
 
 
 So now we have to hook up our pll circuit, the pll must have a feedback by using the cos output of the pll and have the normalised cantilever as an input
@@ -167,7 +167,7 @@ scanner.Move(x=0,y=0,z=-11)
 machine.Wait(1)
 ~~~~~~~~~~~~~
 
-Lets now set up our ScanArea function like we did in in tutorial 6.2, except this time we want 64 points per line and 64 lines over an image area of 11.68 by 11.68 angstroms. If you are using gnuplot leave the blanklines as  True but if you choose to use another plotting program that doesn't use the blank lines feel free to set it to False, finally use the ScanArea() function to begin your scan.
+Lets now set up our ScanArea function like we did in \link page_tutint this \endlink tutorial, except this time we want 64 points per line and 64 lines over an image area of 11.68 by 11.68 angstroms. If you are using gnuplot leave the blanklines as  True but if you choose to use another plotting program that doesn't use the blank lines feel free to set it to False, finally use the ScanArea() function to begin your scan.
 
 ~~~~~~~~~~~~~{.py}
 scanner.Recorder = imager
@@ -280,7 +280,9 @@ sp "tut5.dat" using 1:2:3
 
 Your results should look similar to the image below;
 
-\image html tut5.png "Tutorial 5 output"
+\htmlonly
+<img src="tut5.png" width="800px">
+\endhtmlonly
 
 
 */

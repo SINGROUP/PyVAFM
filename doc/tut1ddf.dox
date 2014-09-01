@@ -58,7 +58,7 @@ machine.AddCircuit(type="Machine",name='pll', assembly=dPFD, gain=1000.0, fcut=5
 ~~~~~~~~~~~~~
 
 
-We need the excitation signal to be off phase by $\pi /2$. Since we are using a digital pll we find that the signal and the reference will be 0 when they are both exactly in phase (unlike the analogue pll where the signal and reference are out of phase by $\pi /2$) so in order for us to excite the cantilever with a phase of $\pi /2$ we must simply invert the sin channel of the pll to give us a peak at the correct phase.
+We need the excitation signal to be off phase by pi/2. Since we are using a digital pll we find that the signal and the reference will be 0 when they are both exactly in phase (unlike the analogue pll where the signal and reference are out of phase by pi/2) so in order for us to excite the cantilever with a phase of pi/2 we must simply invert the sin channel of the pll to give us a peak at the correct phase.
 
 ~~~~~~~~~~~~~{.py}
 machine.AddCircuit(type='opMul',name='pllinv',in2=-1, pushed=True)
@@ -109,7 +109,7 @@ So lets connect the amplitude to the agc circuit
 machine.Connect('amp.amp','agc.signal')
 ~~~~~~~~~~~~~
 
-Next we must hook up the pll (this is a digital one compared to the analogue one used in tutorial 6.5 so the inside mechanics are different). We need to connect the normalised cantilever signal and the cos channel of the pll to the vco channel of the pll.
+Next we must hook up the pll (this is a digital one compared to the analogue one used in the full NaCl FM-AFM tutorial, so the inside mechanics are different). We need to connect the normalised cantilever signal and the cos channel of the pll to the vco channel of the pll.
 
 ~~~~~~~~~~~~~{.py}
 machine.Connect('amp.norm','pll.ref')
@@ -123,7 +123,7 @@ machine.Connect('agc.out','agclim.signal')
 machine.Connect('agclim.out','exc.in1')
 ~~~~~~~~~~~~~
 
-Since we want to excite with a wave of $\pi/2$ we must invert the sin wave and pass it through to the exciter multiplier and finally to the cantilever excitation channel.
+Since we want to excite with a wave of pi/2 we must invert the sin wave and pass it through to the exciter multiplier and finally to the cantilever excitation channel.
 
 
 ~~~~~~~~~~~~~{.py}
@@ -237,10 +237,12 @@ scanner.MoveRecord(x=0,y=0,z=-9.5,v=1,points=200)
 
 ~~~~~~~~~~~~~
 
-The output should look something like this;
+The output should look like this;
 
 
-\image html tut4.png "Tutorial 4 output"
+\htmlonly
+<img src="tut4.png" width="800px">
+\endhtmlonly
 
 
 */

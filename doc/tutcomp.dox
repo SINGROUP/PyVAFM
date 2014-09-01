@@ -4,8 +4,6 @@
 Building a composite circuit
 ======================
 
-Composite circuits are described in section 5.3 so in this tutorial we will repeat what we did in section 6.1 and create a simple addition circuit but this time making it a composite 
-
 Lets first start by creating the composite circuit so we as per usual start the mandatory imports;
 
 ~~~~~~~~~~~~~{.py}
@@ -141,7 +139,8 @@ machine.Wait(5)
 
 When you run and plot the output you should get something looking like figure 4 which resembles what we got in tutorial 1.
 
-\image html tut3.png "Tutorial 3 output"
-
+\htmlonly
+<img src="tut3.png" width="800px">
+\endhtmlonly
 
 */

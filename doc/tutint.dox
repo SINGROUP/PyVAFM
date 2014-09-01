@@ -15,7 +15,7 @@ import vafmcircuits
 machine = Machine(machine=None, name='machine', dt=0.01)
 ~~~~~~~~~~~~~
 
-So now we must add both the \href{http://johnt447.github.io/pyvafm/classvafmcircuits__Interpolation_1_1i3Dlin.html}[interpolation] and the \href{http://johnt447.github.io/pyvafm/classvafmcircuits__Scanner_1_1Scanner.html}[scanning] circuit in the usual manner;
+So now we must add both the \link vafmcircuits_Interpolation.i3Dlin Interpolation\endlink and the \link vafmcircuits_Scanner.Scanner Scanner \endlink circuit in the usual manner;
 
 ~~~~~~~~~~~~~{.py}
 scan = machine.AddCircuit(type='Scanner',name='scann')
@@ -32,14 +32,14 @@ inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])
 Lets start configuring the interpolation circuit, first we must set the step size with the steps parameter. The force field is in the format of :
 
 
-1 1 1 fx fy fz 
-1 1 2 fx fy fz 
-.. .. .. .. .. 
-.. .. .. .. .. 
-x y z fx fy fz 
+> 1 1 1 fx fy fz <BR>
+> 1 1 2 fx fy fz <BR>
+> .. .. .. .. .. <BR>
+> .. .. .. .. .. <BR>
+> x y z fx fy fz <BR>
 
 
-Where x y and z are the index of that particular point in the force field, so in order to allow the scanner to moved in the correct units we must change these indexes to what ever the correct step size is. In this case the step in x and y is 0.805 and the step in z in 0.1. Next we must define the number of points in each dimension using the "npoints" parameter  in this case we know that the x and y axis both contain 8 points each and the z direction contains 171 points.
+Where x y and z are the index of that particular point in the force field, so in order to allow the scanner to moved in the correct units we must change these indexes to what ever the correct step size is. In this case the step in x and y is 0.705 and the step in z in 0.1. Next we must define the number of points in each dimension using the "npoints" parameter  in this case we know that the x and y axis both contain 8 points each and the z direction contains 201 points.
 
 At this point we are going to set the periodic boundary conditions using the "pbc" parameter;
 
@@ -79,8 +79,8 @@ machine.Connect("scann.record", "image.record")
 ~~~~~~~~~~~~~
 
 
-Now that we have finally set up our machine we can now start issuing commands to it, we will only be using a hand full of the scanner commands although more can be found on the documentation webpage. \\
-\linebreak
+Now that we have finally set up our machine we can now start issuing commands to it, we will only be using a hand full of the scanner commands although more can be found on the documentation webpage. 
+
 lets start by placing our scanner in the force field at position 0,0,4;
 
 ~~~~~~~~~~~~~{.py}
@@ -173,7 +173,9 @@ So assuming you are using gnuplot use the following commands in order to plot th
 You should get something that looks like this;
 
 
-\image html tut2.png "Tutorial 2 output"
+\htmlonly
+<img src="tut2.png" width="800px">
+\endhtmlonly
 
 
 */

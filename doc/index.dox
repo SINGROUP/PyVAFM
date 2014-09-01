@@ -8,20 +8,22 @@ Welcome to the \progname documentation.
  	-# \ref Prerequisites
  	-# \ref Installation
  	-# \ref Running
- -# \subpage page_Quickstart
+ 	
+ -# \subpage page_quickstart
  -# \subpage page_UserManual
  	-# \ref Circuits
  	-# \ref channels
  	-# \ref comp 	
  	-# \ref Pushing
+ 	-# \ref Force
  	-# \ref Units
  	-# \ref Anatomy
- 	-# \ref input
  -# \subpage page_circs
  -# \subpage page_tutorial
+ -# \subpage page_Credits
 
 
-The latest \progname version can be downloaded [here](https://github.com/fullmetalfelix/pyvafm/archive/pyvafm.zip)
+The latest \progname version can be downloaded [here](https://github.com/johnt447/pyvafm/archive/cCore.zip)
 
 
 */
