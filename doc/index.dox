@@ -20,6 +20,7 @@ Welcome to the \progname documentation.
  	-# \ref Anatomy
  -# \subpage page_circs
  -# \subpage page_tutorial
+ -# \subpage page_gui
  -# \subpage page_Credits
 
 

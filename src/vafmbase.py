@@ -221,7 +221,7 @@ class Circuit(object):
 			if self.pushed:
 				Circuit.cCore.SetPushed(self.cCoreID, 1);
 			
-		print 'PY: circuit '+self.name+'('+self.__class__.__name__+') inited.'
+		print 'PY: circuit '+self.name+'('+self.__class__.__name__+') initiated.'
 	
 	def SetInputs_fromKeys(self, **kwargs):
 		

@@ -1,0 +1,98 @@
+/*! \page page_tutadd Addition
+
+
+Simple Addition
+======================
+In this basic tutorial we will learn how to create two sin waves and add them. So lets start by adding the modules that the PyVAFM requires. 
+
+~~~~~~~~~~~~~{.py}
+from vafmbase import ChannelType
+from vafmcircuits import Machine
+import vafmcircuits
+~~~~~~~~~~~~~
+
+If you have problems importing these modules be sure you have followed the steps in section 1.3. The next step is to initialise the machine, every simulation needs at least one machine. You can think of these machines as the box you put your circuits in so they will need a unique name for each new machine you create. So to initialise the machine we will use this code:
+
+~~~~~~~~~~~~~{.py}
+machine = Machine(name='machine', dt=0.01);
+~~~~~~~~~~~~~
+
+So here we have added a Machine with the object identification "machine", name of the machine is "machine" and timestep is set to "0.01". 
+
+So now we must add the circuits that we need so lets add a waver circuit to generate our sin wave.
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type='waver',name='wave', amp=1, freq=2)
+~~~~~~~~~~~~~
+
+So this will be capable of outputting a a wave of amplitude 1 (amp=1) and a frequency of 2 (freq=2). Next we need to add our addition circuit, in much the same way as we added the previous:
+
+~~~~~~~~~~~~~{.py}
+machine.AddCircuit(type='opAdd',name='Add')
+~~~~~~~~~~~~~
+
+So now we have added all the circuits we need so next we have to connect the circuits.
+
+if we look at the documentation  \href{http://johnt447.github.io/pyvafm/classvafmcircuits__signal__gens_1_1waver.html}{webpage} we can see that the waver circuit has 3 output channels namely, sin, cos and sqw. Since we are only interested in outputting the sin wave we will only use the "sin" output channel.  Like wise if we look at the \href{http://johnt447.github.io/pyvafm/classvafmcircuits__math_1_1opAdd.html}{opAdd}  circuit we can see that it can accept any number inputs as long as the form is inx where x is the number of the input channel. So remember we named our waver circuit "wave" and our adder circuit "Add", we will put this to use now by connecting the output channel named "sin" of our circuit named "wave" to the input "in1" and "in2" of our circuit named "Add".
+
+~~~~~~~~~~~~~{.py}
+machine.Connect("wave.sin","Add.in1")
+machine.Connect("wave.sin","Add.in2")
+~~~~~~~~~~~~~
+
+Now that we have connected our circuits we need to setup the output circuit so we can get our results. 
+
+~~~~~~~~~~~~~{.py}
+out1 = machine.AddCircuit(type='output',name='output',file='tut1.dat', dump=1)
+~~~~~~~~~~~~~
+
+So we have added the (http://johnt447.github.io/pyvafm/classvafmcircuits__output_1_1output.html)[output] circuit in the same way as we added the previous circuits, only thing different here is the  object identification  "out1" and the initialisation parameters. The parameter file names the output file to whatever you set it as and the parameter dump is how often the output file will write to the file. Next the chanels we would like to output have to be registerted;
+
+~~~~~~~~~~~~~{.py}
+out1.Register('global.time', 'wave.sin', 'Add.out')
+~~~~~~~~~~~~~
+
+So here we have registered the channels "global.time" , "wave.sin" and "Add.out", these will be written to the output file as the simulation runs. Now the last thing to do is to tell the machine to run for a set length of time. 
+
+~~~~~~~~~~~~~{.py}
+machine.Wait(5)
+~~~~~~~~~~~~~
+
+So this will set the machine to compute for 5 seconds, the full input script is shown below;
+
+~~~~~~~~~~~~~{.py}
+from vafmbase import ChannelType
+from vafmcircuits import Machine
+import vafmcircuits
+
+#Assign the machine with a time step of 0.01
+machine = Machine(name='machine', dt=0.01);
+
+#Add waver and add circuit
+machine.AddCircuit(type='waver',name='wave', amp=1, freq=2)
+machine.AddCircuit(type='opAdd',name='Add')
+
+#connect a sin wave to both inputs
+machine.Connect("wave.sin","Add.in1")
+machine.Connect("wave.sin","Add.in2")
+
+#Add the output circuit and register channels
+out1 = machine.AddCircuit(type='output',name='output',file='tut1.dat', dump=1)
+out1.Register('global.time', 'wave.sin', 'Add.out')
+
+#ask the machine to wait for 5 seconds
+machine.Wait(5)
+~~~~~~~~~~~~~
+
+So if you now plot the first ad third column of the  file "tut1.dat" you should find that you have now produced an wave that is equal to sin(2t) + sin(2t) as shown in figure 2.
+
+
+
+\image html tut1.png "Tutorial 1 output"
+
+
+
+
+
+
+*/

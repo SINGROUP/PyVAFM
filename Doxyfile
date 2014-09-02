@@ -618,7 +618,7 @@ INPUT                  = "./src/" "./doc/index.dox" "./doc/intro.dox" "./doc/cir
 		"./doc/circuitsman.dox"  "./doc/tutadd.dox" \
 		"./doc/tutint.dox"  "./doc/tutcomp.dox" \
 		"./doc/tut1ddf.dox"  "./doc/tutnacldf.dox" \
-		"./doc/UserManual.dox"
+		"./doc/UserManual.dox" "./doc/GUI.dox" 
 		
 
 # This tag can be used to specify the character encoding of the source files 
