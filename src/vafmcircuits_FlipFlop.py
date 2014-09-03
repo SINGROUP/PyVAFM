@@ -7,7 +7,7 @@ import math
 #
 
 
-## \breif SR Flip Flop circuit.
+## \brief SR Flip Flop circuit.
 # \image html SRFlipFlop.png "schema"
 #
 # Truth Table for SR FLip FLop

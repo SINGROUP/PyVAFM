@@ -2,7 +2,7 @@ from vafmbase import Circuit
 import math
 import ctypes
 
-## \breif Van Der Waals force circuit.
+## \brief Van Der Waals force circuit.
 # \image html VDW.png "schema"
 #
 # 

@@ -23,7 +23,7 @@ from ctypes import c_double
 #
 #
 # \b Output \b channels: 
-# 	- \a out = \f$ \sum_i^{factors} in_i \f$
+# 	- \a out = \f$\sum_i^{factors} in_i\f$
 #
 #\b Examples:
 # \code{.py}
