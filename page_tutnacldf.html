@@ -220,15 +220,11 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;scanner.ImageArea(11.28,11.28)        </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">#scan</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;scanner.ScanArea()</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;\end{lstlisting}</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;This scan will most likely take a long time you can reduce the time it will take by altering the resolution parameter. After it has finished running plot an intensity plot, <span class="keywordflow">if</span> you are using gnuplot you can use the following commands;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;\begin{lstlisting}[language=bash]</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;set pm3d</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;set size square</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;set palette rgbformula 34,35,36</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;sp <span class="stringliteral">&quot;tut5.dat&quot;</span> using 1:2:3</div>
+</div><!-- fragment --><p>This scan will most likely take a long time you can reduce the time it will take by altering the resolution parameter. After it has finished running plot an intensity plot, if you are using gnuplot you can use the following commands;</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;set pm3d</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;set size square</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;set palette rgbformula 34,35,36</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;sp <span class="stringliteral">&quot;NaCl.dat&quot;</span> using 1:2:3</div>
 </div><!-- fragment --><p>Your results should look similar to the image below;</p>
  
 <img src="tut5.png" width="800px">
@@ -238,7 +234,7 @@ function toggleMenu(objID, button) {
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Wed Sep 3 2014 17:49:42 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Wed Sep 10 2014 14:50:34 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->
