@@ -18,6 +18,7 @@ import vafmcircuits_signal_processing, vafmcircuits_Scanner, vafmcircuits_FlipFl
 import vafmcircuits_pycirc, vafmcircuits_Comparison, vafmcircuits_avg
 import vafmcircuits_VDW
 import vafmcircuits_STM
+import vafmcircuits_Dipole
 
 
 ## \package vafmcircuits

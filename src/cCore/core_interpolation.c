@@ -376,6 +376,8 @@ void i4Dlin(circuit* c) {
     double z = GlobalSignals[c->inputs[2]];
     double V = GlobalSignals[c->inputs[3]];
 
+    if (V == 0) { V = V +1;}
+
     int PBCx = c->iparams[5];
 	int PBCy = c->iparams[6];
 	int PBCz = c->iparams[7];    

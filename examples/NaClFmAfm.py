@@ -83,7 +83,7 @@ def main():
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [64,64]
+	scanner.Resolution = [64,1]
 	scanner.ImageArea(11.68,11.68)        
 	#scan
 	scanner.ScanArea()

@@ -278,7 +278,7 @@ class i1Dlin(Circuit):
 #	 - \a z : this is z the coordiante to calculate the interpolation.
 #	 - \a V : this ist he voltage of the STM.
 # - \b Output \b channels:
-# 	- \a Fn: The interpolated forces where n is the component for example F1 would be first first component.
+# 	- \a F: The interpolated output.
 #
 # \b Example:
 # \code
@@ -296,12 +296,15 @@ class i4Dlin(Circuit):
 	def __init__(self, machine, name, **keys):        
 			
 		super(self.__class__, self).__init__( machine, name )
-		
+		'''
 		if 'components' in keys.keys():
 			self.components = keys['components']
 			print "components = " +str(self.components)
 		else:
 			raise NameError("No components entered ")
+		'''
+		#Vasp files only have 1 component
+		self.components = 1
 
 		Circuit.cCore.Add_i4Dlin.argtypes = [ctypes.c_int,ctypes.c_int]
 		self.cCoreID = Circuit.cCore.Add_i4Dlin(machine.cCoreID, self.components)
@@ -315,7 +318,7 @@ class i4Dlin(Circuit):
 
 
 		for i in range(0,self.components):
-			self.AddOutput("F"+str(i+1))
+			self.AddOutput("F")
 
 		self.SetInputs(**keys)
 
@@ -376,13 +379,13 @@ class i4Dlin(Circuit):
 			for linenumber, line in enumerate(f):
 				#Find super cell size
 				if linenumber == 2:
-					size[0] = float(line.split()[0])
+					size[0] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
 				
 				if linenumber == 3:
-					size[1] = float(line.split()[1])
+					size[1] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
 
 				if linenumber == 4:
-					size[2] = float(line.split()[2])
+					size[2] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
 
 				#Find number of atoms
 				if linenumber == 6:
@@ -438,3 +441,7 @@ class i4Dlin(Circuit):
 
 		#Clear array to free up memory
 		del Density[0:len(Density)]
+
+
+
+

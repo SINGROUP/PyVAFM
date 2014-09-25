@@ -267,15 +267,18 @@ scanner.Resolution = [20,20]
 scanner.ImageArea(11.28,11.28)        
 #scan
 scanner.ScanArea()
-\end{lstlisting}
+
+~~~~~~~~~~~~~
 
 This scan will most likely take a long time you can reduce the time it will take by altering the resolution parameter. After it has finished running plot an intensity plot, if you are using gnuplot you can use the following commands;
 
-\begin{lstlisting}[language=bash]
+
+
+~~~~~~~~~~~~~{.py}
 set pm3d
 set size square
 set palette rgbformula 34,35,36
-sp "tut5.dat" using 1:2:3
+sp "NaCl.dat" using 1:2:3
 ~~~~~~~~~~~~~
 
 Your results should look similar to the image below;

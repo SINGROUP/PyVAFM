@@ -31,6 +31,8 @@ Cantilever circuits definitions.
  * params[4] = a
  * params[5] = cantioffset z
  * params[6] = reduced omega
+ * params[7] = vold
+ * params[8] = aold
  * *****************************************/
 int Add_Cantilever(int owner, double Q, double k, double M, double f0, double startingz, double cantiz) {
 
@@ -47,14 +49,16 @@ int Add_Cantilever(int owner, double Q, double k, double M, double f0, double st
 	c.nI = 3;
 	c.nO = 3;
 
-	c.plen = 7;
+	c.plen = 10;
 	c.params = (double*)calloc(c.plen,sizeof(double));
 	c.params[0] = gamma;
 	c.params[1] = M;
 	c.params[2] = startingz;
 	c.params[5] = cantiz;
 	c.params[6] = W;
-	
+	c.params[7] = 0;
+	c.params[8] = 0;	
+	c.params[9] = 0;
 	c.updatef = RunCantilever;
 
 	int index = AddToCircuits(c,owner);
@@ -65,12 +69,35 @@ int Add_Cantilever(int owner, double Q, double k, double M, double f0, double st
 
 
 void RunCantilever(circuit *c) {
+
 	
+		//second part of the update
+	//in principle here the forces should be updated!
+	//MAYBE LEAPFROG IS MORE CORRECT!
+
+	
+	if (c->params[9] == 1){
+
+
+	double az = GlobalSignals[c->inputs[1]] + GlobalSignals[c->inputs[2]]; //total force
+	
+	c->params[4] = az*c->params[1] - c->params[2]*c->params[6]*c->params[6];
+	c->params[4] /= dt;
+	c->params[3] = c->params[3]*(1.0-c->params[0]) + 0.5*c->params[4]; //update v (half step 2/2)
+	}
+	//Verlet End
+
+
+	//Verlet Start
 	//update tip z
 	c->params[2] += c->params[3]*dt*(1.0-c->params[0]) + 0.5*c->params[4]*dt;
-	//update velocity - half step
+	//update velocity - half step (1/2)
 	c->params[3] = c->params[3]*(1.0-c->params[0]) + 0.5*c->params[4];
-	
+
+
+
+	c->params[9] = 1;
+
 	//output the ztip - relative to the cantilever
 	GlobalBuffers[c->outputs[0]] = c->params[2];
 	//output the vztip
@@ -80,6 +107,8 @@ void RunCantilever(circuit *c) {
 	GlobalBuffers[c->outputs[1]] = GlobalSignals[c->inputs[0]] + c->params[5] + c->params[2]; 
 	//push the absolute position buffer
 	GlobalSignals[c->outputs[1]] = GlobalBuffers[c->outputs[1]];
+
+/*
 	
 	//second part of the update
 	//in principle here the forces should be updated!
@@ -89,6 +118,8 @@ void RunCantilever(circuit *c) {
 	c->params[4] = az*c->params[1] - c->params[2]*c->params[6]*c->params[6];
 	c->params[4] /= dt;
 	c->params[3] = c->params[3]*(1.0-c->params[0]) + 0.5*c->params[4]; //update v (half step)
+*/	
+ 
 
 }
 
@@ -480,6 +511,29 @@ void RunAdvancedCantilever(circuit *c)
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// vertical modes
 		//ztip = 0
+
+		double totalforce = GlobalSignals[c->inputs[5]] + GlobalSignals[c->inputs[0]]; 
+
+
+		for (int i=0; i<numberofmodesV;i++)
+		{
+			//change in acceleration
+			//force / mass                  - z * w ^2 
+			Av[i] = totalforce / Mv[i] - Zv[i]*Wv[i]*Wv[i];
+
+			//update the half velocity
+			Vv[i] = Vv[i] *(1 - Gammav[i]*dt) + 0.5 * Av[i] * dt;
+
+			// print out V and Z for each mode
+			GlobalBuffers[c->outputs[5+i]] = Vv[i];
+			GlobalBuffers[c->outputs[6+i+numberofmodesV]] = Zv[i];
+			
+		}
+
+
+
+
+
 		c->params[6] = 0;
 
 		for (int i=0; i<numberofmodesV;i++)
@@ -505,6 +559,8 @@ void RunAdvancedCantilever(circuit *c)
 		GlobalBuffers[c->outputs[3]] = GlobalSignals[c->inputs[3]] + c->params[8]; //y
 		GlobalBuffers[c->outputs[4]] = GlobalSignals[c->inputs[4]] + c->params[6]; //z
 
+
+/*
 		// total force = Force + exciterV
 		double totalforce = GlobalSignals[c->inputs[5]] + GlobalSignals[c->inputs[0]]; 
 
@@ -523,11 +579,35 @@ void RunAdvancedCantilever(circuit *c)
 			GlobalBuffers[c->outputs[6+i+numberofmodesV]] = Zv[i];
 			
 		}
+
+*/		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// lateral modes
 		//ytip = 0
+
+		// total force = Force + exciterY
+		totalforce = GlobalSignals[c->inputs[6]] + GlobalSignals[c->inputs[1]]; 
+
+
+		for (int i=0; i<numberofmodesL;i++)
+		{
+			//change in acceleration
+			//force / mass                  - z * w ^2 
+			Al[i] = totalforce / Ml[i] - Yl[i]*Wl[i]*Wl[i];
+
+			//update the half velocity
+			Vl[i] = Vl[i] *(1 - Gammal[i]*dt) + 0.5 * Al[i] * dt;
+
+			// print out V and Z for each mode
+			GlobalBuffers[c->outputs[7+i+numberofmodesV]] = Vl[i];
+			GlobalBuffers[c->outputs[8+i+numberofmodesV+numberofmodesL]] = Yl[i];
+			
+		}
+
+
+		
 		c->params[8] = 0;
 
 		for (int i=0; i<numberofmodesL;i++)
@@ -553,6 +633,8 @@ void RunAdvancedCantilever(circuit *c)
 		GlobalBuffers[c->outputs[3]] = GlobalSignals[c->inputs[3]] + c->params[8]; //y
 		GlobalBuffers[c->outputs[4]] = GlobalSignals[c->inputs[4]] + c->params[6]; //z
 
+
+/*
 		// total force = Force + exciterY
 		totalforce = GlobalSignals[c->inputs[6]] + GlobalSignals[c->inputs[1]]; 
 
@@ -571,6 +653,8 @@ void RunAdvancedCantilever(circuit *c)
 			GlobalBuffers[c->outputs[8+i+numberofmodesV+numberofmodesL]] = Yl[i];
 			
 		}
+*/
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
