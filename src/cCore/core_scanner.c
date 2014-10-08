@@ -357,3 +357,88 @@ void Scanner_DoScan( circuit *c )
 
 
 }
+/*
+    c.params[0] = Lvxx; X comp of the x lattice vector
+    c.params[1] = Lvxy; Y comp of the x lattice vector
+    c.params[2] = Lvxz; Z comp of the x lattice vector
+
+    
+    c.params[3] = Lvyx; X comp of the y lattice vector
+    c.params[4] = Lvyy; Y comp of the y lattice vector
+    c.params[5] = Lvyz; Z comp of the y lattice vector
+
+    c.params[6] = Lvzx; X comp of the z lattice vector
+    c.params[7] = Lvzy; Y comp of the z lattice vector
+    c.params[8] = Lvzz; Z comp of the z lattice vector
+
+    c.params[9]  = sqrt(Lvxx*Lvxx + Lvxy*Lvxy + Lvxz*Lvxz); mag of x vector
+    c.params[10] = sqrt(Lvyx*Lvyx + Lvyy*Lvyy + Lvyz*Lvyz); mag of y vector    
+    c.params[11] = sqrt(Lvzx*Lvzx + Lvzy*Lvzy + Lvzz*Lvzz); mag of z vector
+*/
+
+int CoordTransform(int owner, double Lvxx,double Lvxy,double Lvxz,   double Lvyx,double Lvyy,double Lvyz,   double Lvzx,double Lvzy,double Lvzz)
+{
+
+    circuit c = NewCircuit();
+    c.nI = 3;
+    c.nO = 3;
+    
+    c.plen = 12;
+    c.params = (double*)calloc(c.plen,sizeof(double));
+
+    c.params[0] = Lvxx;
+    c.params[1] = Lvxy;
+    c.params[2] = Lvxz;
+
+    
+    c.params[3] = Lvyx;
+    c.params[4] = Lvyy;
+    c.params[5] = Lvyz;
+
+    c.params[6] = Lvzx;
+    c.params[7] = Lvzy;
+    c.params[8] = Lvzz;
+
+    c.params[9]  = sqrt(Lvxx*Lvxx + Lvxy*Lvxy + Lvxz*Lvxz);
+    c.params[10] = sqrt(Lvyx*Lvyx + Lvyy*Lvyy + Lvyz*Lvyz);
+    c.params[11] = sqrt(Lvzx*Lvzx + Lvzy*Lvzy + Lvzz*Lvzz);
+
+    
+   
+    c.updatef = RunCoordTrans; //this is the default scanner update function
+    
+    int index = AddToCircuits(c,owner);
+    printf("cCore: Coordinate Transfomration Initialised\n");
+    return index;
+
+}
+
+void RunCoordTrans( circuit *c ) 
+{
+    double x = GlobalSignals[c->inputs[0]];
+    double y = GlobalSignals[c->inputs[1]];  
+    double z = GlobalSignals[c->inputs[2]]; 
+
+    //Find Fractional coord
+    double fracx = x / c->params[9];
+    double fracy = y / c->params[10];
+    double fracz = z / c->params[11];
+
+    double posx = fracx * c->params[0];
+    double posy = fracx * c->params[1];
+    double posz = fracx * c->params[2];
+
+    posx += fracy * c->params[3];
+    posy += fracy * c->params[4];
+    posz += fracy * c->params[5];
+
+    posx += fracz * c->params[6];
+    posy += fracz * c->params[7];
+    posz += fracz * c->params[8];
+
+   // printf("%f %f %f\n", posx,posy,posz);
+    GlobalBuffers[c->outputs[0]]  = posx;
+    GlobalBuffers[c->outputs[1]]  = posy;
+    GlobalBuffers[c->outputs[2]]  = posz;
+
+}

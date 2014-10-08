@@ -14,5 +14,6 @@ void Scanner_DoScan( circuit *c );
 
 void Scanner_DoMove_RecordF( circuit *c );
 
-
+int CoordTransform(int owner, double Lvxx,double Lvxy,double Lvxz,   double Lvyx,double Lvyy,double Lvyz,   double Lvzx,double Lvzy,double Lvzz);
+void RunCoordTrans( circuit *c ) ;
 #endif

@@ -4,31 +4,35 @@ from vafmcircuits import Machine
 def main():
 
 	machine = Machine(machine=None, name='machine', dt=0.01)
-		
-#	machine.AddCircuit(type='Dipole',name='Dipole',Dx=0,Dy=0,Dz=3,ZOffsetLower=134,ZOffsetUpper=134 ,Divisons=1, OutputFilename="Dipole.dat",PotentialFilename ="surf_f_elec_NN.LOCPOT" ,pushed=True)
-#	machine.AddCircuit(type='PlotAtoms',name='PlotAtoms', Filename ="surf_f_elec_NN.LOCPOT" ,pushed=True)
 
-
+	machine.AddCircuit(type='CoordTransform',name='CT', LatticeVectorX=[15.562592,0.0,0.0], LatticeVectorY=[-7.781296,13.4776,0.0], LatticeVectorZ=[15.562592,-8.985067,25.413607] ,pushed=True)
+	
 
 	scan = machine.AddCircuit(type='Scanner',name='scann')
 	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=1)
 
-	inter.Configure(steps=[0.072049037037,0.0720490369539,0.0741075825003], npoints=[215,215,285])
+	inter.Configure(steps=[0.1, 0.1, 0.1], npoints=[155,155,307])
 	inter.Configure(pbc=[True,True,False])
-	inter.ReadData('Dipole.dat')
+	inter.ReadData('Cerium.dat')
 
 	machine.Connect("scann.x" , "inter.x")
 	machine.Connect("scann.y" , "inter.y")
 	machine.Connect("scann.z" , "inter.z")
 
+	#machine.Connect("CT.xprime","inter.x")
+	#machine.Connect("CT.yprime","inter.y")
+	#machine.Connect("CT.zprime","inter.z")
+
 
 	#image output
-	imager = machine.AddCircuit(type='output',name='image',file='DipoleTest.dat', dump=0)
-	imager.Register("scann.x", "scann.y", 'inter.F1')
+	imager = machine.AddCircuit(type='output',name='image',file='CeriumFF.dat', dump=0)
+	imager.Register("scann.x", "scann.y", 'inter.F1',)
 
 	machine.Connect("scann.record", "image.record")
 
-	scan.Place(x=16, y=16, z=16)
+	scan.Place(x=0, y=0, z=13)
+	#machine.Wait(0.01)
+	
 	#this will print an empty line after each scanline
 	scan.Recorder = imager
 	scan.BlankLines = True 
@@ -36,10 +40,11 @@ def main():
 		
 	#resolution of the image [# points per line, # lines]
 	scan.Resolution = [256,256]
-	scan.ImageArea(15,15) 
+	scan.ImageArea(16,16) 
 		
 	#scan
 	scan.ScanArea()
+
 
 if __name__ == '__main__':
         main()

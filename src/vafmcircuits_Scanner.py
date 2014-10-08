@@ -269,3 +269,57 @@ class Scanner(Circuit):
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
 
 
+
+class CoordTransform(Circuit):
+    
+    
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+		self.AddInput("x")
+		self.AddInput("y")
+		self.AddInput("z")
+
+		self.AddOutput("xprime")
+		self.AddOutput("yprime")
+		self.AddOutput("zprime")
+		
+		if 'LatticeVectorX' in keys.keys():
+			self.LatticeVectorX = keys['LatticeVectorX']
+		else:
+			raise NameError("Missing LatticeVectorX parameter!")
+		
+		if 'LatticeVectorY' in keys.keys():
+			self.LatticeVectorY = keys['LatticeVectorY']
+		else:
+			raise NameError("Missing LatticeVectorY parameter!")
+
+		if 'LatticeVectorZ' in keys.keys():
+			self.LatticeVectorZ = keys['LatticeVectorZ']
+		else:
+			raise NameError("Missing LatticeVectorX parameter!")					
+		
+
+		Circuit.cCore.CoordTransform.argtypes = [c_int, c_double, c_double, c_double
+													  , c_double, c_double, c_double
+													  , c_double, c_double, c_double ]
+		
+		self.cCoreID = Circuit.cCore.CoordTransform(self.machine.cCoreID
+																			,self.LatticeVectorX[0],self.LatticeVectorX[1],self.LatticeVectorX[2]
+																			,self.LatticeVectorY[0],self.LatticeVectorY[1],self.LatticeVectorY[2]
+																			,self.LatticeVectorZ[0],self.LatticeVectorZ[1],self.LatticeVectorZ[2])
+
+		
+		self.SetInputs(**keys)
+
+		
+
+	def Initialize (self):
+
+		pass
+	
+
+	def Update (self):
+		pass
+
