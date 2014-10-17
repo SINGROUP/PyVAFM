@@ -6,7 +6,7 @@ PYINC	= /usr/include/python2.7/
 
 #CIRCUITS = core_container.o core_signals.o core_output.o core_maths.o core_logic.o  core_filters.o
 
-all: container cantilever siggen scanner interpo outputs rsa flops maths logics filters comparison control sigproc avg vdw stm pyc main.o 
+all: container cantilever siggen scanner interpo outputs rsa flops maths logics filters comparison control sigproc avg vdw stm pyc dipole main.o 
 	$(CC) $(LFLAGS) *.o
 	rm *.o
 	cp vafmcore.so ../.
@@ -47,6 +47,8 @@ vdw:
 	$(CC) $(CFLAGS) core_VDW.c
 stm:
 	$(CC) $(CFLAGS) core_STM.c
+dipole:
+	$(CC) $(CFLAGS) core_Dipole.c
 pyc:
 	$(CC) $(CFLAGS) -I$(PYINC) core_pycircuit.c
 clean:

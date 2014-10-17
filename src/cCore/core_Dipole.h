@@ -1,8 +1,8 @@
-#ifndef coreVDW
-#define coreVDW
+#ifndef coreDIPOLE
+#define coreDIPOLE
 
 
-int Add_Dipole(int owner, double Dx, double Dy, double Dz);
+int Add_Dipole(int owner,double stepz);
 void Dipole( circuit *c );
 
 

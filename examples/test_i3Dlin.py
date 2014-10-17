@@ -22,7 +22,7 @@ imager.Register("scann.x", "scann.y", 'inter.F3')
 
 machine.Connect("scann.record", "image.record")
 
-scan.Place(x=0, y=0, z=4)
+scan.Place(x=0, y=0, z=3)
 #this will print an empty line after each scanline
 scan.Recorder = imager
 scan.BlankLines = True 

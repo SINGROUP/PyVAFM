@@ -260,8 +260,7 @@ class Dipole(Circuit):
 		dz = float(size[2]/NumberOfPoints[2])
 		
 			
-
-
+		
 		print "Interpolating"
 
 		stepx = 0.1
@@ -313,7 +312,7 @@ class Dipole(Circuit):
 					points = []
 					values = []
 
-
+					#Find Interpolated point
 					Data[counterx][countery][counterz] = (  V[index[0] ][ index[1] ][ index[2] ]*(1-fracx)*(1-fracy)*(1-fracz)  		#V000 * (1-x)*(1-y)*(1-z)
 
 			       			 + V[index[0]+1 ][ index[1] ][ index[2] ]*(fracx)*(1-fracy)*(1-fracz)  		#V100 * (x)*(1-y)*(1-z) 
@@ -341,19 +340,23 @@ class Dipole(Circuit):
 			countery=0
 			x += stepx
 				
-		Datax = len(Data)
-		Datay = len(Data[0])
-		Dataz = len(Data[0][0])
+		#Datax = len(Data)
+		#Datay = len(Data[0])
+		#Dataz = len(Data[0][0])
 
+		Datax = len(V)
+		Datay = len(V[0])
+		Dataz = len(V[0][0])
+		
 		#print Data[0][0][300]
 
 
-		Force = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
+		Force  = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
 		Forceb = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
 		
 		print "Calculating Derivatives"
 
-
+		'''
 		for x in range(0,Datax):
 			for y in range(0,Datay):
 				for z in range(0,Dataz-2):
@@ -364,15 +367,18 @@ class Dipole(Circuit):
 			for y in range(0,Datay):
 				for z in range(0,Dataz-4):
 					Forceb[x][y][z] = (Force[x][y][z+2] - Force[x][y][z]) / (stepz*2)
+		'''
 
 		print "Writing to File"
 		for x in range(0,Datax):
 			for y in range(0,Datay):
-				for z in range(0,Dataz-4):
+				#REMEMEBR TO CHANGE ME BACK :)
+				#z = 12 to 14 ang
+				for z in range(0,30):
 					#print x,y,z
-					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" "+str(Forceb[x][y][z]) + "\n")		
+					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" "+str(V[x][y][z+162]) + "\n")		
 
-		print size
+		print size,NumberOfPoints,dx,dy,dz
 
 
 	def Initialize (self):
@@ -383,3 +389,43 @@ class Dipole(Circuit):
 		pass
 	
 
+
+
+
+
+
+
+
+
+
+
+class DipoleTest(Circuit):
+
+
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+		self.AddInput("Potential")
+	
+		#create output channels
+		self.AddOutput("Force")
+
+		Dx=0
+		Dy=0
+		Dz=1
+
+
+		if 'stepz' in keys.keys():
+			Stepz=  float(keys['stepz'])
+		else:
+			raise ValueError("Stepz required")
+
+		self.cCoreID = Circuit.cCore.Add_Dipole(self.machine.cCoreID, ctypes.c_double(Stepz) )
+
+	def Initialize (self):
+		pass
+
+
+	def Update (self):
+		pass

@@ -11,9 +11,9 @@ def main():
 	scan = machine.AddCircuit(type='Scanner',name='scann')
 	inter = machine.AddCircuit(type='i3Dlin',name='inter', components=1)
 
-	inter.Configure(steps=[0.1, 0.1, 0.1], npoints=[155,155,307])
+	inter.Configure(steps=[0.072049037037, 0.0748755555556, 0.075635735119], npoints=[216,180,332])
 	inter.Configure(pbc=[True,True,False])
-	inter.ReadData('Cerium.dat')
+	inter.ReadData('TestCeo2.dat')
 
 	machine.Connect("scann.x" , "inter.x")
 	machine.Connect("scann.y" , "inter.y")

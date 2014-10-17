@@ -126,7 +126,7 @@ class Channel(object):
 		self.signal = Feed(self.owner)
 
 	def __str__(self):
-		return self.owner.name+"."+self.name+" = "+str(self.signal)
+		return self.owner.name+"."+self.name+" = "+str(self.value)
 		
 
 
