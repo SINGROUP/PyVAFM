@@ -25,7 +25,7 @@ int Add_Dipole(int owner, double stepz) {
     
     c.plen = 6;
     c.params = (double*)calloc(c.plen,sizeof(double));
-    c.params[0]=stepz*2;
+    c.params[0]=stepz;
     c.params[1]=0;
     c.params[2]=0;
     c.params[3]=0;

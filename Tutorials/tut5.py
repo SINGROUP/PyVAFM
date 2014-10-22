@@ -39,7 +39,7 @@ out1.Stop()
  
 out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=10000)
 out2.Register('global.time', 'canti.ztip','agc.out','pll.df',"canti.fz")
-out2.Stop()
+#out2.Stop()
  
 #Imaging output
 imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
@@ -53,7 +53,7 @@ machine.Connect("scan.z" , "canti.holderz")
 machine.Connect("canti.zabs" , "inter.z")
  
 #Force
-machine.Connect("inter.F3" , "canti.fz")    
+#machine.Connect("inter.F3" , "canti.fz")    
  
 machine.Connect('canti.ztip','amp.signal')
 machine.Connect('amp.amp','agc.signal')
@@ -68,11 +68,12 @@ machine.Connect('pllinv.out','exc.in2')
 machine.Connect('exc.out','canti.exciter')
  
 machine.Connect("scan.record","image.record")   
+
+machine.Wait(0.1) 
  
+'''
  
- 
- 
-scanner.Place(x=0,y=0,z=15)
+scanner.Place(x=0,y=6,z=15)
 machine.Wait(0.1)   
  
 scanner.Move(x=0,y=0,z=-11)
@@ -81,7 +82,9 @@ machine.Wait(0.1)
 scanner.Recorder = imager
 scanner.BlankLines = True 
 #resolution of the image [# points per line, # lines]
-scanner.Resolution = [20,20]
-scanner.ImageArea(11.28,11.28)        
+scanner.Resolution = [64,1]
+scanner.ImageArea(12,12)        
 #scan
 scanner.ScanArea()
+
+'''

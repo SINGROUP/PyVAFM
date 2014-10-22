@@ -151,7 +151,7 @@ class PlotAtoms(Circuit):
 	def Update (self):
 		pass		
 
-class Dipole(Circuit):
+class ExtractPotential(Circuit):
 
 
 	def __init__(self, machine, name, **keys):
@@ -169,6 +169,13 @@ class Dipole(Circuit):
 		else:
 			raise ValueError("Output filename Required")
 
+		check = False
+
+		if 'ZCutOff' in keys.keys():
+			ZCutOff = keys['ZCutOff']
+		else:
+			ZCutOff = [0,0]
+			check = True
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
@@ -258,128 +265,42 @@ class Dipole(Circuit):
 		dx = float(size[0]/NumberOfPoints[0])
 		dy = float(size[1]/NumberOfPoints[1])
 		dz = float(size[2]/NumberOfPoints[2])
-		
-			
-		
-		print "Interpolating"
-
-		stepx = 0.1
-		stepy = 0.1
-		stepz = 0.1
-
-		Data = [[[0 for k in xrange( int (math.floor(size[2]/stepz)) ) ] for j in xrange( int (math.floor(size[1]/stepy)) )] for i in xrange(int (math.floor(size[0]/stepx)) )]
-
-
-		counterz = 0
-		countery = 0
-		counterx = 0
-
-
-		#interpolated point (in terms of magnitidue of the vector)
-		x=0
-		y=0
-		z=0
-		
-		
-		while x < size[0]-stepx:
-			y=0
-			while y < size[1]-stepy:
-				z = 0
-				while z < size[2]-stepz:
-		
-
-					indexpoint =[0,0,0]
-					index =[0,0,0]
-
-
-					#Find the voxel the point is 		
-					index[0] = int(math.floor(x/dx)) 
-					index[1] = int(math.floor(y/dy)) 
-					index[2] = int(math.floor(z/dz)) 
-					
-
-					indexpoint[0] = x/dx
-					indexpoint[1] = y/dy
-					indexpoint[2] = z/dz
-
-					#Find fractional indexs
-
-					fracx = indexpoint[0]-index[0]
-					fracy = indexpoint[1]-index[1]
-					fracz = indexpoint[2]-index[2]
-					#print fracx,fracy,fracz
-					
-					points = []
-					values = []
-
-					#Find Interpolated point
-					Data[counterx][countery][counterz] = (  V[index[0] ][ index[1] ][ index[2] ]*(1-fracx)*(1-fracy)*(1-fracz)  		#V000 * (1-x)*(1-y)*(1-z)
-
-			       			 + V[index[0]+1 ][ index[1] ][ index[2] ]*(fracx)*(1-fracy)*(1-fracz)  		#V100 * (x)*(1-y)*(1-z) 
-
-			       			 + V[index[0] ][ index[1]+1 ][ index[2] ]*(1-fracx)*(fracy)*(1-fracz)  		#V010 * (1-x)*(y)*(1-z) 
-
-			       			 + V[index[0] ][ index[1] ][ index[2]+1 ]*(1-fracx)*(1-fracy)*(fracz)  		#V001 * (1-x)*(1-y)*(z)
-
-			       			 + V[index[0]+1 ][ index[1] ][ index[2]+1 ]*(fracx)*(1-fracy)*(fracz)  		#V101 * (x)*(1-y)*(z)
-
-			       			 + V[index[0] ][ index[1]+1 ][ index[2]+1 ]*(1-fracx)*(fracy)*(fracz) 		#V011 * (1-x)*(y)*(z)
-
-			       			 + V[index[0]+1 ][ index[1]+1 ][ index[2] ]*(fracx)*(fracy)*(1-fracz)		#V110 * (x)*(y)*(1-z) 
-
-			       			 + V[index[0]+1 ][ index[1]+1 ][ index[2]+1 ]*(fracx)*(fracy)*(fracz) )		#V111 * (x)*(y)*(z)
-
-			 		z += stepz
-			 		counterz += 1
-
-			 	countery +=1
-			 	counterz = 0
-			 	y += stepy
-
-			counterx+=1
-			countery=0
-			x += stepx
-				
-		#Datax = len(Data)
-		#Datay = len(Data[0])
-		#Dataz = len(Data[0][0])
 
 		Datax = len(V)
 		Datay = len(V[0])
 		Dataz = len(V[0][0])
-		
-		#print Data[0][0][300]
+
+		if check == True:
+			ZCutOff[1] == Dataz
 
 
-		Force  = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
-		Forceb = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
-		
-		print "Calculating Derivatives"
-
-		'''
-		for x in range(0,Datax):
-			for y in range(0,Datay):
-				for z in range(0,Dataz-2):
-					Force[x][y][z] = (Data[x][y][z+2] - Data[x][y][z]) / (stepz*2)
-
-
-		for x in range(0,Datax):
-			for y in range(0,Datay):
-				for z in range(0,Dataz-4):
-					Forceb[x][y][z] = (Force[x][y][z+2] - Force[x][y][z]) / (stepz*2)
-		'''
 
 		print "Writing to File"
 		for x in range(0,Datax):
 			for y in range(0,Datay):
 				#REMEMEBR TO CHANGE ME BACK :)
-				#z = 12 to 14 ang
-				for z in range(0,30):
+				#z = 12 to 15 ang
+				for z in range(0,ZCutOff[1]):
 					#print x,y,z
-					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" "+str(V[x][y][z+162]) + "\n")		
+					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" "+str(V[x][y][z+ ZCutOff[0] ]) + "\n")		
 
-		print size,NumberOfPoints,dx,dy,dz
 
+		print "####################################"
+		print "Potential Field Information "
+		print " "
+		print "Step size in x = " + str(dx)
+		print "Step size in y = " + str(dy)
+		print "Step size in z = " + str(dz)
+		print " "
+		print "Number of points in x is = " + str(NumberOfPoints[0])
+		print "Number of points in y is = " + str(NumberOfPoints[1])
+		print "Number of points in z is = " + str(ZCutOff[1]) 
+		print " "
+		print "Lattice x vector is " + str(Vx) + " and the magnitude is " + str(size[0])
+		print "Lattice y vector is " + str(Vy) + " and the magnitude is " + str(size[1])
+		print "Lattice z vector is " + str(Vz) + " and the magnitude is " + str(size[2])
+		print " "
+		print "####################################"
 
 	def Initialize (self):
 		pass
@@ -388,44 +309,3 @@ class Dipole(Circuit):
 	def Update (self):
 		pass
 	
-
-
-
-
-
-
-
-
-
-
-
-class DipoleTest(Circuit):
-
-
-	def __init__(self, machine, name, **keys):
-
-		super(self.__class__, self).__init__( machine, name )
-
-		self.AddInput("Potential")
-	
-		#create output channels
-		self.AddOutput("Force")
-
-		Dx=0
-		Dy=0
-		Dz=1
-
-
-		if 'stepz' in keys.keys():
-			Stepz=  float(keys['stepz'])
-		else:
-			raise ValueError("Stepz required")
-
-		self.cCoreID = Circuit.cCore.Add_Dipole(self.machine.cCoreID, ctypes.c_double(Stepz) )
-
-	def Initialize (self):
-		pass
-
-
-	def Update (self):
-		pass
