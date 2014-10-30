@@ -150,6 +150,7 @@ void i3Dlin( circuit *c ) {
     
     //compute voxel indexes and t
     for (int i = 0; i < 3; i++) {
+        //printf("%f %f\n",pos[i] , c->params[i] );
 	idx[i] = (int)floor(pos[i]/c->params[i]); //voxel lower indexes
 	idxx[i] = idx[i]+1; //voxel higher indexes
 	if(idxx[i] == c->iparams[i+1] && c->iparams[i+6]==1)
@@ -159,15 +160,25 @@ void i3Dlin( circuit *c ) {
 	t[i] = (pos[i] - idx[i]*c->params[i])/c->params[i];
     }
 
+    //for the special case where the point is at the end of the FF so we must make the next index 0 (since PBC) 
+    //and since you dont want the max value from the FF the index must be reduced by 1
+    //printf("%f\n", c->params[0]*c->iparams[1]);
+    double maxx = c->params[0]*c->iparams[1];
+    double maxy = c->params[1]*c->iparams[2];
+    double maxz = c->params[2]*c->iparams[3];
 
-    if (pos[0] == 15.6) {idxx[0] = 0;}
-    if (pos[1] == 13.5) {idxx[1] = 0;}
-    if (pos[2] == 14.7) {idxx[2] = 0;}
+
+    //maxx = 15.600000000;
+    float acceptedDiff = 0.0000001;
+    if (fabsf (pos[0]-maxx) < acceptedDiff ) {idxx[0] = 0; idx[0] -=1;}
+    if ( fabsf (pos[1]-maxy) < acceptedDiff) {idxx[1] = 0; idx[1] -=1;}
+    if ( fabsf (pos[2]-maxz) < acceptedDiff) {idxx[2] = 0; idx[2] -=1;}
 	
+
     //printf("asd! %lf %lf %lf\n",pos[0],pos[1],pos[2]);
     //printf("asd! %lf %lf %lf\n",t[0],t[1],t[2]);
-    printf("asd! %d %d %d\n",idx[0],idx[1],idx[2]);
-    printf("asd! %d %d %d\n",idxx[0],idxx[1],idxx[2]);
+    //printf("asd! %d %d %d\n",idx[0],idx[1],idx[2]);
+    //printf("asd! %d %d %d\n",idxx[0],idxx[1],idxx[2]);
 
 
 
@@ -177,6 +188,8 @@ void i3Dlin( circuit *c ) {
     double *data;
     int nyz = c->iparams[5], ny = c->iparams[3];
     int indexes[8];
+
+
     indexes[0] = idx[0]*nyz + idx[1]*ny + idx[2];
     indexes[1] = idxx[0]*nyz + idx[1]*ny + idx[2];
     indexes[2] = idx[0]*nyz + idxx[1]*ny + idx[2];
@@ -191,10 +204,13 @@ void i3Dlin( circuit *c ) {
 	
 	data = (double*)c->vpparams[comp]; //data pointer to the component
 
+
+    /*
     printf("Check1 \n");
 
     printf("\n");
     printf("max = %i\n", 78*27*147);
+    printf("%i %i \n",nyz,ny );
     printf("0 0 0 %i \n", indexes[0]);
     printf("1 0 0 %i \n", indexes[1]);
     printf("0 1 0 %i \n", indexes[2]);
@@ -204,10 +220,10 @@ void i3Dlin( circuit *c ) {
     printf("0 1 1 %i \n", indexes[6]);
     printf("1 1 1 %i \n", indexes[7]);
     printf("\n");
+    */
 
 	for (int i = 0; i < 4; i++){
-        //SEG FAULTS HERE
-        printf("%i %i \n",i , indexes[2*i] );
+
 	    C000[i] = (1.0-t[0])*data[ indexes[2*i] ] + t[0]*data[ indexes[2*i+1] ];
     }
 
@@ -222,8 +238,7 @@ void i3Dlin( circuit *c ) {
 
 	GlobalBuffers[c->outputs[comp]] = C000[0];
     }
-        printf("Check2\n");
-        printf("\n");
+
 }
 
 
