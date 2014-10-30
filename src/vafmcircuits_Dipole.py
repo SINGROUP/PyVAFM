@@ -139,6 +139,9 @@ class PlotAtoms(Circuit):
 		# For z +y + x
 		plt.plot([size[0][0]+size[1][0],size[1][0]+size[2][0]+size[0][0]], [ size[1][1]+size[0][1], size[1][1]+size[2][1]+size[0][1]  ],[size[1][2]+size[0][2], size[1][2]+size[2][2]+size[0][2]], 'k-')
 
+
+
+
 		plt.show()
 				
 
@@ -219,6 +222,8 @@ class ExtractPotential(Circuit):
 				Vz[1] = float(line.split()[1])
 				Vz[2] = float(line.split()[2])
 			
+				
+
 			#Find number of atoms
 			if linenumber == 6:
 				for i in range(0, (len(line.split()))  ):
@@ -277,12 +282,10 @@ class ExtractPotential(Circuit):
 
 		print "Writing to File"
 		for x in range(0,Datax):
-			for y in range(0,Datay):
-				#REMEMEBR TO CHANGE ME BACK :)
-				#z = 12 to 15 ang
+			for y in range(0,Datay):				
 				for z in range(0,ZCutOff[1]):
 					#print x,y,z
-					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" "+str(V[x][y][z+ ZCutOff[0] ]) + "\n")		
+					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1+ ZCutOff[0])+" "+str(V[x][y][z+ ZCutOff[0] ]) + "\n")		
 
 
 		print "####################################"
@@ -294,7 +297,7 @@ class ExtractPotential(Circuit):
 		print " "
 		print "Number of points in x is = " + str(NumberOfPoints[0])
 		print "Number of points in y is = " + str(NumberOfPoints[1])
-		print "Number of points in z is = " + str(ZCutOff[1]) 
+		print "Number of points in z is = " + str(ZCutOff[1]+ZCutOff[0])
 		print " "
 		print "Lattice x vector is " + str(Vx) + " and the magnitude is " + str(size[0])
 		print "Lattice y vector is " + str(Vy) + " and the magnitude is " + str(size[1])

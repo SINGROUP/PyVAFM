@@ -104,12 +104,18 @@ void i3Dlin( circuit *c ) {
     double pos[3];
     int oob = 1;
     
+
+
+
+
     //position of the tip - pbc
     for (int i = 0; i < 3; i++) {
+
 
 	pos[i] = GlobalSignals[c->inputs[i]];
 	if(c->iparams[i+6] == 1)
 	    pos[i] -= floor(pos[i]/c->params[3+i])*c->params[3+i];
+
 	else {
 	    if( pos[i] >= (c->iparams[i+1]-1)*c->params[i] || pos[i] < 0) {
 		oob = 0;
@@ -117,7 +123,7 @@ void i3Dlin( circuit *c ) {
 	    
 	}
     }
-    
+
     
     if( pos[2] >= (c->iparams[2+1]-1)*c->params[2])
     {
@@ -128,7 +134,7 @@ void i3Dlin( circuit *c ) {
 	return;
     }
 
-	
+
 
     //outputs 0 if out of bounds
     if(oob == 0) {
@@ -152,11 +158,21 @@ void i3Dlin( circuit *c ) {
 	//compute t - the position of the tip in the voxel, normalised in 0-1
 	t[i] = (pos[i] - idx[i]*c->params[i])/c->params[i];
     }
+
+
+    if (pos[0] == 15.6) {idxx[0] = 0;}
+    if (pos[1] == 13.5) {idxx[1] = 0;}
+    if (pos[2] == 14.7) {idxx[2] = 0;}
 	
     //printf("asd! %lf %lf %lf\n",pos[0],pos[1],pos[2]);
     //printf("asd! %lf %lf %lf\n",t[0],t[1],t[2]);
-    //printf("asd! %d %d %d\n",idx[0],idx[1],idx[2]);
-    //printf("asd! %d %d %d\n",idxx[0],idxx[1],idxx[2]);
+    printf("asd! %d %d %d\n",idx[0],idx[1],idx[2]);
+    printf("asd! %d %d %d\n",idxx[0],idxx[1],idxx[2]);
+
+
+
+
+
     double C000[4];
     double *data;
     int nyz = c->iparams[5], ny = c->iparams[3];
@@ -170,21 +186,44 @@ void i3Dlin( circuit *c ) {
     indexes[6] = idx[0]*nyz + idxx[1]*ny + idxx[2];
     indexes[7] = idxx[0]*nyz + idxx[1]*ny + idxx[2];
     
+
     for (int comp=0; comp<c->iparams[0]; comp++) {
 	
 	data = (double*)c->vpparams[comp]; //data pointer to the component
-	
-	for (int i = 0; i < 4; i++)
+
+    printf("Check1 \n");
+
+    printf("\n");
+    printf("max = %i\n", 78*27*147);
+    printf("0 0 0 %i \n", indexes[0]);
+    printf("1 0 0 %i \n", indexes[1]);
+    printf("0 1 0 %i \n", indexes[2]);
+    printf("1 1 0 %i \n", indexes[3]);
+    printf("0 0 1 %i \n", indexes[4]);
+    printf("1 0 1 %i \n", indexes[5]);
+    printf("0 1 1 %i \n", indexes[6]);
+    printf("1 1 1 %i \n", indexes[7]);
+    printf("\n");
+
+	for (int i = 0; i < 4; i++){
+        //SEG FAULTS HERE
+        printf("%i %i \n",i , indexes[2*i] );
 	    C000[i] = (1.0-t[0])*data[ indexes[2*i] ] + t[0]*data[ indexes[2*i+1] ];
+    }
+
+
 	
 	C000[0] = C000[0]*(1.0-t[1]) + C000[1]*t[1];
 	C000[1] = C000[2]*(1.0-t[1]) + C000[3]*t[1];
 	
 	C000[0] = C000[0]*(1.0-t[2]) + C000[1]*t[2];
 	
+
+
 	GlobalBuffers[c->outputs[comp]] = C000[0];
     }
-
+        printf("Check2\n");
+        printf("\n");
 }
 
 

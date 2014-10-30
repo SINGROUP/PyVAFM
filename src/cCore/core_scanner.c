@@ -419,26 +419,72 @@ void RunCoordTrans( circuit *c )
     double y = GlobalSignals[c->inputs[1]];  
     double z = GlobalSignals[c->inputs[2]]; 
 
-    //Find Fractional coord
-    double fracx = x / c->params[9];
-    double fracy = y / c->params[10];
-    double fracz = z / c->params[11];
 
-    double posx = fracx * c->params[0];
-    double posy = fracx * c->params[1];
-    double posz = fracx * c->params[2];
+    /*
+        //Find unit vectors
 
-    posx += fracy * c->params[3];
-    posy += fracy * c->params[4];
-    posz += fracy * c->params[5];
+    double Unitxx =  c->params[0] / c->params[9];
+    double Unitxy =  c->params[1] / c->params[9];
+    double Unitxz =  c->params[2] / c->params[9];
 
-    posx += fracz * c->params[6];
-    posy += fracz * c->params[7];
-    posz += fracz * c->params[8];
+    double Unityx =  c->params[3] / c->params[10];
+    double Unityy =  c->params[4] / c->params[10];
+    double Unityz =  c->params[5] / c->params[10];
 
-   // printf("%f %f %f\n", posx,posy,posz);
-    GlobalBuffers[c->outputs[0]]  = posx;
-    GlobalBuffers[c->outputs[1]]  = posy;
-    GlobalBuffers[c->outputs[2]]  = posz;
+    double Unitzx =  c->params[6] / c->params[11];
+    double Unitzy =  c->params[7] / c->params[11];
+    double Unitzz =  c->params[8] / c->params[11];
+
+
+
+    double mag = sqrt(x*x + y*y + z*z);
+
+    double ux = x /mag;
+    double uy = y /mag;
+    double uz = z /mag;
+
+
+    
+    //double posx = x * (Unitxx) + y * (Unityx) + z * (Unitzx);
+    //double posy = x * (Unitxy) + y * (Unityy) + z * (Unitzy);
+    //double posz = x * (Unitxz) + y * (Unityz) + z * (Unitzz);
+
+    double posx = x * (c->params[0]) + y * (c->params[1]) + z * (c->params[2]);
+    double posy = x * (c->params[3]) + y * (c->params[4]) + z * (c->params[5]);
+    double posz = x * (c->params[6]) + y * (c->params[7]) + z * (c->params[8]);
+
+    //double posx = x * (Unitxx) + y * (Unitxy) + z * (Unitxz);
+    //double posy = x * (Unityx) + y * (Unityy) + z * (Unityz);
+    //double posz = x * (Unitzx) + y * (Unitzy) + z * (Unitzz);
+
+    //printf("%f %f %f \n",c->params[3],c->params[4],c->params[5] );
+    */
+
+    double ax = c->params[0];
+    double ay = c->params[1];
+    double az = c->params[2];
+
+    double bx = c->params[3];
+    double by = c->params[4];
+    double bz = c->params[5];
+
+    double cx = c->params[6];
+    double cy = c->params[7];
+    double cz = c->params[8];
+
+
+    //Find C1
+    double posx = (bz*cy*x - by*cz*x - bz*cx*y + bx*cz*y + by*cx*z - bx*cy*z)/ (az*by*cx - ay*bz*cx - az*bx*cy + ax*bz*cy + ay*bx*cz - ax*by*cz);
+    //Find C2
+    double posy = (az*cy*x - ay*cz*x - az*cx*y + ax*cz*y + ay*cx*z - ax*cy*z)/ (-(az*by*cx) + ay*bz*cx + az*bx*cy - ax*bz*cy - ay*bx*cz + ax*by*cz);
+    //Find C3
+    double posz = (az*by*x - ay*bz*x - az*bx*y + ax*bz*y + ay*bx*z - ax*by*z)/ (az*by*cx - ay*bz*cx - az*bx*cy + ax*bz*cy + ay*bx*cz - ax*by*cz);
+
+
+
+    GlobalBuffers[c->outputs[0]]  = posx*c->params[9];
+    GlobalBuffers[c->outputs[1]]  = posy*c->params[10];
+    GlobalBuffers[c->outputs[2]]  = posz*c->params[11];
+
 
 }
