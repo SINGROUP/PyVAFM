@@ -268,7 +268,35 @@ class Scanner(Circuit):
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
 
-
+## \brief CoordTransform circuit.
+#
+#
+# \image html CT.png "schema"
+# This circuit transforms coordinates from real cubic space into various other spaces by supplying the lattice coordinates, allowing non ortho files to be used in the PyVAFM.
+#
+# \b Initialisation \b parameters:
+# 	- \a pushed = True|False  push the output buffer immediately if True
+#
+# \b Initialisation \b Commands:
+#	- LatticeVectorX =[float,float,float] | The lattice vector in the x direction
+#	- LatticeVectorY =[float,float,float] | The lattice vector in the y direction
+#	- LatticeVectorZ =[float,float,float] | The lattice vector in the z direction
+#
+#
+# \b input \b channels:
+# 	- \a x = x coordinate value.
+# 	- \a y = y coordinate value.
+# 	- \a z = z coordinate value.
+#
+# \b input \b channels:
+# 	- \a xprime = Transformed x coordinate value.
+# 	- \a yprime = Transformed y coordinate value.
+# 	- \a zprime = Transformed z coordinate value.
+#\b Examples:
+# \code{.py}
+#	machine.AddCircuit(type='CoordTransform',name='CT', LatticeVectorX= [15.562592,0.0,0.0], LatticeVectorY=[-7.781296,13.4776,0.0], LatticeVectorZ=[15.562592,-8.985067,25.413607],pushed=True)
+# \endcode
+#
 
 class CoordTransform(Circuit):
     

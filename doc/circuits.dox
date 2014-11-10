@@ -235,6 +235,7 @@
 @endhtmlonly
 	- Scanner
 		- \link vafmcircuits_Scanner.Scanner Scanner\endlink - <i> Scanning circuit</i>
+		- \link vafmcircuits_Scanner.CoordTransform Coordinate Transform\endlink - <i> Coordinate Transform circuit</i>		
 @htmlonly
 </div><!-- end of Composites list -->
 @endhtmlonly
@@ -260,6 +261,25 @@
 @endhtmlonly
 
 
+@htmlonly
+<div>
+	<a class="anchor" id="sec_MISC" ></a>
+	<h1>
+	<span class="foldbt" onclick="toggleMenu('MISC',this)">-</span>Miscellaneous Circuits</h1>
+</div>
+<div id="MISC">
+@endhtmlonly
+	- Miscellaneous Circuits
+		- \link vafmcircuits_Dipole.PlotAtoms Plot Atoms\endlink - <i> Plot Atoms Circuit</i>
+		- \link vafmcircuits_Dipole.ExtractPotential Extract Potential\endlink - <i> Extract Potential Circuit</i>
+		- \link vafmcircuits_Dipole.LOCPOTShaping LOCPOT Shaping\endlink - <i> LOCPOT Shaping Circuit</i>
+		- \link vafmcircuits_Dipole.Dipole Dipole Aproximation\endlink - <i> Dipole Aproximation Circuit</i>
+
+@htmlonly
+</div><!-- end of Composites list -->
+@endhtmlonly
+
+
 
 
 @htmlonly
@@ -275,6 +295,9 @@
 @htmlonly
 </div><!-- end of Composites list -->
 @endhtmlonly
+
+
+
 
 \link docindex Documentation \endlink > Circuits
 

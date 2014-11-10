@@ -9,6 +9,31 @@ import time
 import math
 import tools
 
+## \package vafmcircuits_Dipole
+# This file contains the averager circuit classes.
+
+## \brief PlotAtoms circuit.
+#
+# This circuit will plot atoms using MatPlotLib from a LOCPOT file.
+# This Circuit requires MatPlotLib library to be installed.
+#
+# \b Initialisation \b parameters:
+# 	- \a Filename = Input Filename | string
+#
+# \b Input \b channels:
+# 	None
+#
+# \b Output \b channels:
+# 	None
+#
+#\b Examples:
+# \code{.py}
+# machine.AddCircuit(type='PlotAtoms',name='plot',Filename='host.LOCPOT')
+# \endcode
+#
+
+
+
 class PlotAtoms(Circuit):
 	def __init__(self, machine, name, **keys):
 
@@ -154,6 +179,27 @@ class PlotAtoms(Circuit):
 	def Update (self):
 		pass		
 
+
+## \brief ExtractPotential circuit.
+#
+# This circuit will extract the potential from a cubic LOCPOT file, as well as outputting to the terminal information regarding the locpot eg: Stepsize etc.
+#
+# \b Initialisation \b parameters:
+# 	- \a PotentialFilename = LOCPOT Filename | string
+# 	- \a OutputFilename = Output Filename | string
+#	- \a ZCutOff = [LowerIndex | int ,UpperIndex | int] This is the upper and lower z index cut offs allowings users to cut off top or bottom of locpot files
+#
+# \b Input \b channels:
+# 	None
+#
+# \b Output \b channels:
+# 	None
+#
+#\b Examples:
+# \code{.py}
+# machine.AddCircuit(type='ExtractPotential',name='host.LOCPOT', OutputFilename="File.dat",PotentialFilename=InputFilename,ZCutOff=[200,20])
+# \endcode
+#
 
 #This will simple extract potential from a LOCPOT
 class ExtractPotential(Circuit):
@@ -317,7 +363,31 @@ class ExtractPotential(Circuit):
 
 
 
+## \brief LOCPOTShaping circuit.
+#
+# This circuit will extract the potential from a LOCPOT file for both ortharombic and non orthorombic files. After extracting the potential 
+# the circuit will reshape the data into a cubic format so it can be read by the PyVAFM.
+#
+# \b Initialisation \b parameters:
+# 	- \a PotentialFilename = LOCPOT Filename | string
+# 	- \a OutputFilename = Output Filename | string
+#	- \a ZCutOff = [LowerIndex | int ,UpperIndex | int] This is the upper and lower z index cut offs allowings users to cut off top or bottom of locpot files
+#	- \a ForcefieldSize = [x | float ,y | float,z | float] This is the total size of the force field, By default this is set to the size of the appropriate component of the lattice vectors.
+#	- \a ForcefieldStepSize = [x | float ,y | float,z | float] This is the step size of the force field,
 
+#
+# \b Input \b channels:
+# 	None
+#
+# \b Output \b channels:
+# 	None
+#
+#\b Examples:
+# \code{.py}
+#machine.AddCircuit(type='LOCPOTShaping',name='LOCPOTShaping', OutputFilename="Ceria.dat",PotentialFilename="host.LOCPOT",ForcefieldSize=[15.562592,13.4776,25.413607]
+#					,ForcefieldStepSize=[0.072049037037,0.0748755555556,0.075635735119])
+# \endcode
+#
 
 
 
@@ -332,6 +402,8 @@ class LOCPOTShaping(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
+
+
 		if 'PotentialFilename' in keys.keys():
 			self.Filename=  str(keys['PotentialFilename'])
 		else:
@@ -343,20 +415,22 @@ class LOCPOTShaping(Circuit):
 		else:
 			raise ValueError("Output filename Required")
 
-		check = False
+		check  = False
+		checka = False
+		checkb = False
+		checkc = False
 
 		if 'ZCutOff' in keys.keys():
 			ZCutOff = keys['ZCutOff']
 		else:
 			ZCutOff = [0,0]
-			check = True
+			
 
 		if 'ForcefieldSize' in keys.keys():
 			ForcefieldSize = keys['ForcefieldSize']
 		else:
-			raise ValueError("ERROR: No Force field size specified")
-
-		#ForcefieldSize = [15.562592,13.4776,25.413607]
+			check = True
+			ForcefieldSize = [15.562592,13.4776,25.413607]
 
 		if 'ForcefieldStepSize' in keys.keys():
 			STEPSIZE = keys['ForcefieldStepSize']
@@ -370,17 +444,17 @@ class LOCPOTShaping(Circuit):
 		if 'LatticeVectora' in keys.keys():
 			LatticeVectora = keys['LatticeVectora']
 		else:
-			LatticeVectora = [1 , 0 , 0]
+			checka = True
 	
 		if 'LatticeVectorb' in keys.keys():
 			LatticeVectorb = keys['LatticeVectorb']
 		else:
-			LatticeVectorb = [0 , 1 , 0]			
+			checkb = True		
 		
 		if 'LatticeVectorc' in keys.keys():
 			LatticeVectorc = keys['LatticeVectorc']
 		else:
-			LatticeVectorc = [0 , 0 , 1]
+			checkc = True
 
 
 
@@ -473,6 +547,20 @@ class LOCPOTShaping(Circuit):
 				if len(line.split()) == 0:
 					break
 
+		if check == True:
+			ForcefieldSize = [Vx[0],Vy[1],Vz[2]]
+
+		if checka == True:
+			LatticeVectora = [Vx[0],Vx[1],Vx[2]]
+
+		if checkb == True:
+			LatticeVectorb = [Vy[0],Vy[1],Vy[2]]
+
+		if checkc == True:
+			LatticeVectorc = [Vz[0],Vz[1],Vz[2]]
+
+
+
 		print "File read in"
 		#Find step size
 		dx = float(size[0]/NumberOfPoints[0])
@@ -483,8 +571,6 @@ class LOCPOTShaping(Circuit):
 		Datay = len(V[0])
 		Dataz = len(V[0][0])
 
-		if check == True:
-			ZCutOff[1] == Dataz
 
 
 
@@ -586,6 +672,32 @@ class LOCPOTShaping(Circuit):
 
 
 
+## \brief Dipole circuit.
+#
+# This circuit will apply the dipole aproximation as devloped by David Gao (<http://pubs.acs.org/doi/abs/10.1021/nn501785q>).
+# Warning: When applying this aproximation to noisy signals 
+#
+# \b Initialisation \b parameters:
+# 	- \a InputFile = Input potential file must be in the same format as used in i3dlin.
+#	- \a OutputFile = Output force field already formated in such a way that the PyVAFM can use it.
+#	- \a StepSize = Step size of the inputted potential field..
+#	- \a Dz = Magnitude of the dipole vector in the z direction.
+
+#
+# \b Input \b channels:
+# 	- None
+#
+# \b Output \b channels:
+# 	- None
+#
+#\b Examples:
+# \code{.py}
+#machine.AddCircuit(type='Dipole',name='Dipole',InputFile="Ceria.dat", OutputFile="FF.dat", stepsize= [0.072049037037,0.0748755555556,0.075635735119])
+# \endcode
+#
+
+
+
 class Dipole(Circuit):
 
 
@@ -608,6 +720,12 @@ class Dipole(Circuit):
 			Step=keys['stepsize']
 		else:
 			raise ValueError("step size Required")
+
+		if 'Dz' in keys.keys():
+			Dz=keys['Dz']
+		else:
+			Dz=1
+
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
@@ -643,7 +761,7 @@ class Dipole(Circuit):
 		for x in range(0,I):
 			for y in range(0,J):
 				for z in range(1,K-1):
-					Force[x][y][z] =(U[x][y][z+1] - 2*U[x][y][z] + U[x][y][z-1]) / (Step[2]*Step[2])
+					Force[x][y][z] =(U[x][y][z+1] - 2*U[x][y][z] + U[x][y][z-1]) / (Step[2]*Step[2]) * Dz
 
 		for x in range(0,I):
 			for y in range(0,J):
