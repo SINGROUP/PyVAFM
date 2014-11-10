@@ -154,6 +154,8 @@ class PlotAtoms(Circuit):
 	def Update (self):
 		pass		
 
+
+#This will simple extract potential from a LOCPOT
 class ExtractPotential(Circuit):
 
 
@@ -247,7 +249,6 @@ class ExtractPotential(Circuit):
 				for i in range(0, (len(line.split()))  ):
 
 
-					
 					V[ index[0] ][ index[1] ] [ index[2] ] = float (line.split()[i])
 					#V.append(float( line.split()[i] ) )
 					#print index
@@ -312,3 +313,350 @@ class ExtractPotential(Circuit):
 	def Update (self):
 		pass
 	
+
+
+
+
+
+
+
+
+
+
+
+
+class LOCPOTShaping(Circuit):
+
+
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+		if 'PotentialFilename' in keys.keys():
+			self.Filename=  str(keys['PotentialFilename'])
+		else:
+			raise ValueError("Input filename Required")
+
+
+		if 'OutputFilename' in keys.keys():
+			self.OFilename=  str(keys['OutputFilename'])
+		else:
+			raise ValueError("Output filename Required")
+
+		check = False
+
+		if 'ZCutOff' in keys.keys():
+			ZCutOff = keys['ZCutOff']
+		else:
+			ZCutOff = [0,0]
+			check = True
+
+		if 'ForcefieldSize' in keys.keys():
+			ForcefieldSize = keys['ForcefieldSize']
+		else:
+			raise ValueError("ERROR: No Force field size specified")
+
+		#ForcefieldSize = [15.562592,13.4776,25.413607]
+
+		if 'ForcefieldStepSize' in keys.keys():
+			STEPSIZE = keys['ForcefieldStepSize']
+		else:
+			raise ValueError("ERROR: No Force field step size specified")
+
+		stepx = STEPSIZE[0]
+		stepy = STEPSIZE[1]
+		stepz = STEPSIZE[2]
+
+		if 'LatticeVectora' in keys.keys():
+			LatticeVectora = keys['LatticeVectora']
+		else:
+			LatticeVectora = [1 , 0 , 0]
+	
+		if 'LatticeVectorb' in keys.keys():
+			LatticeVectorb = keys['LatticeVectorb']
+		else:
+			LatticeVectorb = [0 , 1 , 0]			
+		
+		if 'LatticeVectorc' in keys.keys():
+			LatticeVectorc = keys['LatticeVectorc']
+		else:
+			LatticeVectorc = [0 , 0 , 1]
+
+
+
+		#LatticeVectora = [15.562592,0.0,0.0]
+		#LatticeVectorb = [-7.781296,13.4776,0.0]
+		#LatticeVectorc = [15.562592,-8.985067,25.413607]
+
+
+
+		f = open(self.Filename, "r")
+		fo = open(self.OFilename, "w")
+		print "Reading in file: "+ self.Filename
+		
+		size=[0,0,0]
+		index = [0,0,0]
+		NumberOfPoints=[0,0,0]
+
+		Points=[0,0,0]
+
+		NumberOfAtoms=0
+		Vx =[0,0,0]
+		Vy =[0,0,0]
+		Vz =[0,0,0]
+
+		linelen = 0
+		check = False
+
+		for linenumber, line in enumerate(f):
+			if linenumber == 2:
+				size[0] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
+				
+				Vx[0] = float(line.split()[0])
+				Vx[1] = float(line.split()[1])
+				Vx[2] = float(line.split()[2])
+
+			if linenumber == 3:
+				size[1] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
+
+				Vy[0] = float(line.split()[0])
+				Vy[1] = float(line.split()[1])
+				Vy[2] = float(line.split()[2])
+
+			if linenumber == 4:
+				size[2] = (float(line.split()[0])**2 + float(line.split()[1])**2 + float(line.split()[2])**2) ** (0.5)
+
+
+				Vz[0] = float(line.split()[0])
+				Vz[1] = float(line.split()[1])
+				Vz[2] = float(line.split()[2])
+			
+				
+
+			#Find number of atoms
+			if linenumber == 6:
+				for i in range(0, (len(line.split()))  ):
+					NumberOfAtoms += float(line.split()[i])
+
+
+			#find number of points
+			if linenumber == NumberOfAtoms+9:
+
+				NumberOfPoints[0]= int(line.split()[0])
+				NumberOfPoints[1]= int(line.split()[1])
+				NumberOfPoints[2]= int(line.split()[2])
+
+
+
+				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+				#V = []				
+
+			if linenumber > NumberOfAtoms+9:
+
+				for i in range(0, (len(line.split()))  ):
+
+
+					V[ index[0] ][ index[1] ] [ index[2] ] = float (line.split()[i])
+					#V.append(float( line.split()[i] ) )
+					#print index
+					index[0] = index[0] +1
+
+					if index [0] == NumberOfPoints[0]:
+						index[0] = 0
+						index[1] = index [1] +1
+
+					if index [1] == NumberOfPoints[1]:
+						index[1] = 0
+						index[2] = index[2] +1	
+				
+
+				if len(line.split()) == 0:
+					break
+
+		print "File read in"
+		#Find step size
+		dx = float(size[0]/NumberOfPoints[0])
+		dy = float(size[1]/NumberOfPoints[1])
+		dz = float(size[2]/NumberOfPoints[2])
+
+		Datax = len(V)
+		Datay = len(V[0])
+		Dataz = len(V[0][0])
+
+		if check == True:
+			ZCutOff[1] == Dataz
+
+
+
+
+		Force  = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
+		Forceb = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
+
+		
+		#For coord transform find:
+
+		ax = LatticeVectora[0]
+		ay = LatticeVectora[1]
+		az = LatticeVectora[2]
+		
+		bx = LatticeVectorb[0]
+		by = LatticeVectorb[1]
+		bz = LatticeVectorb[2]
+
+		cx = LatticeVectorc[0]
+		cy = LatticeVectorc[1]
+		cz = LatticeVectorc[2]		
+
+		maga = math.sqrt (LatticeVectora[0]*LatticeVectora[0] + LatticeVectora[1]*LatticeVectora[1] + LatticeVectora[2]*LatticeVectora[2])
+		magb = math.sqrt (LatticeVectorb[0]*LatticeVectorb[0] + LatticeVectorb[1]*LatticeVectorb[1] + LatticeVectorb[2]*LatticeVectorb[2])
+		magc = math.sqrt (LatticeVectorc[0]*LatticeVectorc[0] + LatticeVectorc[1]*LatticeVectorc[1] + LatticeVectorc[2]*LatticeVectorc[2])
+
+		print "Interpolating"
+
+
+
+
+		x = 0
+		y = 0
+		z = 0
+
+		counter = [0,0,0]
+
+		sizex = math.ceil(ForcefieldSize[0] / stepx)
+		sizey = math.ceil(ForcefieldSize[1] / stepy)
+		sizez = math.ceil(ForcefieldSize[2] / stepz)
+
+		
+
+		U = [[[0 for k in xrange( int (sizez) ) ] for j in xrange( int (sizey) )] for i in xrange(int (sizex) )]
+
+	 	xarray = []
+	 	yarray = []
+	 	zarray = []
+
+
+		
+		#Build the 3d interpolated square grid
+		while x <= ForcefieldSize[0]:
+			while y<=ForcefieldSize[1]:
+				while z <= ForcefieldSize[2]:
+
+					#print counter[2]
+					#Find the transformed coordiante
+					posx = maga*(bz*cy*x - by*cz*x - bz*cx*y + bx*cz*y + by*cx*z - bx*cy*z)/ (az*by*cx - ay*bz*cx - az*bx*cy + ax*bz*cy + ay*bx*cz - ax*by*cz)
+					posy = magb*(az*cy*x - ay*cz*x - az*cx*y + ax*cz*y + ay*cx*z - ax*cy*z)/ (-(az*by*cx) + ay*bz*cx + az*bx*cy - ax*bz*cy - ay*bx*cz + ax*by*cz)
+					posz = magc*(az*by*x - ay*bz*x - az*bx*y + ax*bz*y + ay*bx*z - ax*by*z)/ (az*by*cx - ay*bz*cx - az*bx*cy + ax*bz*cy + ay*bx*cz - ax*by*cz)
+
+					ans = tools.interpolate(V,[dx,dy,dz],posx,posy,posz)
+					U[ counter[0] ][ counter[1] ][ counter[2] ] = ans
+
+
+					z+=stepz
+					counter[2]+=1
+					
+
+				counter[1] += 1
+				counter[2] =  0
+				z = 0
+				y += stepy
+
+			counter[0] += 1
+			counter[1] =  0
+			counter[2] =  0
+			y = 0
+			z = 0
+			x += stepx
+
+
+		
+		#Output the Potential
+		print "Writing to File"
+		for x in range(0, int (sizex) ):
+			for y in range(0,int(sizey) ):
+				for z in range(0+ZCutOff[0],int(sizez-ZCutOff[1]) ):
+					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" " + str(U[x][y][z]) + "\n")
+		
+
+	def Initialize (self):
+		pass
+
+
+	def Update (self):
+		pass
+
+
+
+class Dipole(Circuit):
+
+
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+		if 'InputFile' in keys.keys():
+			self.Filename=  str(keys['InputFile'])
+		else:
+			raise ValueError("Input filename Required")
+
+
+		if 'OutputFile' in keys.keys():
+			self.OFilename=  str(keys['OutputFile'])
+		else:
+			raise ValueError("Output filename Required")
+
+		if 'stepsize' in keys.keys():
+			Step=keys['stepsize']
+		else:
+			raise ValueError("step size Required")
+
+		f = open(self.Filename, "r")
+		fo = open(self.OFilename, "w")
+		print "Reading in file: "+ self.Filename
+
+
+		for line in f:
+			pass
+		last = line
+		
+
+		if last == "\n":
+			raise ValueError("ERROR: Blank line at end of input file, remove it from input file")
+
+		I =  int(last.split()[0])
+		J =  int(last.split()[1])
+		K =  int(last.split()[2])
+		
+		U  = [[[0 for k in xrange( int (K) ) ] for j in xrange( int (J) )] for i in xrange(int (I) )]
+		Force  = [[[0 for k in xrange( int (K) ) ] for j in xrange( int (J) )] for i in xrange(int (I) )]
+
+
+		f = open(self.Filename, "r")
+		for line in f:
+			
+			U[ int(line.split()[0])-1][ int(line.split()[1])-1][ int(line.split()[2])-1] = float(line.split()[3])
+
+
+
+
+
+
+		for x in range(0,I):
+			for y in range(0,J):
+				for z in range(1,K-1):
+					Force[x][y][z] =(U[x][y][z+1] - 2*U[x][y][z] + U[x][y][z-1]) / (Step[2]*Step[2])
+
+		for x in range(0,I):
+			for y in range(0,J):
+				for z in range(1,K-1):
+					fo.write(str(x+1)+" "+str(y+1)+" "+str(z)+" "+str(Force[x][y][z]) + "\n")
+
+
+	def Initialize (self):
+		pass
+
+
+	def Update (self):
+		pass
+
+
+
