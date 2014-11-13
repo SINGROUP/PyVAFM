@@ -675,7 +675,7 @@ class LOCPOTShaping(Circuit):
 ## \brief Dipole circuit.
 #
 # This circuit will apply the dipole aproximation as devloped by David Gao (<http://pubs.acs.org/doi/abs/10.1021/nn501785q>).
-# Warning: When applying this aproximation to noisy signals 
+# Warning: Be careful when applying this aproximation to noisy signals as the second derivatives may yeild an incorrect result.
 #
 # \b Initialisation \b parameters:
 # 	- \a InputFile = Input potential file must be in the same format as used in i3dlin.

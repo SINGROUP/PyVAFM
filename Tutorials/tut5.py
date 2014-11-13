@@ -71,7 +71,6 @@ machine.Connect("scan.record","image.record")
 
 machine.Wait(0.1) 
  
-'''
  
 scanner.Place(x=0,y=6,z=15)
 machine.Wait(0.1)   
@@ -82,9 +81,8 @@ machine.Wait(0.1)
 scanner.Recorder = imager
 scanner.BlankLines = True 
 #resolution of the image [# points per line, # lines]
-scanner.Resolution = [64,1]
+scanner.Resolution = [64,64]
 scanner.ImageArea(12,12)        
 #scan
 scanner.ScanArea()
 
-'''
