@@ -69,10 +69,9 @@ machine.Connect('exc.out','canti.exciter')
  
 machine.Connect("scan.record","image.record")   
 
-machine.Wait(0.1) 
  
  
-scanner.Place(x=0,y=6,z=15)
+scanner.Place(x=0,y=0,z=15)
 machine.Wait(0.1)   
  
 scanner.Move(x=0,y=0,z=-11)
