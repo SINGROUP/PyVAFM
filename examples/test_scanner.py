@@ -6,7 +6,7 @@ from vafmcircuits import Machine
 def main():
 	
 	
-	machine = Machine(name='machine', dt=0.01, pushed=True);
+	machine = Machine(name='machine', dt=0.001, pushed=True);
 	
 	#Add Circuits
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
@@ -40,13 +40,16 @@ def main():
 	machine.Connect("sinx.out", "add.in1")
 	machine.Connect("siny.out", "add.in2")
 	
+
+
 	#this will print an empty line after each scanline
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#not necessary, but it makes it easier for gnuplot
-	
+	scanner.FastScan=1
+	scanner.ImageSize = [2,2]
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [30,60]
+	scanner.Resolution = [200,200]
 	
 	#scan
 	scanner.ScanArea()

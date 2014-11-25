@@ -448,9 +448,9 @@ int* GetOutputs(int c) {
     return circuits[c].outputs;
 }
 
-int Update(int steps) {
+int Update(unsigned long long int  steps) {
  
-    for(int t=0; t<steps; t++) {
+    for(unsigned long long int t=0; t<steps; t++) {
         
         //printf("step %d\n",t);
         circuits[0].updatef( &circuits[0] ); //this way is faster

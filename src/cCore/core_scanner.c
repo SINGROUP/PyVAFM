@@ -34,6 +34,9 @@ int Scanner( int owner ) {
 	
     c.iplen = 6;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
+
+    c.vplen = 1;
+    c.vpparams = (unsigned long long int*)calloc(c.vplen,sizeof(unsigned long long int));    
    
     c.updatef = Scanner_DoIdle; //this is the default scanner update function
     
@@ -57,7 +60,7 @@ int Scanner( int owner ) {
  * 
  * *************************************/
 
-int Scanner_Move(int index, double x, double y, double z, double v) {
+unsigned long long int Scanner_Move(int index, double x, double y, double z, double v) {
 	
     circuits[index].updatef = Scanner_DoMove;
     //circuit c = circuits[index]; //this is very unsafe!
@@ -73,9 +76,10 @@ int Scanner_Move(int index, double x, double y, double z, double v) {
     length = sqrt(length);
     
     double timeneeded = length/v;
-    int steps = (int)ceil(timeneeded/dt);
+    unsigned long long int steps = (unsigned long long int)ceil(timeneeded/dt);
     //printf("%e %e %e \n", steps, (timeneeded/dt), ceil(timeneeded/dt)  );
-    circuits[index].iparams[0] = steps;
+    //circuits[index].iparams[0] = steps;
+    circuits[index].vpparams[0] = (unsigned long long int)steps;
     circuits[index].iparams[1] = 0;
     
 
@@ -89,11 +93,10 @@ int Scanner_Move(int index, double x, double y, double z, double v) {
 void Scanner_DoMove( circuit *c ) {
 	
 	c->iparams[1]++; //increment the elapsed time
-	
     // pos = pos + step
-    c->params[0] = c->params[7] + c->iparams[1]*(c->params[3]-c->params[7])/c->iparams[0];
-    c->params[1] = c->params[8] + c->iparams[1]*(c->params[4]-c->params[8])/c->iparams[0];
-    c->params[2] = c->params[9] + c->iparams[1]*(c->params[5]-c->params[9])/c->iparams[0];
+    c->params[0] = c->params[7] + c->iparams[1]*(c->params[3]-c->params[7])/ (unsigned long long int)c->vpparams[0];
+    c->params[1] = c->params[8] + c->iparams[1]*(c->params[4]-c->params[8])/ (unsigned long long int)c->vpparams[0];
+    c->params[2] = c->params[9] + c->iparams[1]*(c->params[5]-c->params[9])/ (unsigned long long int)c->vpparams[0];
        
     // at the end adjust all the values to the target
     if (c->iparams[0] == c->iparams[1]) {
@@ -115,10 +118,10 @@ void Scanner_DoMove( circuit *c ) {
 
 }
 
-int Scanner_Move_Record(int index, double x, double y, double z, double v, int npts) {
+unsigned long long int Scanner_Move_Record(int index, double x, double y, double z, double v, int npts) {
 	
 	//setup a normal move command
-    int steps = Scanner_Move(index,x,y,z,v);
+    unsigned long long int steps = Scanner_Move(index,x,y,z,v);
     
     //... but use a different update function
     circuits[index].updatef = Scanner_DoMove_RecordF; //TODO: different for Backward scan!
@@ -176,7 +179,7 @@ void Scanner_DoPlace( circuit *c ) {
 
 }
 
-int Scanner_MoveTo (int index, double x,double y, double z, double v) {
+unsigned long long int Scanner_MoveTo (int index, double x,double y, double z, double v) {
     
 	//circuits[index].updatef = Scanner_DoMoveTo;
 	
@@ -185,7 +188,7 @@ int Scanner_MoveTo (int index, double x,double y, double z, double v) {
 	double dy = y-circuits[index].params[1];
 	double dz = z-circuits[index].params[2];
 
-	int steps = Scanner_Move(index, dx, dy, dz, v);
+	unsigned long long int steps = Scanner_Move(index, dx, dy, dz, v);
 
 	return steps;
 }

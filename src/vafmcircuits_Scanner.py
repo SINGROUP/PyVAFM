@@ -87,10 +87,11 @@ class Scanner(Circuit):
 
 
 	def Move(self, x = 0, y = 0, z = 0, v = 1): #default arguments, make the input lighter
-		#Circuit.cCore.Scanner_Move.restype = c_ulonglong
+		Circuit.cCore.Scanner_Move.restype = c_ulonglong
 		steps = Circuit.cCore.Scanner_Move(self.cCoreID, c_double(x), c_double(y) ,c_double(z),c_double(v) )
-		print steps
-		self.machine.main.WaitSteps(steps)
+		 
+
+		self.machine.main.WaitSteps( (steps) )
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
 
 	def Place(self,**kw): #all parameters required
@@ -131,6 +132,7 @@ class Scanner(Circuit):
 		else:
 			raise NameError ("ERROR! Scanner MoveTo requires v.")
 
+		Circuit.cCore.Scanner_MoveTo.restype = c_ulonglong
 		steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, c_double(x), c_double(y), c_double(z), c_double(v))
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved to " +str(x) + "," + str(y)+ "," + str(z)
@@ -216,6 +218,7 @@ class Scanner(Circuit):
 			print "PY Scanner: starting line number "+str(linenum) + "..."
 			
 			#move to the end of fast scanline
+			Circuit.cCore.Scanner_Move_Record.restype = c_ulonglong
 			steps = Circuit.cCore.Scanner_Move_Record(self.cCoreID, dfast[0],dfast[1],dfast[2],
 				c_double(self.FastSpeed), c_int(self.Resolution[0]) )
 			self.machine.main.WaitSteps(steps)
@@ -229,6 +232,7 @@ class Scanner(Circuit):
 			#move to initial pos + step along slowscan
 			repos = [c_double(x0[i]+linenum*dslow[i]) for i in range(3)]
 			#print "repositioning: ",repos
+			Circuit.cCore.Scanner_MoveTo.restype = c_ulonglong
 			steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, repos[0], repos[1], repos[2],
 				c_double(self.SlowSpeed))
 			self.machine.main.WaitSteps(steps)
@@ -265,7 +269,7 @@ class Scanner(Circuit):
 		else:
 			raise NameError ("ERROR! Scanner MoveRecord requires number of points.")
 
-
+		Circuit.cCore.Scanner_Move_Record.restype = c_ulonglong
 		steps = Circuit.cCore.Scanner_Move_Record(self.cCoreID, c_double(x), c_double(y), c_double(z), c_double(v), c_int(npts)) 
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)

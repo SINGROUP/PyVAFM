@@ -845,15 +845,15 @@ class Machine(Circuit):
 	# 
 	def Wait(self, dtime):
 		
-		Circuit.cCore.Update(c_int(int(math.floor(dtime/self.dt))))
+		Circuit.cCore.Update(c_ulonglong(int(math.floor(dtime/self.dt))))
 	
 	## Integrate the machine.
 	#
 	# Calls the update routine of each circuit in the setup for a given amount of steps.
 	# 
 	def WaitSteps(self, nsteps):
-
-		Circuit.cCore.Update(c_int(nsteps))
+		
+		Circuit.cCore.Update(c_ulonglong(int(nsteps)))
 		
 	def Wait2(self, dtime):
 		
