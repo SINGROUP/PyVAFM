@@ -74,6 +74,7 @@ int Scanner_Move(int index, double x, double y, double z, double v) {
     
     double timeneeded = length/v;
     int steps = (int)ceil(timeneeded/dt);
+    //printf("%e %e %e \n", steps, (timeneeded/dt), ceil(timeneeded/dt)  );
     circuits[index].iparams[0] = steps;
     circuits[index].iparams[1] = 0;
     

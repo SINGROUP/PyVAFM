@@ -19,28 +19,28 @@ def main():
 
 
 	out1 = machine.AddCircuit(type='output',name='output',file='testSTM2.dat', dump=1)
-	out1.Register('scan.x', 'scan.y','scan.z','STM.Current','inter.F1')	
+	out1.Register('scan.x', 'scan.y','scan.z','STM.Current','inter.F')	
 
 
 	imager = machine.AddCircuit(type='output',name='image',file='STM2.dat', dump=0)
-	imager.Register("scan.x","scan.y",'STM.Current','inter.F1')	
+	imager.Register("scan.x","scan.y",'STM.Current','inter.F')	
 
 	machine.Connect("scan.x","inter.x")
 	machine.Connect("scan.y","inter.y")
 	machine.Connect("scan.z","inter.z")
-	machine.Connect("inter.F1","STM.Density")
+	machine.Connect("inter.F","STM.Density")
 	machine.Connect("scan.record","image.record")
 
 
 	machine.circuits['inter'].I['V'].Set(2)
-	scanner.Place(x=0,y=0,z=15)
+	scanner.Place(x=0,y=4,z=15)
 
 	
 	scanner.Recorder = imager
 	scanner.BlankLines = True 
 	#resolution of the image [# points per line, # lines]
 	scanner.Resolution = [200,200]
-	scanner.ImageArea(18,16)        
+	scanner.ImageArea(18,9)        
 	#scan
 	scanner.ScanArea()
 	
