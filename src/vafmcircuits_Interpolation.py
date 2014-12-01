@@ -258,7 +258,7 @@ class i1Dlin(Circuit):
 			Circuit.cCore.i1Dlin_SetData(self.cCoreID, 0,test_arr,npts)
 
 
-## \brief quad-linear interpolation circuit.
+## \brief Vasp quad-linear interpolation circuit.
 #
 # \image html i4dlin.png "schema"
 #
@@ -290,7 +290,7 @@ class i1Dlin(Circuit):
 # \endcode
 #
 
-class i4Dlin(Circuit):
+class i4DlinVasp(Circuit):
     
     
 	def __init__(self, machine, name, **keys):        
@@ -445,3 +445,165 @@ class i4Dlin(Circuit):
 
 
 
+
+
+## \brief quad-linear interpolation circuit.
+#
+# \image html i4dlin.png "schema"
+#
+# This is the circuit that calculates the interpolation of the provided 4d force field.
+# The force field must be in the following format, but plese note that the interpolation circuit is capable of taking any number of components in. 
+#
+# x y z v F1 F2 F3 
+#
+# The force field must also use a constant step size for each dimenson, although the force field can be in any order. The x y and z must also be the index
+# of the point eg: 1 1 1 1 , 1 1 1 2 , 1 1 1 3 etc. When you configure the circuit later on you set the steps size to whatever you want it to be.
+#
+# - \b Initialisation \b parameters:.
+# 	- \a Components = Number of components of force in the force field.
+# 	- \a pushed True|False
+# - \b Initialisation \b commands:
+#	- Configure(steps=array, npoints=integer, pbc=True|False, ForceMultipler=float)
+#		- \a steps = step size of the force field must be specfied in this format [x,y,z,v]
+#		- \a npoints = number of points in each dimension must be specfied in this format [xn,yn,zn,vn]
+#		- \a pbc = Perodic boundray conditions for each dimenson, must be specfied in this format [True|False,True|False,True|False,True|False]
+#	-  ForceMultipler = A global multipler for all the force field values, use this to change the units of the force field into what ever units are desired.
+#	-  ReadData(filename = string)
+#		- \a Filename is the force field being interpolated.
+# - \b Input \b channels:
+#	 - \a x : this is x the coordiante to calculate the interpolation.
+#	 - \a y : this is y the coordiante to calculate the interpolation.
+#	 - \a z : this is z the coordiante to calculate the interpolation.
+#	 - \a V : this is V the coordiante to calculate the interpolation.
+# - \b Output \b channels:
+# 	- \a Fn: The interpolated forces where n is the component for example F1 would be first first component.
+#
+# \b Example:
+# \code
+#	inter = machine.AddCircuit(type='i4Dlin',name='inter', components=1, pushed=True)
+#	inter.Configure(steps=[0.805714285714286,0.805714285714286,0.1,0.1], npoints=[8,8,171,100])
+#	inter.Configure(pbc=[True,True,False,False])
+#	inter.ForceMultipler=1e10
+#	inter.ReadData('4dData.dat')
+# \endcode
+
+class i4Dlin(Circuit):
+    
+    
+	def __init__(self, machine, name, **keys):        
+			
+		super(self.__class__, self).__init__( machine, name )
+		
+		if 'components' in keys.keys():
+			self.components = keys['components']
+			print "components = " +str(self.components)
+		else:
+			raise NameError("No components entered ")
+	
+
+		Circuit.cCore.Add_i4Dlin.argtypes = [ctypes.c_int,ctypes.c_int]
+		self.cCoreID = Circuit.cCore.Add_i4Dlin(machine.cCoreID, self.components)
+		self.BiasStep=0
+		self.StartingV=1
+		self.pbcSET = False
+		self.ForceMultiplier = 1
+		self.AddInput("x")
+		self.AddInput("y")
+		self.AddInput("z")
+		self.AddInput("V")
+
+
+		for i in range(0,self.components):
+			self.AddOutput("F"+str(i))
+
+		self.SetInputs(**keys)
+
+	def Configure(self, **keys):
+				#check for pbc
+		if 'pbc' in keys.keys():
+			if len(keys['pbc']) != 4:
+				raise ValueError("ERROR! the PBC requires 4 argments!")
+			else:
+				self.pbc = [0,0,0,0]
+				for i in xrange(len(keys['pbc'])):
+					if keys['pbc'][i] == True:
+						self.pbc[i] = 1
+					else:
+						self.pbc[i] = 0
+				#print "PBC ",self.pbc
+				Circuit.cCore.i4DLinPBC(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2], self.pbc[3])
+				self.pbcSET = True
+
+		if 'points' in keys.keys():
+			if len(keys['points']) != 4:
+				raise ValueError("ERROR! the number of points requires 4 arguments! (nx,ny,nz,nv)")
+			else:
+				self.NPoints = [keys['points'][0],keys['points'][1],keys['points'][2],keys['points'][3]]
+
+
+		if 'step' in keys.keys():
+			if len(keys['step']) != 4:
+				raise ValueError("ERROR! the step size requires 4 arguments! (nx,ny,nz,nv)")
+			else:
+				self.DX= keys['step'][0]
+				self.DY= keys['step'][1]
+				self.DZ= keys['step'][2]
+				self.DV= keys['step'][3]
+
+
+
+
+
+
+	def ReadData(self,*filename):
+
+		if self.pbcSET == False:
+			raise NameError ("Error: PBC must be defined first ")
+
+		if self.StartingV == -1:
+			raise NameError ("Error: StartingV must be defined first ")
+
+		
+
+
+		Density=[]
+
+
+
+
+			
+		#Find step size
+		dx = self.DX
+		dy = self.DY
+		dz = self.DZ
+		dv = self.DV
+		#Find number of points
+		nx = int(self.NPoints[0])
+		ny = int(self.NPoints[1])
+		nz = int(self.NPoints[2])
+		nv = int(self.NPoints[3])
+
+		#Set up Ctypes
+		Circuit.cCore.i4Dlin_SetUpData.restype =  ctypes.POINTER(ctypes.POINTER(ctypes.c_double))
+		Circuit.cCore.i4Dlin_SetUpData.argtypes = [ctypes.c_int 
+												  ,ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, 
+												   ctypes.c_double,  ctypes.c_double,  ctypes.c_double,  ctypes.c_double
+												   ,  ctypes.c_double]
+		#Pass some data to C
+		self.data = Circuit.cCore.i4Dlin_SetUpData(self.cCoreID, nx , ny , nz, nv , dx, dy, dz , dv,  self.StartingV)
+
+
+
+		f = open(filename, "r")
+		for line in f:
+			words = line.split()
+			i = int(words[0])-1
+			j = int(words[1])-1
+			k = int(words[2])-1
+			v = int(words[3])-1
+			index = i + j*nx + k*nx*ny + v*nx*ny*nz
+			for c in xrange(self.components): #convert the components to float
+				words[c+4] = ctypes.c_double(float(words[c+4]) * self.ForceMultiplier)
+				self.data[c][index] = words[c+4]
+		
+		f.close()

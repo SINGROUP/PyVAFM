@@ -16,7 +16,7 @@ def main():
 
 	machine.AddCircuit(type="limiter",name='lim', min=9,max=20, pushed=True)
 
-	inter = machine.AddCircuit(type='i4Dlin',name='inter', components=1, pushed=True)
+	inter = machine.AddCircuit(type='i4DlinVasp',name='inter', components=1, pushed=True)
 	inter.BiasStep=0.5
 	inter.StartingV=2
 	inter.ConfigureVASP(pbc=[True,True,False,False])

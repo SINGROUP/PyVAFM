@@ -9,6 +9,7 @@ inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3)
 
 inter.Configure(steps=[0.705,0.705,0.1], npoints=[8,8,201])
 inter.Configure(pbc=[True,True,False])
+inter.Configure(ForceMultiplier=1e10)
 inter.ReadData('NaClforces.dat')
 
 machine.Connect("scann.x" , "inter.x")
@@ -18,11 +19,11 @@ machine.Connect("scann.z" , "inter.z")
 
 #image output
 imager = machine.AddCircuit(type='output',name='image',file='tut2.dat', dump=0)
-imager.Register("scann.x", "scann.y", 'inter.F3')
+imager.Register("scann.x", "scann.y", 'inter.F3',"scann.z")
 
 machine.Connect("scann.record", "image.record")
 
-scan.Place(x=0, y=0, z=3)
+scan.Place(x=0, y=0, z=4)
 #this will print an empty line after each scanline
 scan.Recorder = imager
 scan.BlankLines = True 

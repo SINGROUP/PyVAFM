@@ -35,7 +35,7 @@ int Scanner( int owner ) {
     c.iplen = 6;
     c.iparams = (int*)calloc(c.iplen,sizeof(int));
 
-    c.vplen = 1;
+    c.vplen = 4;
     c.vpparams = (unsigned long long int*)calloc(c.vplen,sizeof(unsigned long long int));    
    
     c.updatef = Scanner_DoIdle; //this is the default scanner update function
@@ -51,12 +51,15 @@ int Scanner( int owner ) {
  * params[6] = velocity - deprecated
  * params[7-9] = movement step sizes x,y,z
  * 
- * iparams[0] = steps required to complete action
- * iparams[1] = elapsed steps
+ * iparams[0] = steps required to complete action (not used)
+ * iparams[1] = elapsed steps (not used)
  * iparams[2] = fast scan resolution - points per line
  * iparams[3] = slow scan resolution - lines
- * iparams[4] = number of steps to wait before activating record
- * iparams[5] = elapsed steps since the last record event
+ * iparams[4] = number of steps to wait before activating record 
+ * iparams[5] = elapsed steps since the last record event 
+ *
+ * vparams[0] = steps required to complete action Long long int version
+ * vparams[1] = elapsed steps Long long int version
  * 
  * *************************************/
 
@@ -80,7 +83,7 @@ unsigned long long int Scanner_Move(int index, double x, double y, double z, dou
     //printf("%e %e %e \n", steps, (timeneeded/dt), ceil(timeneeded/dt)  );
     //circuits[index].iparams[0] = steps;
     circuits[index].vpparams[0] = (unsigned long long int)steps;
-    circuits[index].iparams[1] = 0;
+    circuits[index].vpparams[1] = 0;
     
 
     //saves the initial position before moving
@@ -92,18 +95,22 @@ unsigned long long int Scanner_Move(int index, double x, double y, double z, dou
 }
 void Scanner_DoMove( circuit *c ) {
 	
-	c->iparams[1]++; //increment the elapsed time
+	c->vpparams[1]++; //increment the elapsed time
+
+
+
     // pos = pos + step
-    c->params[0] = c->params[7] + c->iparams[1]*(c->params[3]-c->params[7])/ (unsigned long long int)c->vpparams[0];
-    c->params[1] = c->params[8] + c->iparams[1]*(c->params[4]-c->params[8])/ (unsigned long long int)c->vpparams[0];
-    c->params[2] = c->params[9] + c->iparams[1]*(c->params[5]-c->params[9])/ (unsigned long long int)c->vpparams[0];
+    c->params[0] = c->params[7] + (unsigned long long int)c->vpparams[1]*(c->params[3]-c->params[7])/ (unsigned long long int)c->vpparams[0];
+    c->params[1] = c->params[8] + (unsigned long long int)c->vpparams[1]*(c->params[4]-c->params[8])/ (unsigned long long int)c->vpparams[0];
+    c->params[2] = c->params[9] + (unsigned long long int)c->vpparams[1]*(c->params[5]-c->params[9])/ (unsigned long long int)c->vpparams[0];
        
     // at the end adjust all the values to the target
-    if (c->iparams[0] == c->iparams[1]) {
+    if ((unsigned long long int)c->vpparams[0] == (unsigned long long int)c->vpparams[1]) {
 		
 		c->params[0] = c->params[3];
 		c->params[1] = c->params[4];
 		c->params[2] = c->params[5];
+        
 		c->updatef = Scanner_DoIdle; //set idle mode
 	}
     
@@ -127,9 +134,9 @@ unsigned long long int Scanner_Move_Record(int index, double x, double y, double
     circuits[index].updatef = Scanner_DoMove_RecordF; //TODO: different for Backward scan!
     
     //nuber of steps to wait between record events
-    int dL = (int)(floor((float)steps/(float)npts));
-    circuits[index].iparams[4] = dL;
-    circuits[index].iparams[5] = 0;
+     unsigned long long int dL = ( unsigned long long int)(floor((float)steps/(float)npts));
+    circuits[index].vpparams[2] = dL;
+    circuits[index].vpparams[3] = 0;
     
     //record the first point
     GlobalBuffers[circuits[index].outputs[3]] = 1;
@@ -140,19 +147,19 @@ unsigned long long int Scanner_Move_Record(int index, double x, double y, double
 
 void Scanner_DoMove_RecordF( circuit *c ) {
 	
-	c->iparams[5]++; //increment the elapsed time between record events
+	c->vpparams[3]++; //increment the elapsed time between record events
 	
 	Scanner_DoMove(c); //do move normally
 	
 	//if we reached the point where we should record...
-	if(c->iparams[5] == c->iparams[4] || c->iparams[1] == 1) {
+	if((unsigned long long int)c->vpparams[3] == (unsigned long long int)c->vpparams[2] || (unsigned long long int)c->vpparams[1] == 1) {
 		printf(".");
 		GlobalBuffers[c->outputs[3]] = 1;
-		c->iparams[5] = 0;
+		c->vpparams[3]=0;
 	} else {
 		GlobalBuffers[c->outputs[3]] = 0;
 	}
-	if (c->iparams[0] == c->iparams[1]) {
+	if ((unsigned long long int)c->vpparams[0] == (unsigned long long int)c->vpparams[1]) {
 		GlobalBuffers[c->outputs[3]] = 0;
 		printf("\n");
 	}
@@ -233,16 +240,16 @@ void Scanner_DoMoveTo( circuit *c ) { //not needed any more
 
 
 
-    c->iparams[1] = c->iparams[1] + 1;
+    (unsigned long long int)c->vpparams[1] ++;
     // at the end adjust all the values
-    if (c->iparams[0] == c->iparams[1])
+    if ((unsigned long long int)c->vpparams[0] == (unsigned long long int)c->vpparams[1])
         {
             c->params[0] = c->params[3];
             c->params[1] = c->params[4];
             c->params[2] = c->params[5];
         }
     // idle for the time left
-    if (c->iparams[0] == c->iparams[1]) {c->updatef = Scanner_DoIdle;}
+    if ((unsigned long long int)c->vpparams[0] == (unsigned long long int)c->vpparams[1]) {c->updatef = Scanner_DoIdle;}
     
     //OUTPUT VALUES
     GlobalBuffers[c->outputs[0]] = c->params[0];
@@ -340,14 +347,14 @@ void Scanner_DoScan( circuit *c )
 
     c->iparams[1] = c->iparams[1] + 1;
     // at the end adjust all the values
-    if (c->iparams[0] == c->iparams[1])
+    if ((unsigned long long int)c->vpparams[0] == c->iparams[1])
         {
             c->params[0] = c->params[3];
             c->params[1] = c->params[4];
             c->params[2] = c->params[5];
         }
     // idle for the time left
-    if (c->iparams[0] == c->iparams[1]) {c->updatef = Scanner_DoIdle;}
+    if ((unsigned long long int)c->vpparams[0] == c->iparams[1]) {c->updatef = Scanner_DoIdle;}
     if ( (c->iparams[1]%c->iparams[2]) == 0) {Record = 1;}
     
     //OUTPUT VALUES

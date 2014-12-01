@@ -49,7 +49,7 @@ def main():
 	scanner.FastScan=1
 	scanner.ImageSize = [2,2]
 	#resolution of the image [# points per line, # lines]
-	scanner.Resolution = [200,200]
+	scanner.Resolution = [64,64]
 	
 	#scan
 	scanner.ScanArea()

@@ -175,3 +175,22 @@ def aAMPD(compo, **keys):
     compo.Connect('lim.out','global.norm')
     
     
+def FakePLL(compo, **keys):
+    compo.AddInput("signal")
+    compo.AddOutput("freq")
+    compo.AddOutput("df")
+    
+    compo.AddCircuit(type='peaker',name='peaker', up=1 ,pushed=True)
+    compo.AddCircuit(type='opDiv',name='div', in1=1 ,pushed=True)
+    compo.AddCircuit(type='opSub',name='sub', in2=keys["fo"] ,pushed=True)
+
+
+    compo.Connect('global.signal','peaker.signal')
+    compo.Connect('peaker.delay','div.in2')
+
+
+    compo.Connect('div.out','sub.in1')
+    compo.Connect('div.out','global.freq')
+
+
+    compo.Connect('sub.out','global.df')

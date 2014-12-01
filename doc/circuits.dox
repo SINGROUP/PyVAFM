@@ -218,6 +218,7 @@
 		- \link vafmcircuits_Interpolation.i3Dlin i3Dlin\endlink - <i> 3d Linear interpolation circuit</i>
 		- \link vafmcircuits_Interpolation.i1Dlin i1Dlin\endlink - <i> 1d Linear interpolation circuit</i>
 		- \link vafmcircuits_Interpolation.i4Dlin i4Dlin\endlink - <i> 4d Linear interpolation circuit</i>
+		- \link vafmcircuits_Interpolation.i4DlinVasp i4DlinVasp\endlink - <i> 4d Vasp Linear interpolation circuit</i>
 @htmlonly
 </div><!-- end of Composites list -->
 @endhtmlonly

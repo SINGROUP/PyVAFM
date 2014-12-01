@@ -19,6 +19,7 @@ import vafmcircuits_pycirc, vafmcircuits_Comparison, vafmcircuits_avg
 import vafmcircuits_VDW
 import vafmcircuits_STM
 import vafmcircuits_Dipole
+import vafmcircuits_MechAFM
 
 
 ## \package vafmcircuits
