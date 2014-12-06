@@ -74,7 +74,9 @@ function toggleMenu(objID, button) {
 <img src="i4dlin.png" alt="i4dlin.png"/>
 <div class="caption">
 schema</div></div>
-<p> This is the circuit that calculates the interpolation of 4d PARCHG data that is outputted from VASP and is used for STM images.</p>
+<p> This is the circuit that calculates the interpolation of the provided 4d force field. The force field must be in the following format, but plese note that the interpolation circuit is capable of taking any number of components in.</p>
+<p>x y z v F1 F2 F3</p>
+<p>The force field must also use a constant step size for each dimenson, although the force field can be in any order. The x y and z must also be the index of the point eg: 1 1 1 1 , 1 1 1 2 , 1 1 1 3 etc. When you configure the circuit later on you set the steps size to whatever you want it to be.</p>
 <ul>
 <li><b>Initialisation</b> <b>parameters:</b>.<ul>
 <li><em>Components</em> = Number of components of force in the force field.</li>
@@ -82,29 +84,37 @@ schema</div></div>
 </ul>
 </li>
 <li><b>Initialisation</b> <b>commands:</b> <ul>
-<li><em>BiasStep</em> = The stepsize of the bias between the VASP files.</li>
-<li><em>StartingV</em> = The starting value of the voltage.</li>
-<li><em>ConfigureVASP</em> -<em>pbc</em> = True|False True|False True|False The perodic boundary condition for x y and z.</li>
+<li>Configure(steps=array, npoints=integer, pbc=True|False, ForceMultipler=float)<ul>
+<li><em>steps</em> = step size of the force field must be specfied in this format [x,y,z,v]</li>
+<li><em>npoints</em> = number of points in each dimension must be specfied in this format [xn,yn,zn,vn]</li>
+<li><em>pbc</em> = Perodic boundray conditions for each dimenson, must be specfied in this format [True|False,True|False,True|False,True|False]</li>
+</ul>
+</li>
+<li>ForceMultipler = A global multipler for all the force field values, use this to change the units of the force field into what ever units are desired.</li>
+<li>ReadData(filename = string)<ul>
+<li><em>Filename</em> is the force field being interpolated.</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><b>Input</b> <b>channels:</b> <ul>
 <li><em>x</em> : this is x the coordiante to calculate the interpolation.</li>
 <li><em>y</em> : this is y the coordiante to calculate the interpolation.</li>
 <li><em>z</em> : this is z the coordiante to calculate the interpolation.</li>
-<li><em>V</em> : this ist he voltage of the STM.</li>
+<li><em>V</em> : this is V the coordiante to calculate the interpolation.</li>
 </ul>
 </li>
 <li><b>Output</b> <b>channels:</b> <ul>
-<li><em>F:</em> The interpolated output.</li>
+<li><em>Fn:</em> The interpolated forces where n is the component for example F1 would be first first component.</li>
 </ul>
 </li>
 </ul>
 <p><b>Example:</b> </p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;inter = machine.AddCircuit(type=<span class="stringliteral">&#39;i4Dlin&#39;</span>,name=<span class="stringliteral">&#39;inter&#39;</span>, components=1, pushed=<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;inter.BiasStep=0.5</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;inter.StartingV=1</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;inter.ConfigureVASP(pbc=[<span class="keyword">True</span>,<span class="keyword">True</span>,<span class="keyword">False</span>,<span class="keyword">False</span>])</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;inter.ReadVASPData(<span class="stringliteral">&quot;parchg.1.0&quot;</span>)</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;inter.Configure(steps=[0.805714285714286,0.805714285714286,0.1,0.1], npoints=[8,8,171,100])</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;inter.Configure(pbc=[<span class="keyword">True</span>,<span class="keyword">True</span>,<span class="keyword">False</span>,<span class="keyword">False</span>])</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;inter.ForceMultipler=1e10</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;inter.ReadData(<span class="stringliteral">&#39;4dData.dat&#39;</span>)</div>
 </div><!-- fragment --> </div>
 <p>Inherits <a class="el" href="classvafmbase_1_1Circuit.html">Circuit</a>.</p>
 <table class="memberdecls">
@@ -142,7 +152,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Mon Nov 10 2014 13:51:59 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
+Generated on Sat Dec 6 2014 21:48:42 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.5</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->
