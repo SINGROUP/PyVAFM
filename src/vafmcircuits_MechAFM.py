@@ -13,18 +13,7 @@ from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 class MechAFM(Circuit):
     
-	# Uniquify a list
-	def uniquify(seq, idfun=None):  
-	    if idfun is None: 
-	        def idfun(x): return x 
-	    seen = {} 
-	    result = [] 
-	    for item in seq: 
-	        marker = idfun(item) 
-	        if marker in seen: continue 
-	        seen[marker] = 1 
-	        result.append(item) 
-	    return result
+
     
 	def __init__(self, machine, name, **keys):
 
@@ -151,7 +140,8 @@ class MechAFM(Circuit):
 		fo.write("\n")
 		fo.write( "bufsize	     "+str(self.bufsize)+"\n")
 
-		#call(["woof"])
+
+		call(["./bin/mechafm-mpi",self.InputFileName])
 
 	def Initialize (self):
 
@@ -164,7 +154,18 @@ class MechAFM(Circuit):
 
 
 class SimpleAFM(Circuit):
-    
+    # Uniquify a list
+	def uniquify(seq, idfun=None):  
+	    if idfun is None: 
+	        def idfun(x): return x 
+	    seen = {} 
+	    result = [] 
+	    for item in seq: 
+	        marker = idfun(item) 
+	        if marker in seen: continue 
+	        seen[marker] = 1 
+	        result.append(item) 
+	    return result
     
 	def __init__(self, machine, name, **keys):
 
@@ -191,9 +192,9 @@ class SimpleAFM(Circuit):
 		print 'Setting some initial things'
 
 		# Some basic settings
-		xyzfile = 'graphene.xyz'
-		frcfiles = 'scan-*.dat*'
-		inpfile = 'input.scan'
+		xyzfile = self.xyzfile
+		frcfiles = self.frcfiles
+		inpfile = self.inpfile
 
 
 

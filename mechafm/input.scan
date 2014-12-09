@@ -1,0 +1,21 @@
+xyzfile      graphene.xyz
+paramfile    parameters.dat
+tipatom      O
+dummyatom    X
+planeatom    C
+
+minterm      f
+etol         0.1
+ftol         0.1 
+cfac         0.001
+maxsteps     50000
+
+coulomb	     on
+
+zhigh	     10.0
+zlow	     6.0
+dx	     0.5
+dy	     0.5
+dz	     0.1
+
+bufsize	     1000
