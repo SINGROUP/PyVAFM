@@ -141,8 +141,8 @@ class MechAFM(Circuit):
 		fo.write( "bufsize	     "+str(self.bufsize)+"\n")
 
 
-		call(["./bin/mechafm-mpi",self.InputFileName])
-
+		#call(["./bin/mechafm-mpi",self.InputFileName])
+		os.system("./bin/mechafm-mpi "+str(self.InputFileName))
 	def Initialize (self):
 
 		pass
