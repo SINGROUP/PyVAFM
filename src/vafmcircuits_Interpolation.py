@@ -99,7 +99,7 @@ class i3Dlin(Circuit):
 				self.nptsSET = True
 				#send the changes to cCore
 				self.data = Circuit.cCore.i3Dlin_npts(self.cCoreID, self.npts[0], self.npts[1], self.npts[2])
-				#print self.data[0][0]
+				
 				
 		#check for steps
 		if 'steps' in keys.keys():
@@ -123,7 +123,7 @@ class i3Dlin(Circuit):
 						self.pbc[i] = 1
 					else:
 						self.pbc[i] = 0
-				#print "PBC ",self.pbc
+				
 				Circuit.cCore.i3Dlin_pbc(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2])
 				self.pbcSET = True
 
@@ -241,7 +241,7 @@ class i1Dlin(Circuit):
 		if(npts < 2):
 			raise ValueError("ERROR: there are less than 2 points in the field!")
 		
-		#(int index, int c, double* data, int npts)
+		
 		Circuit.cCore.i1Dlin_SetData.argtypes = [ctypes.c_int,ctypes.c_int,
 			ctypes.POINTER(ctypes.c_double),ctypes.c_int]
 		
@@ -249,7 +249,7 @@ class i1Dlin(Circuit):
 			for c in range(self.components):
 				
 				lst = [p[c] for p in datapoints]
-				#print lst
+				
 				test_arr = (ctypes.c_double * npts)(*lst)
 				
 				Circuit.cCore.i1Dlin_SetData(self.cCoreID, c,test_arr,npts)
@@ -296,13 +296,7 @@ class i4DlinVasp(Circuit):
 	def __init__(self, machine, name, **keys):        
 			
 		super(self.__class__, self).__init__( machine, name )
-		'''
-		if 'components' in keys.keys():
-			self.components = keys['components']
-			print "components = " +str(self.components)
-		else:
-			raise NameError("No components entered ")
-		'''
+
 		#Vasp files only have 1 component
 		self.components = 1
 
@@ -334,7 +328,7 @@ class i4DlinVasp(Circuit):
 						self.pbc[i] = 1
 					else:
 						self.pbc[i] = 0
-				#print "PBC ",self.pbc
+				
 				Circuit.cCore.i4DLinPBC(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2], self.pbc[3])
 				self.pbcSET = True
 
@@ -530,7 +524,7 @@ class i4Dlin(Circuit):
 						self.pbc[i] = 1
 					else:
 						self.pbc[i] = 0
-				#print "PBC ",self.pbc
+				
 				Circuit.cCore.i4DLinPBC(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2], self.pbc[3])
 				self.pbcSET = True
 

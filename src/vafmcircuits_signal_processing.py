@@ -158,7 +158,7 @@ class derivative(Circuit):
 		self.SetInputs(**keys)
 
 
-		#@todo i dont understand this it should always be 0 anyway!
+		
 		self.y=self.I["signal"].value
 		self.yo = 0
 

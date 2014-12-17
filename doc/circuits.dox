@@ -251,7 +251,7 @@
 <div>
 	<a class="anchor" id="sec_VDW" ></a>
 	<h1>
-	<span class="foldbt" onclick="toggleMenu('VDW',this)">-</span>Van Der walls Force</h1>
+	<span class="foldbt" onclick="toggleMenu('VDW',this)">-</span>van der waals Force</h1>
 </div>
 <div id="VDW">
 @endhtmlonly

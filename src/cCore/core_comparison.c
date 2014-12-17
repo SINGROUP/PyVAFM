@@ -12,6 +12,7 @@ Comparison circuits definitions.
 
 
 int CompStart, CompEnd;
+//Set names and update functions of comparison operators
 void INIT_COMPARISON(int* counter) {
 
 	int i = *counter; CompStart = i;

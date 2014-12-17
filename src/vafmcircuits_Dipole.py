@@ -101,9 +101,6 @@ class PlotAtoms(Circuit):
 
 		fig = plt.figure()
 		ax = fig.add_subplot(111, projection='3d')
-		#ax.set_xlim3d(0, size[0])
-		#ax.set_ylim3d(0, size[1])
-		#ax.set_zlim3d(0, size[2])
 
 		for i in range(0,int(NumberOfAtoms) ):
 			#Shift me along the first vector
@@ -117,7 +114,7 @@ class PlotAtoms(Circuit):
 			ATOMS[i][1] += ATOMSy[i] * size[1][1]
 			ATOMS[i][2] += ATOMSy[i] * size[1][2]
 
-			#Shift me along the 2nd vector
+			#Shift me along the 3rd vector
 			
 			ATOMS[i][0] += ATOMSz[i] * size[2][0]
 			ATOMS[i][1] += ATOMSz[i] * size[2][1]
@@ -288,7 +285,7 @@ class ExtractPotential(Circuit):
 
 
 				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
-				#V = []				
+						
 
 			if linenumber > NumberOfAtoms+9:
 
@@ -296,8 +293,7 @@ class ExtractPotential(Circuit):
 
 
 					V[ index[0] ][ index[1] ] [ index[2] ] = float (line.split()[i])
-					#V.append(float( line.split()[i] ) )
-					#print index
+				
 					index[0] = index[0] +1
 
 					if index [0] == NumberOfPoints[0]:
@@ -458,12 +454,6 @@ class LOCPOTShaping(Circuit):
 
 
 
-		#LatticeVectora = [15.562592,0.0,0.0]
-		#LatticeVectorb = [-7.781296,13.4776,0.0]
-		#LatticeVectorc = [15.562592,-8.985067,25.413607]
-
-
-
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
 		print "Reading in file: "+ self.Filename
@@ -523,7 +513,7 @@ class LOCPOTShaping(Circuit):
 
 
 				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
-				#V = []				
+						
 
 			if linenumber > NumberOfAtoms+9:
 
@@ -531,8 +521,6 @@ class LOCPOTShaping(Circuit):
 
 
 					V[ index[0] ][ index[1] ] [ index[2] ] = float (line.split()[i])
-					#V.append(float( line.split()[i] ) )
-					#print index
 					index[0] = index[0] +1
 
 					if index [0] == NumberOfPoints[0]:
@@ -627,7 +615,7 @@ class LOCPOTShaping(Circuit):
 			while y<=ForcefieldSize[1]:
 				while z <= ForcefieldSize[2]:
 
-					#print counter[2]
+					
 					#Find the transformed coordiante
 					posx = maga*(bz*cy*x - by*cz*x - bz*cx*y + bx*cz*y + by*cx*z - bx*cy*z)/ (az*by*cx - ay*bz*cx - az*bx*cy + ax*bz*cy + ay*bx*cz - ax*by*cz)
 					posy = magb*(az*cy*x - ay*cz*x - az*cx*y + ax*cz*y + ay*cx*z - ax*cy*z)/ (-(az*by*cx) + ay*bz*cx + az*bx*cy - ax*bz*cy - ay*bx*cz + ax*by*cz)
@@ -662,6 +650,7 @@ class LOCPOTShaping(Circuit):
 				for z in range(0+ZCutOff[0],int(sizez-ZCutOff[1]) ):
 					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1)+" " + str(U[x][y][z]) + "\n")
 		
+		fo.close()
 
 	def Initialize (self):
 		pass
@@ -760,14 +749,16 @@ class Dipole(Circuit):
 
 		for x in range(0,I):
 			for y in range(0,J):
-				for z in range(1,K-1):
-					Force[x][y][z] =(U[x][y][z+1] - 2*U[x][y][z] + U[x][y][z-1]) / (Step[2]*Step[2]) * Dz
+				for z in range(1,K-2):
+					Force[x][y][z] =(U[x][y][z+2] - 2*U[x][y][z] + U[x][y][z-2]) / (Step[2]*Step[2]) * Dz
+					#Force[x][y][z] = (-U[x][y][z+2] + 16*U[x][y][z+1] - 30*U[x][y][z] + 16*U[x][y][z-1] - U[x][y][z-2] )/(12*Step[2]*Step[2]) * Dz
 
 		for x in range(0,I):
 			for y in range(0,J):
-				for z in range(1,K-1):
+				for z in range(1,K-2):
 					fo.write(str(x+1)+" "+str(y+1)+" "+str(z)+" "+str(Force[x][y][z]) + "\n")
 
+		fo.close()
 
 	def Initialize (self):
 		pass

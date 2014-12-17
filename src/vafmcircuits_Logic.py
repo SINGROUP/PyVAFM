@@ -88,7 +88,7 @@ class AND(Circuit):
 		#check if the amount of factors was given        
 		if 'factors' in keys.keys():
 			self.factors = keys['factors']
-		#print ' factors: '+str(self.factors)
+		
 		
 		#create input channels
 		for i in range(self.factors):
@@ -172,7 +172,7 @@ class OR(Circuit):
 		#check if the amount of factors was given        
 		if 'factors' in keys.keys():
 			self.factors = keys['factors']
-		#print ' factors: '+str(self.factors)
+	
 		
 		#create input channels
 		for i in range(self.factors):
@@ -292,7 +292,7 @@ class NOR(Circuit):
 		#check if the amount of factors was given        
 		if 'factors' in keys.keys():
 			self.factors = keys['factors']
-		#print ' factors: '+str(self.factors)
+		
 		
 		#create input channels
 		for i in range(self.factors):

@@ -137,10 +137,6 @@ class Scanner(Circuit):
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved to " +str(x) + "," + str(y)+ "," + str(z)
 
-	#def Scan(self,x,y,z,v,points):
-		#steps = Circuit.cCore.Scanner_Scan(self.cCoreID, c_double(x), c_double(y) ,c_double(z),c_double(v),points )
-		#Machine.main.Wait(steps*self.machine.dt)                
-		#print "Scanner scanned to " +str(x) + "," + str(y)+ "," + str(z)
 
 	## Used to set the fast scan direction
 	#
@@ -231,7 +227,7 @@ class Scanner(Circuit):
 			
 			#move to initial pos + step along slowscan
 			repos = [c_double(x0[i]+linenum*dslow[i]) for i in range(3)]
-			#print "repositioning: ",repos
+			
 			Circuit.cCore.Scanner_MoveTo.restype = c_ulonglong
 			steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, repos[0], repos[1], repos[2],
 				c_double(self.SlowSpeed))

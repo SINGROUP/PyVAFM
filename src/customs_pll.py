@@ -92,9 +92,6 @@ def aPLL(compo,**keys):
 	compo.Connect("vco.cos",   "global.cos")
 	compo.Connect("pfd.out",   "global.dbg")
 	
-	#debug
-	#out1 = compo.AddCircuit(type='output',name='output',file='pll.log', dump=1000)
-	#out1.Register('global.time',"lp"+str(len(filters))+".out",'pump.out',"global.df")
 
 	print "analog PLL assembled!"
 
@@ -114,9 +111,7 @@ def dPFD(compo,**keys):
     compo.AddOutput("df")
     compo.AddOutput("dbg")
     
-    
-    #filters = keys['filters']
-    #print "prefilters cutoffs: ",filters
+  
     
     compo.AddCircuit(type='DRFlipFlop',name='ffdr1', D=1, pushed=True)
     compo.AddCircuit(type='DRFlipFlop',name='ffdr2', D=1, pushed=True)

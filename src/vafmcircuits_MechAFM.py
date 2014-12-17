@@ -114,6 +114,12 @@ class MechAFM(Circuit):
 			self.maxsteps = str(keys['MaxSteps'])
 		else:
 			raise NameError("Missing MaxSteps")
+		
+
+		if 'MPICommand' in keys.keys():
+			self.MPICommand = str(keys['MPICommand'])
+		else:
+			raise NameError("Missing MPICommand")
 
 
 		fo = open(self.InputFileName, "w")
@@ -140,9 +146,9 @@ class MechAFM(Circuit):
 		fo.write("\n")
 		fo.write( "bufsize	     "+str(self.bufsize)+"\n")
 
-
-		#call(["./bin/mechafm-mpi",self.InputFileName])
-		os.system("./bin/mechafm-mpi "+str(self.InputFileName))
+		#ToDo check MPI is installed
+		fo.close()
+		os.system(str(self.MPICommand)+ " ./bin/mechafm-mpi "+str(self.InputFileName))
 	def Initialize (self):
 
 		pass
@@ -229,7 +235,7 @@ class SimpleAFM(Circuit):
 		dz = (numpy.array(zpos)[1:]-numpy.array(zpos)[:-1]).mean()
 
 		# Talk to me
-		print 'Setting Giessibl stuff'
+		print 'Setting Giessibl parameters'
 
 		# Use the Giessibl approach to create frequency shift image (Beilstein J. Nanotechnol. 3:238, 2012)
 		Nm2kcalAA = 1.438978
@@ -443,12 +449,13 @@ class SimpleAFM(Circuit):
 		    # Save figure
 		    plt.savefig('displ-%06.3f.png' % zpos[pl],dpi=200,bbox_inches='tight',pad_inches=0)
 
+		'''
 		# Talk to me
 		print 'Creating animated gifs'
 		os.system('convert -resize 800x -loop 0 deltaf-0*.png movie-deltaf.gif')
 		os.system('convert -resize 800x -loop 0 angle-0*.png movie-angle.gif')
 		os.system('convert -resize 800x -loop 0 displ-0*.png movie-displ.gif')
-
+		'''
 		# Talk to me
 		print 'Done'
 

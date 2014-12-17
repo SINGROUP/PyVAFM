@@ -64,13 +64,13 @@ class Feed(object):
 	#@value.setter
 	def value_set(self,value):
 		self._buff = value
-		#print 'buffering value '+str(value)
+
 		
 	value = property(value_get, value_set)
 	
 	def Push(self):
 		
-		#print 'pushing '+str(self._buff)+' old('+str(self._value)+")"
+
 		self._value = self._buff;
 		
 	def PushValue(self, value):
@@ -78,7 +78,7 @@ class Feed(object):
 		self._buff = value
 	
 	def __str__ (self):
-		return str(self._value)  #+ "("+str(self._buff)+")"
+		return str(self._value)  
 
 class Channel(object):
 	
@@ -92,24 +92,20 @@ class Channel(object):
 		if isInput == True:
 			self.cisInput = 1
 		
-		#self.cCoreID #index of channel in the circuit.inputs[] of cCore
+		
 		self.cCoreCHID = 0
 	
 	#@property
 	def value_get(self):
-		#return self.signal.value
+		
 		return Circuit.cCore.ChannelToPy(self.owner.cCoreID, self.cCoreCHID, self.cisInput)
 	#@value.setter
 	def value_set(self,value):
 		
-		#self.signal.value = value
-		#print "setting channel: ",self.owner.cCoreID, self.cCoreCHID,self.cisInput,c_double(value)
+
 		Circuit.cCore.PyToChannel(self.owner.cCoreID, self.cCoreCHID, self.cisInput,c_double(value))
 		
-		#if(self.signal.owner == self.owner):
-		#	self.Push()
-		
-		#print 'setting value '+str(value)
+
 		
 	value = property(value_get, value_set);
 	
@@ -117,7 +113,7 @@ class Channel(object):
 		self.signal.Push()
 	
 	def Set(self, newvalue):
-		#self.signal.PushValue(value)
+
 		self.value = newvalue
 
 
@@ -135,10 +131,10 @@ class Channel(object):
 #
 class Circuit(object):
 
-	#__metaclass__ = abc.ABCMeta;
+
 	cCoreINIT = False
 	cCore = None
-	#cGetInput = None
+
 	
 	
 	##\internal
@@ -147,8 +143,7 @@ class Circuit(object):
 	# @param machine Reference to the virtual machine.
 	# @param name Name of this instance.
 	def __init__(self, machine, name):
-		
-		#print "PY: initing Circuit"
+
 		
 		## Name of the circuit.
 		self.name = name
@@ -181,7 +176,7 @@ class Circuit(object):
 		#init the cCore if itz the first time
 		if(Circuit.cCoreINIT == False):
 			print 'Initializing the cCore...'
-			##Circuit.cCore = cdll.LoadLibrary("./vafmcore.so")
+
 			current_dir = os.path.dirname(os.path.realpath(__file__))
 			Circuit.cCore = cdll.LoadLibrary(current_dir + "/vafmcore.so")
 
@@ -206,11 +201,11 @@ class Circuit(object):
 		for ch in self.I.keys():
 			idx = self.I.keys().index(ch)
 			self.I[ch].cCoreCHID = idx
-			#print "PY: input "+ch+" ID:" +str(idx)
+
 		for ch in self.O.keys():
 			idx = self.O.keys().index(ch)
 			self.O[ch].cCoreCHID = idx
-			#print "PY: output "+ch+" ID:" +str(idx)
+
 			
 		#self.SetCCoreChannels()
 		self.SetInputs_fromKeys(**kwargs)
@@ -263,7 +258,7 @@ class Circuit(object):
 		# get the indexes of input(original) channels
 		if len(self.I) > 0:
 			self.cCoreI = getins(self.cCoreID)
-			#print 'cCoreI ',self.cCoreI,len(self.I)
+		
 		
 			for i in range(len(self.I)):
 				#print i,self.cCoreI[i]
@@ -272,10 +267,10 @@ class Circuit(object):
 		# get the indexes of output channels
 		if len(self.O) > 0:
 			self.cCoreO = getouts(self.cCoreID)
-			#print 'cCoreO ',self.cCoreO, len(self.O)
+	
 			
 			for i in range(len(self.O)):
-				#print i,self.cCoreO[i]
+				
 				self.O.values()[i].signal.cCoreFEED = self.cCoreO[i]
 	
 	##\internal
@@ -334,15 +329,7 @@ class Circuit(object):
 			self.O[kw].Push()
 
 
-	#def AddEvent(self, eventname, function):
+
 	
 	def __str__( self ):
 		return "["+self.__class__.__name__+"]"+self.name+"  cCoreID: "+str(self.cCoreID)
-
-	##\internal
-	def Initialize (self):
-		raise NotImplementedError( "Should have implemented this" )
-	
-	##\internal
-	def Update (self):
-		raise NotImplementedError( "Should have implemented this" )

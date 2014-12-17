@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+//#include "circuit.c"
+
+//#include "main.h"
+
 
 /**********************************************************
 The python system will just call

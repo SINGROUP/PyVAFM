@@ -58,7 +58,7 @@ class output(Circuit):
 		## Dump rate.
 		self.dump = keys['dump']
 
-		#self._file = open(self.filename, 'w')
+	
 
 		self._cnt = 0
 
@@ -90,21 +90,15 @@ class output(Circuit):
 	#
 	def Register(self, *args):
 
-		#if type(channel) is list:
-		#cclist = [j.split(".",1) for j in channel]
+		
 		cclist = [self.machine.GetChannel(tag) for tag in args]
 		self.channels.extend(cclist)
 		
 		for ch in cclist:
 			print 'PY: registering channel:',ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput
-			#(int outer, int cindex, int chindex, int isInput)
-			#Circuit.cCore.output_register_feed(self.cCoreID,ch.signal.cCoreFEED)
-			Circuit.cCore.output_register(self.cCoreID,ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput)
-		
-		#else :
 
-		#	if not(channel in self.channels):
-		#		self.channels.append(channel)
+			Circuit.cCore.output_register(self.cCoreID,ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput)
+
 
 
 	## Unregister a channel from the output.
@@ -143,9 +137,7 @@ class output(Circuit):
 	#
 	def Dump(self):
 		
-		#for i in self.channels:
-		#	self._file.write(str(i.value)+" ")
-		#self._file.write('\n')
+
 		
 		self.cCore.output_dump(self.cCoreID)
 		

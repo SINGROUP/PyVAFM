@@ -364,7 +364,7 @@ void Scanner_DoScan( circuit *c )
     GlobalBuffers[c->outputs[3]] = Record;
     
 
-   // printf("%f %f %f %i \n",c->params[0],c->params[1],c->params[2], Record);
+
 
 
 }
@@ -430,46 +430,6 @@ void RunCoordTrans( circuit *c )
     double y = GlobalSignals[c->inputs[1]];  
     double z = GlobalSignals[c->inputs[2]]; 
 
-
-    /*
-        //Find unit vectors
-
-    double Unitxx =  c->params[0] / c->params[9];
-    double Unitxy =  c->params[1] / c->params[9];
-    double Unitxz =  c->params[2] / c->params[9];
-
-    double Unityx =  c->params[3] / c->params[10];
-    double Unityy =  c->params[4] / c->params[10];
-    double Unityz =  c->params[5] / c->params[10];
-
-    double Unitzx =  c->params[6] / c->params[11];
-    double Unitzy =  c->params[7] / c->params[11];
-    double Unitzz =  c->params[8] / c->params[11];
-
-
-
-    double mag = sqrt(x*x + y*y + z*z);
-
-    double ux = x /mag;
-    double uy = y /mag;
-    double uz = z /mag;
-
-
-    
-    //double posx = x * (Unitxx) + y * (Unityx) + z * (Unitzx);
-    //double posy = x * (Unitxy) + y * (Unityy) + z * (Unitzy);
-    //double posz = x * (Unitxz) + y * (Unityz) + z * (Unitzz);
-
-    double posx = x * (c->params[0]) + y * (c->params[1]) + z * (c->params[2]);
-    double posy = x * (c->params[3]) + y * (c->params[4]) + z * (c->params[5]);
-    double posz = x * (c->params[6]) + y * (c->params[7]) + z * (c->params[8]);
-
-    //double posx = x * (Unitxx) + y * (Unitxy) + z * (Unitxz);
-    //double posy = x * (Unityx) + y * (Unityy) + z * (Unityz);
-    //double posz = x * (Unitzx) + y * (Unitzy) + z * (Unitzz);
-
-    //printf("%f %f %f \n",c->params[3],c->params[4],c->params[5] );
-    */
 
     double ax = c->params[0];
     double ay = c->params[1];

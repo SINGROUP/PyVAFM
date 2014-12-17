@@ -45,7 +45,7 @@ class opAdd(Circuit):
 		#check if the amount of factors was given	
 		if 'factors' in keys.keys():
 			self.factors = keys['factors']
-		#print '   factors: '+str(self.factors)
+		
 		
 		#create input channels
 		for i in range(self.factors):
@@ -151,7 +151,7 @@ class opMul(Circuit):
 		self.factors = 2
 		if 'factors' in keys.keys():
 			self.factors = int(keys['factors'])
-		#print '   factors: '+str(self.factors)
+		
 		
 		#create input channels
 		for i in range(self.factors):
@@ -256,7 +256,7 @@ class opLinC(Circuit):
 		self.factors = 2
 		if 'factors' in keys.keys():
 			self.factors = keys['factors']
-		#print '   factors: '+str(self.factors)
+		
 		
 		#create input channels
 		for i in range(self.factors):

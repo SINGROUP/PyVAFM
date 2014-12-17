@@ -36,10 +36,9 @@ struct circuit {
     int *dummyin, *dummyout; //global indexes of dummy input-output circuits
     
 
-    //pointer to the update function
-    void (*updatef)(circuit*);
-    //pointer to the external update function (in Python) for PyCircuits  
-    void (*pyupdater)();        
+  //index of the update function
+  void (*updatef)(circuit*);  //
+    void (*pyupdater)();
 
     int init;       //index of init function
     
@@ -47,6 +46,11 @@ struct circuit {
 
 };
 //*********************************************************************
+//int GlobalChannelCounter = 0;
+//int GlobalCircuitCounter = 0;
+
+//array containing all signals I and O
+//double *GlobalSignals; 
 
 
 extern double* GlobalSignals;
@@ -68,4 +72,3 @@ circuit NewCircuit(void);
 
 
 #endif
-
