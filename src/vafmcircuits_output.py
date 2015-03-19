@@ -3,6 +3,8 @@ from vafmbase import Circuit
 from vafmbase import ChannelType
 from vafmbase import Channel
 from ctypes import *
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 ## \package vafmcircuits_output
@@ -151,7 +153,71 @@ class output(Circuit):
 
 		pass
 
-	
+
+
+	def PlotImage(self,interpolation='none',xtickfreq=10,ytickfreq=10):
+		f = open(self.filename,'r')
+
+		Data = []
+
+		scanline = []
+		x = []
+		y = []
+
+		checkx = False
+		checky = False
+
+		for line in f:
+
+			if len(line.split())!=0:
+				scanline.append(float(line.split()[2]))
+
+
+
+				if checkx==False:
+					x.append(float(line.split()[0]))
+
+				if checky==False:
+					y.append(float(line.split()[1]))
+					checky=True
+
+
+			if len(line.split())==0:
+				Data.append(scanline)
+				scanline = []
+				checkx = True
+				checky = False
+
+
+
+		dataRev = []
+
+
+		#Reverse data
+		Datasize = len(Data)-1
+		while Datasize >0:
+			dataRev.append(Data[Datasize])
+			Datasize = Datasize-1
+
+
+
+		plt.figure()
+		plt.set_cmap('hot')
+		plt.imshow(dataRev, interpolation='none')
+		plt.colorbar()		
+		#plt.show()
+
+		tick_locs = np.arange(1,len(x),xtickfreq)
+		tick_lbls = x[0::xtickfreq]
+		plt.xticks(tick_locs, tick_lbls)
+
+
+		y = y[::-1]
+		tick_locs = np.arange(1,len(y),ytickfreq)
+		tick_lbls = y[0::ytickfreq]
+		plt.yticks(tick_locs, tick_lbls)
+		plt.savefig(self.filename.split('.')[0]+'.png')
+
 
 	def Update (self):
 
@@ -180,6 +246,4 @@ class output(Circuit):
 				for i in self.channels:
 					self._file.write(str(i.value)+" ")
 				self._file.write('\n')
-
-
 

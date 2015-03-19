@@ -7,6 +7,7 @@ def main():
 	
 	
 	machine = Machine(name='machine', dt=0.001, pushed=True);
+
 	
 	#Add Circuits
 	scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
@@ -58,6 +59,8 @@ def main():
 	#set pm3d map
 	#set palette rgbformula 34,35,36
 	#sp'test_scanner_image.log' u 1:2:3
+
+	imager.PlotImage(interpolation='none')
 	
 
 if __name__ == '__main__':

@@ -20,7 +20,8 @@ import vafmcircuits_VDW
 import vafmcircuits_STM
 import vafmcircuits_Dipole
 import vafmcircuits_MechAFM
-
+import vafmcircuits_GaussSmear
+import vafmcircuits_DFTVDW
 
 ## \package vafmcircuits
 # \brief This file contains the main Machine circuit.

@@ -21,7 +21,7 @@ def main():
 	
   	
 	machine.Connect("osc.cos","pll.signal1")
-	machine.Connect("pll.cos","pll.signal2")
+	machine.Connect("pll.sin","pll.signal2")
 	
 	
 	out1 = machine.AddCircuit(type='output',name='output',file='test_apll.log', dump=200)

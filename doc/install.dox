@@ -32,7 +32,7 @@ import sys
 sys.path.append('/Users/johntracey/Desktop/pyvafm-master/src')
 ~~~~~~~~~~~~~
 
-Except change /Users/johntracey/Desktop/pyvafm-master/src to whatever paths points to the ./src directory on your computer. So now to run the PyVAFM you simply need to navigate to the folder with the input script and run that python script using whatever python interper you are using, most likely you will simply be able to type python followed by the input script into the terminal. In order to test if the PyVAFM is installed correctly I suggest you make the above modification to one of the example files, namely test\_wavers.py. So run the python script using, 
+Except change /Users/johntracey/Desktop/pyvafm-master/src to whatever paths points to the ./src directory on your computer. It is worth noting that the above command must be entered before you import vafmcircuits. So now to run the PyVAFM you simply need to navigate to the folder with the input script  and run that python script using whatever python interper you are using, most likely you will simply be able to type python followed by the input script into the terminal. In order to test if the PyVAFM is installed correctly I suggest you make the above modification to one of the example files, namely test\_wavers.py. So run the python script using, 
 
 
 	Python test_wavers.py
