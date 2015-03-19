@@ -1,0 +1,45 @@
+\form#0:$ \geq $
+\form#1:$ \leq $
+\form#2:$ = $
+\form#3:$ K_p (set-signal) + K_i \int (set-signal) dt $
+\form#4:$ K_p (set-signal) + K_i \int (set-signal) dt +K_d\frac{d(set-signal)}{dt}$
+\form#5:$ G \cdot \frac{x(s)}{s^{2} + \frac{ \omega_{c} }{Q} \cdot s + \omega^{2}_{c} } $
+\form#6:$ x $
+\form#7:$ \omega_{c} = 2 \pi f_c $
+\form#8:$ Q $
+\form#9:$ G $
+\form#10:$ \frac{\omega ^2 _c \cdot x(t) - \frac {y \cdot (t-2dt) - 2 \cdot y \cdot (t-dt)}{dt^2} + \frac{\omega ^2 _c}{2 \cdot Q \cdot dt} y \cdot (t-2dt) }{ \frac{1}{dt^2} + \frac{\omega ^2 _c}{2 \cdot Q \cdot dt} + \omega ^2 _c }$
+\form#11:$ dt $
+\form#12:$ G\frac{band \cdot dt\cdot(x(t) - x(t-2dt)) + band \cdot dt \cdot (2 \cdot y \cdot (t-dt) - y \cdot (t-2 \cdot dt)) }{ 1 + band \cdot dt + \omega ^2 _c } $
+\form#13:$ y $
+\form#14:$ \land $
+\form#15:$ \land$
+\form#16:$ \lor $
+\form#17:$ \oplus $
+\form#18:$\sum_i^{factors} in_i$
+\form#19:$ in_1 - in_2 $
+\form#20:$ \prod_i^{factors} in_i $
+\form#21:$ in_1 / in_2 $
+\form#22:$ \sum_i^{factors} ina_i\times inb_i $
+\form#23:$|in|$
+\form#24:$ signal^{power} $
+\form#25:$sin(in)$
+\form#26:$cos(in)$
+\form#27:$amp\cdot \sin(2 \pi freq\cdot t) + offset $
+\form#28:$amp\cdot \cos(2 \pi freq\cdot t) + offset $
+\form#29:$amp\cdot( freq*f(t) - floor(freq*f(t) ) + offset $
+\form#30:$ \cdot $
+\form#31:$ \frac{max - min}{2}$
+\form#32:$ \frac{max + min}{2}$
+\form#33:$ \frac{din}{dt} $
+\form#34:$ \frac{f(t)-f(t-1)}{dt} $
+\form#35:$ \int_0^t in$
+\form#36:$dt $
+\form#37:$In_{t-DelayTime}$
+\form#38:$(t-2)$
+\form#39:$<$
+\form#40:$f(t-1)$
+\form#41:$>$
+\form#42:$f(t)$
+\form#43:$ \mbox{Max}(\mbox{Min}(signal, max), min)$
+\form#44:$<=$
