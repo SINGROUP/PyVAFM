@@ -3,7 +3,6 @@ Work
 *.log
 *.pyc
 *.o
-*.dat
 *.in
 *.out
 *.sh

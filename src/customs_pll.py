@@ -92,7 +92,6 @@ def aPLL(compo,**keys):
 	compo.Connect("vco.cos",   "global.cos")
 	compo.Connect("pfd.out",   "global.dbg")
 	
-
 	print "analog PLL assembled!"
 
 
@@ -189,3 +188,4 @@ def FakePLL(compo, **keys):
 
 
     compo.Connect('sub.out','global.df')
+
