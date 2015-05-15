@@ -15,4 +15,6 @@ void opCOS( circuit *c );
 void perlin( circuit* c );
 void perlin_repopulate(void** array, int oct);
 
+
+void ComplexMagAndPhase(circuit* c);
 #endif

@@ -1,6 +1,6 @@
  #!/usr/bin/env python
 from vafmcircuits import Machine
-from customs_pll import *
+from customs import *
  
  
 machine = Machine(machine=None, name='machine', dt=5.0e-8)
@@ -53,7 +53,7 @@ machine.Connect("scan.z" , "canti.holderz")
 machine.Connect("canti.zabs" , "inter.z")
  
 #Force
-#machine.Connect("inter.F3" , "canti.fz")    
+machine.Connect("inter.F3" , "canti.fz")    
  
 machine.Connect('canti.ztip','amp.signal')
 machine.Connect('amp.amp','agc.signal')

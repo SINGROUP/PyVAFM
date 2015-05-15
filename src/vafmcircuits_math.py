@@ -526,3 +526,49 @@ class Perlin(Circuit):
 	def Update (self):
 		pass
 
+
+## \brief Complex magnitude and phase circuit.
+#
+# \image html ComplexSignal.png "schema"
+# Outputs Magnitude and Phase of a complex signal
+#
+# \b Input \b channels:
+# 	- \a Real =  Real part of the incoming signal
+# 	- \a Comples =  Complex part of the incoming signal
+#
+# \b Output \b channels:
+# 	- \a Mag = Magnitude of the complex singal
+# 	- \a Phase = Phase of the complex singal
+#
+#\b Examples:
+# \code{.py}
+# machine.AddCircuit(type='ComplexMagAndPhase', name='Complex')
+# \endcode
+#
+class ComplexMagAndPhase(Circuit):
+	
+	def __init__(self, machine, name, **keys):
+		
+		super(self.__class__, self).__init__( machine, name )
+
+
+		self.AddInput("Real")
+		self.AddInput("Complex")
+
+		#create output channels
+		self.AddOutput("Mag")
+		self.AddOutput("Phase")
+
+		
+		self.cCoreID = Circuit.cCore.Add_ComplexMagAndPhase(self.machine.cCoreID)
+		
+		self.SetInputs(**keys)
+
+
+
+	def Initialize (self):
+		
+		pass
+	
+	def Update (self):
+		pass

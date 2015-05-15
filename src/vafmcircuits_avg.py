@@ -20,7 +20,7 @@ import numpy
 #	- \a moving = True|False  compute average at each step (True) or only when the buffer is full (False, default)
 #
 # \b Input \b channels:
-# 	- \a in =  signal to average
+# 	- \a signal =  signal to average
 #
 # \b Output \b channels:
 # 	- \a out = averaged signal

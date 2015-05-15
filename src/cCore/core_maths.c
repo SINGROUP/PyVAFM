@@ -236,6 +236,45 @@ void perlin(circuit* c) {
     
 }
 
+
+
+
+
+
+
+int Add_ComplexMagAndPhase(int owner) {
+    circuit c = NewCircuit();
+
+    c.nI = 2;
+    c.nO = 2;
+
+    c.updatef = ComplexMagAndPhase;
+
+    int index = AddToCircuits(c,owner);
+    printf("cCore: Added Complex Mag And Phase \n");
+    return index;
+    
+}
+
+
+void ComplexMagAndPhase(circuit* c) {
+    double real = GlobalSignals[c->inputs[0]];
+    double img  = GlobalSignals[c->inputs[1]];
+
+
+    GlobalBuffers[c->outputs[0]] = sqrt(real*real + img*img);
+
+    double phase = atan(img/real);
+
+    if (real<0 && img >=0){phase = phase + 3.14159265359;}
+    if (real<0 && img <0){phase = phase - 3.14159265359;}
+    if (real==0 && img <0){phase = -3.14159265359/2;}
+    if (real==0 && img >0){phase =3.14159265359/2;}
+
+    GlobalBuffers[c->outputs[1]] = phase;
+}
+
+
 /*
 void opSUB( circuit *c ) {
 

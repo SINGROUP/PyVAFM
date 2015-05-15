@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from vafmcircuits import Machine
-from customs_pll import *
+from customs import *
 
 
 def main():
