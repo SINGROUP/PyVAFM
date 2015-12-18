@@ -270,6 +270,29 @@ class Scanner(Circuit):
 		self.machine.main.WaitSteps(steps)                
 		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
 
+
+	def SinScan(self,**kw):
+
+		if "freq" in kw.keys():
+			freq = float(kw["freq"])
+		else: 
+			raise NameError ("ERROR! enter a frequency.")
+		
+		if "amp" in kw.keys():
+			amp = float(kw["amp"])
+		else:
+			raise NameError ("ERROR! enter a amplitude.")
+		
+		if "cycles" in kw.keys():
+			cycle = int(kw["cycles"])
+		else:
+			raise NameError ("ERROR! enter a number of cycles.")
+
+		Circuit.cCore.SinScan.restype = c_ulonglong
+		steps = Circuit.cCore.SinScan(self.cCoreID, c_double(freq), c_double(amp), c_int(cycle)) 
+
+		self.machine.main.WaitSteps(steps)     
+
 ## \brief CoordTransform circuit.
 #
 #

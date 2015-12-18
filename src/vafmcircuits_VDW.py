@@ -159,3 +159,74 @@ class VDWtorn(Circuit):
 	def Update (self):
 		pass		
 
+
+
+
+## \brief Lennard Jones Potential circuit.
+# \image html LJ.png "schema"
+#
+# Produces a Lennard Jones potentinal with given paramaters
+#
+# \b Initialisation \b parameters:
+# 	- \a pushed = True|False  push the output buffer immediately if True
+# 	- \a epsilon  = epsilon of the Lennard Jones potential
+#	- \a sigma =  Sigma of the Lennard Jones potential
+#
+# \b Input \b channels: 
+#	- \a ztip = z posisiton of the tip
+#
+# \b Output \b channels: 
+#	- \a F = Total Potential Output
+#	- \a Repulsive = Just the repuslive part of the Potential
+#	- \a Attractive = Just the attractive part of the Potential
+#
+#\b Examples:
+# \code{.py}
+#	machine.AddCircuit(type='LJ', name='lj',epsilon=3.9487, sigma=1 , pushed=True)
+# \endcode
+#
+
+
+
+class LJ(Circuit):
+    
+    
+	def __init__(self, machine, name, **keys):
+		
+		super(self.__class__, self).__init__( machine, name )
+
+		if 'epsilon' in keys.keys():
+			ep = keys['epsilon']
+		else:
+			raise NameError("No epsilon entered ")
+
+
+		if 'sigma' in keys.keys():
+			sig = keys['sigma']
+		else:
+			raise NameError("No sigma entered ")
+
+
+		self.AddInput("ztip")
+		
+		self.AddOutput("F")
+		self.AddOutput("Repulsive")
+		self.AddOutput("Attractive")
+
+
+		Circuit.cCore.Add_LJ.argtypes = [
+		ctypes.c_int, #owner
+		ctypes.c_double, #ep
+		ctypes.c_double] #sig
+
+		self.cCoreID = Circuit.cCore.Add_LJ(self.machine.cCoreID,ep,sig)
+		
+		self.SetInputs(**keys)
+
+
+	def Initialize (self):
+		pass
+				
+		
+	def Update (self):
+		pass	

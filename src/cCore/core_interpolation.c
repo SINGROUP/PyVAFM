@@ -301,7 +301,18 @@ void i1Dlin_SetData(int index, int c, double* data, int npts) {
 void i1Dlin_periodic(circuit* c) {
 	
 	double x = GlobalSignals[c->inputs[0]];
-	x -= floor(x/c->params[1])*c->params[1]; //pbc 
+    if (c->iparams[2] == 1)
+	   {x -= floor(x/c->params[1])*c->params[1];} //pbc 
+
+    if (c->iparams[2] == 0 )
+        if (x >= (c->iparams[0]-1)*c->params[0] || x< 0){
+        for (int i = 0; i < c->iparams[1]; i++)
+        {   
+            if (x<0) 
+            {printf("WARNING:Crashed into Surface\n");}
+            
+            GlobalBuffers[c->outputs[i]] = 0;
+            return; }}
 	
 	/*else {
 		if(x > c->iparams[0]*c->params[0]) {

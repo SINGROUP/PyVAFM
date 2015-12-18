@@ -221,6 +221,14 @@ class i1Dlin(Circuit):
 		else:
 			raise NameError("No pbc entered ")
 
+		if 'ForceUnits' in keys.keys():
+			self.ForceUnits=float(keys['ForceUnits'])
+		else:
+			self.ForceUnits= 1.0
+
+
+
+
 
 		self.AddInput("x")
 		
@@ -238,6 +246,10 @@ class i1Dlin(Circuit):
 	def SetData(self, datapoints):
 		
 		npts = len(datapoints)
+
+		for i in range(0,len(datapoints)):
+			datapoints[i] = datapoints[i]*self.ForceUnits
+
 		if(npts < 2):
 			raise ValueError("ERROR: there are less than 2 points in the field!")
 		

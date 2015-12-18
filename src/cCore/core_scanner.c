@@ -29,7 +29,7 @@ int Scanner( int owner ) {
     c.nI = 0;
     c.nO = 4;
     
-    c.plen = 11;
+    c.plen = 13;
     c.params = (double*)calloc(c.plen,sizeof(double));
 	
     c.iplen = 6;
@@ -50,6 +50,9 @@ int Scanner( int owner ) {
  * params[3-5] = target x,y,z
  * params[6] = velocity - deprecated
  * params[7-9] = movement step sizes x,y,z
+ * params[10] = sin freq
+ * params[11] = sin amp
+ *
  * 
  * iparams[0] = steps required to complete action (not used)
  * iparams[1] = elapsed steps (not used)
@@ -363,11 +366,39 @@ void Scanner_DoScan( circuit *c )
     GlobalBuffers[c->outputs[2]] = c->params[2];
     GlobalBuffers[c->outputs[3]] = Record;
     
-
-
-
-
 }
+
+
+unsigned long long int SinScan(int index, double freq, double amp, int cycles)
+{   
+    circuits[index].updatef = DoSinScan;
+    circuit c = circuits[index];
+
+    //save initial pos
+    circuits[index].params[7] = circuits[index].params[0];
+    circuits[index].params[8] = circuits[index].params[1];
+    circuits[index].params[9] = circuits[index].params[2];
+
+
+    circuits[index].params[10] = freq;
+    circuits[index].params[11] = amp;
+
+
+
+    
+    return (int) ( cycles * (1/freq)/dt );
+    
+}
+
+void DoSinScan(circuit *c)
+{
+   c->iparams[1] ++;
+   
+    GlobalBuffers[c->outputs[2]] = c->params[9] +  cos(2*M_PI*c->iparams[1]*dt*c->params[10])*c->params[11];
+}
+
+
+
 /*
     c.params[0] = Lvxx; X comp of the x lattice vector
     c.params[1] = Lvxy; Y comp of the x lattice vector

@@ -16,7 +16,7 @@ def gauss(real_dir2cart, grid_dim, real_grid_data, sigma) :
 	j = np.subtract(np.array(range(0, grid_dim[1])), cent_point_grid[1])
 	k = np.subtract(np.array(range(0, grid_dim[2])), cent_point_grid[2])
 
-	jj, ii, kk = np.meshgrid(i, j, k) # NOTE STUPID ORDERING OF 3D MESHGRID OUTPUT !
+	jj, ii, kk = np.meshgrid(j, i, k) # NOTE STUPID ORDERING OF 3D MESHGRID OUTPUT !
 
 	xx = np.multiply( ii, dk[0,0]) + np.multiply( jj, dk[0,1]) + np.multiply( kk, dk[0,2])
 	yy = np.multiply( ii, dk[1,0]) + np.multiply( jj, dk[1,1]) + np.multiply( kk, dk[1,2])

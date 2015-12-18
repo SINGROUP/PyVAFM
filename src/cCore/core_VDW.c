@@ -162,3 +162,56 @@ void VDWtorn( circuit *c ) {
 
 }
 
+
+
+
+
+
+
+int Add_LJ(int owner, double ep, double sig) {
+
+    circuit c = NewCircuit();
+    c.nI = 1;
+    c.nO = 3;
+
+    c.plen = 2;
+    c.params = (double*)calloc(c.plen,sizeof(double));
+
+    c.params[0] = ep; 
+    c.params[1] = sig;
+
+
+    c.updatef = LJ;    
+
+    int index = AddToCircuits(c,owner);
+    printf("cCore: added LJ circuit\n");
+    return index;
+    
+}
+
+void LJ( circuit *c ) {
+
+   //printf("%f %f\n", c->params[0],c->params[1]);
+    //  LJ.append( 4*ep*( 12*(sig**12/r**13) - 6*(sig**6/r**7) ) )
+    double r=GlobalSignals[c->inputs[0]];
+    double ep = c->params[0];
+    double sig =  c->params[1];
+
+    if (r<=0)
+    {
+        printf("WARNING: Crashed into surface\n");
+        GlobalBuffers[c->outputs[0]]=0;
+        return;
+    }
+
+    //all LJ
+    GlobalBuffers[c->outputs[0]]=4*ep*( 12*(pow(sig,12)/pow(r,13)) - 6*( pow(sig,6) /pow(r,7) ) );
+
+    //Repuslive
+    GlobalBuffers[c->outputs[1]]=4*ep*( 12*(pow(sig,12)/pow(r,13))  );
+
+
+    //Attractive
+    GlobalBuffers[c->outputs[2]]=4*ep*( -6*( pow(sig,6) /pow(r,7) ) );
+
+}

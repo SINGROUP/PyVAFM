@@ -9,9 +9,9 @@ def main():
     
     machine.AddCircuit(type='waver',name='osc', freq=1, pushed=True)
     machine.AddCircuit(type='opAbs',name='abs', pushed=True)
-    machine.AddCircuit(type='SKLP',name='lp', fcut=0.04, pushed=True)
+    machine.AddCircuit(type='SKLP',name='lp', fc=0.04, pushed=True)
     
-    pi = machine.AddCircuit(type='PI', name='pi', set=1,Kp=1.5,Ki=0.2)
+    pi = machine.AddCircuit(type='PI', name='pi', set=2,Kp=0.2,Ki=0)
     #pid = machine.AddCircuit(type='PID', name='pi', set=1,Kp=1.5,Ki=0.2,Kd=0.1)
     
     machine.Connect("osc.sin","abs.signal")

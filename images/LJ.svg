@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="259.10059"
+   height="123"
+   id="svg4560"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="LJ.svg"
+   inkscape:export-filename="/home/felix/Dropbox/vafmpro/pyvafm/images/waver.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4562">
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3905"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4580"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4582"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4584"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4586"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4588"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4590"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4592"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4594"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4596"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4598"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="110.45728"
+     inkscape:cy="52.302843"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1366"
+     inkscape:window-height="656"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4728"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="-7.8876975px"
+       originy="0.01282px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata4565">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-163.42969,-470.875)">
+    <rect
+       style="fill:#00adde;fill-opacity:0.13242008;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect4305-6"
+       width="160"
+       height="120"
+       x="200"
+       y="472.36218"
+       rx="10"
+       ry="10"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       x="374"
+       y="528.36218"
+       id="text3831-8"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         sodipodi:role="line"
+         id="tspan3833-0"
+         x="374"
+         y="528.36218">Repuslive</tspan></text>
+    <g
+       transform="translate(80,-50.000011)"
+       id="g4307-11"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999">
+      <rect
+         y="572.36218"
+         x="270"
+         height="20"
+         width="20"
+         id="rect3006-1-4"
+         style="fill:#ff3e42;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3835-6"
+         d="m 280,582.36218 20,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#DotM)" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:40.07913589px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       x="270.54199"
+       y="533.86218"
+       id="text3802-0-6-8"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         sodipodi:role="line"
+         id="tspan3804-1-2-9"
+         x="270.54199"
+         y="533.86218"
+         style="font-size:16px">LJ</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="17.172592"
+       y="44.208103"
+       id="text3083"
+       sodipodi:linespacing="125%"
+       transform="translate(155.54199,470.86218)"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         sodipodi:role="line"
+         id="tspan3085"
+         x="17.172592"
+         y="44.208103" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3098"
+       y="526.36218"
+       x="163"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         y="526.36218"
+         x="163"
+         id="tspan3100"
+         sodipodi:role="line">ztip</tspan></text>
+    <g
+       id="g3106"
+       transform="translate(20,-49.999965)"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999">
+      <rect
+         style="fill:#0ca9ff;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect3108"
+         width="20"
+         height="20"
+         x="170"
+         y="572.36218" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#DotM)"
+         d="m 180,582.36218 -20,0"
+         id="path3110"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <g
+       id="g3213"
+       transform="translate(80,-80.000011)"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999">
+      <rect
+         style="fill:#ff3e42;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect3215"
+         width="20"
+         height="20"
+         x="270"
+         y="572.36218" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#DotM)"
+         d="m 280,582.36218 20,0"
+         id="path3217"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="translate(80,-16.000011)"
+       id="g3219"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999">
+      <rect
+         y="572.36218"
+         x="270"
+         height="20"
+         width="20"
+         id="rect3221"
+         style="fill:#ff3e42;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3223"
+         d="m 280,582.36218 20,0"
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#DotM)" />
+    </g>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3225"
+       y="498.86218"
+       x="385.54199"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         y="498.86218"
+         x="385.54199"
+         id="tspan3227"
+         sodipodi:role="line">Force</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3229"
+       y="560.36218"
+       x="374"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu Mono;-inkscape-font-specification:Ubuntu Mono"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/John/Documents/pyvafm/images/LJ.png"
+       inkscape:export-xdpi="83.709999"
+       inkscape:export-ydpi="83.709999"><tspan
+         y="560.36218"
+         x="374"
+         id="tspan3231"
+         sodipodi:role="line">Attractive</tspan></text>
+  </g>
+</svg>

@@ -8,5 +8,7 @@ void VDW( circuit *c );
 int Add_VDWtorn(int owner, double A1, double A2, double A3, double A4, double A5, double A6,double tipoffset );
 void VDWtorn( circuit *c );
 
+int Add_LJ(int owner, double ep, double sig);
+void LJ( circuit *c );
 
 #endif

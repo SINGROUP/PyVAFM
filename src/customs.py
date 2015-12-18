@@ -214,38 +214,80 @@ def aAMPD(compo, **keys):
     compo.AddOutput("norm")
     
     compo.AddCircuit(type='opAbs',name='abs', pushed=True)
-    compo.AddCircuit(type='SKLP', name='lp', fc=keys["fcut"], pushed=True)
+    #compo.AddCircuit(type='SKLP', name='lp', fc=keys["fcut"], pushed=True)
+
+    filters = keys['fcut']
+
+    for i in range(len(filters)):
+        f = filters[i]
+        compo.AddCircuit(type='SKLP',name='lp'+str(i+1),fc=f, pushed=True)
+
+
     compo.AddCircuit(type='opDiv', name='nrm', pushed=True)
     compo.AddCircuit(type='limiter', name='lim', min=-1, max=1, pushed=True)
     
     compo.Connect('global.signal','abs.signal')
-    compo.Connect('abs.out','lp.signal')
-    compo.Connect('lp.out','global.amp')
+    compo.Connect('abs.out','lp1.signal')
+
+    for i in range(1,len(filters)):
+        compo.Connect("lp"+str(i)+".out","lp"+str(i+1)+".signal")
+    
+    compo.Connect("lp"+str(i+1)+".out",'global.amp')
+    
+
     compo.Connect('global.signal','nrm.in1')
-    compo.Connect('lp.out','nrm.in2')
+    compo.Connect("lp"+str(i+1)+".out",'nrm.in2')
     compo.Connect('nrm.out','lim.signal')
     compo.Connect('lim.out','global.norm')
+
+
+def dAMPD(compo, **keys):
+    
+    compo.AddInput("signal")
+    compo.AddOutput("amp")
+    compo.AddOutput("norm")
+    
+    compo.AddCircuit(type='minmax', name='MinandMax' , CheckTime = keys['checktime'])
+    compo.AddCircuit(type='avg', name='average', time = keys['avgtime'], moving = False , pushed = 'True')
+    compo.AddCircuit(type='limiter', name='lim', min=-1, max=1, pushed=True)
+    compo.AddCircuit(type='opDiv', name='nrm', pushed=True)
+    compo.AddCircuit(type='SKLP',name='lp',fc=keys['fc'], pushed=True)
+
+    compo.Connect('global.signal','MinandMax.signal')
+    compo.Connect('MinandMax.amp','global.amp','nrm.in2')
+    compo.Connect('global.signal','nrm.in1')
+    compo.Connect('nrm.out','global.norm')
+
+  
     
     
 def FakePLL(compo, **keys):
     compo.AddInput("signal")
     compo.AddOutput("freq")
     compo.AddOutput("df")
+    compo.AddOutput("debug")
+
     
     compo.AddCircuit(type='peaker',name='peaker', up=1 ,pushed=True)
     compo.AddCircuit(type='opDiv',name='div', in1=1 ,pushed=True)
     compo.AddCircuit(type='opSub',name='sub', in2=keys["fo"] ,pushed=True)
+    compo.AddCircuit(type='avg', name='average', time = keys['AvgTime'], moving = False , pushed = 'True')
 
 
     compo.Connect('global.signal','peaker.signal')
     compo.Connect('peaker.delay','div.in2')
 
 
+
+
     compo.Connect('div.out','sub.in1')
     compo.Connect('div.out','global.freq')
 
 
-    compo.Connect('sub.out','global.df')
+    #compo.Connect('sub.out','global.df')
+    compo.Connect('sub.out','average.signal')
+    compo.Connect('average.out','global.df')
+
 
 
 

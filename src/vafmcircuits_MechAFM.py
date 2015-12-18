@@ -11,6 +11,8 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
+#Stil waiting for peter to write a manual for this.
+
 class MechAFM(Circuit):
     
 
