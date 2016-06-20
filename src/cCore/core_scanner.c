@@ -13,6 +13,8 @@ Scanner circuit & its functions
 #include "core_scanner.h"
 #endif
 
+//double M_PI = 3.14159265359;
+
 double* ScannerParams(int index) {
 	return circuits[index].params;
 }
