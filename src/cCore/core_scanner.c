@@ -13,7 +13,7 @@ Scanner circuit & its functions
 #include "core_scanner.h"
 #endif
 
-//double M_PI = 3.14159265359;
+double mpi = 3.14159265359;
 
 double* ScannerParams(int index) {
 	return circuits[index].params;
@@ -396,7 +396,7 @@ void DoSinScan(circuit *c)
 {
    c->iparams[1] ++;
    
-    GlobalBuffers[c->outputs[2]] = c->params[9] +  cos(2*M_PI*c->iparams[1]*dt*c->params[10])*c->params[11];
+    GlobalBuffers[c->outputs[2]] = c->params[9] +  cos(2*mpi*c->iparams[1]*dt*c->params[10])*c->params[11];
 }
 
 
