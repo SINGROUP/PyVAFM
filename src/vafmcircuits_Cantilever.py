@@ -4,7 +4,13 @@ import numpy
 import math
 from vafmbase import Circuit
 import ctypes
+import tools
 
+
+from numpy import *
+from scipy.interpolate import griddata
+import sys
+import tools
 
 ## \package vafmcircuits_Cantilever
 # This file contains the cantilever circuit
@@ -282,3 +288,201 @@ class AdvancedCantilever(Circuit):
 
 		Circuit.cCore.AddF(self.cCoreID,farray)		
 
+
+
+
+
+
+class AnalyticalCantilever(Circuit):
+
+	def __init__(self, machine, name, **keys):
+
+		super(self.__class__, self).__init__( machine, name )
+
+
+		A = 0.13
+		f0 = 1.553e6
+		K = 130
+
+
+		if 'filename' in keys.keys():
+			FILENAME = keys["filename"]
+		else:
+			raise NameError("Missing filename")
+
+		if 'NumberOfPoints' in keys.keys():
+			NumberOfPoints = keys["NumberOfPoints"]
+		else:
+			raise NameError("Missing NumberOfPoints")
+
+		if 'K' in keys.keys():
+			K = keys["K"]
+		else:
+			raise NameError("Missing K")
+
+
+		if 'A' in keys.keys():
+			A = keys["A"]
+		else:
+			raise NameError("Missing A")
+
+		if 'f0' in keys.keys():
+			f0 = keys["f0"]
+		else:
+			raise NameError("Missing f0")
+
+
+
+		res = [51,51,201]
+		if 'res' in keys.keys():
+			res = keys["res"]
+
+		step = []
+		if 'step' in keys.keys():
+			step = keys["step"]
+		else:
+			raise NameError("Missing step")
+
+		NumberOfUnitCells = [1,1,1]
+		if 'NumberOfFFCells' in keys.keys():
+			NumberOfUnitCells = keys["NumberOfFFCells"]
+
+
+		convertion=1
+		if 'convertion' in keys.keys():
+			convertion = keys["convertion"]
+
+
+		zHeight = None
+		if 'zHeight' in keys.keys():
+			zHeight = keys["zHeight"]
+
+
+		OutputFile = ""
+		if 'OutputFile' in keys.keys():
+			OutputFile = keys["OutputFile"]
+		else:
+			raise NameError("Missing OutputFile")
+
+
+		OscRes=100
+		if 'OscRes' in keys.keys():
+			OscRes = keys["OscRes"]
+
+		if 'TipPos' in keys.keys():
+			TipPos = keys["TipPos"]
+
+
+
+		arrayx = linspace(TipPos[0],  (step[0]*NumberOfPoints[0]*NumberOfUnitCells[0])+TipPos[0],res[0])
+		arrayy = linspace(TipPos[1],  (step[1]*NumberOfPoints[1]*NumberOfUnitCells[1])+TipPos[1],res[1])
+		arrayz = linspace(A, (step[2]*NumberOfPoints[2]*NumberOfUnitCells[2])+TipPos[2],res[2])
+
+
+
+		if 'ScanType' in keys.keys():
+			ScanType = keys["ScanType"]
+			if ScanType != "Vertical":
+				if ScanType != "Lateral":
+					print "ERROR: Scan type can only be Vertical or Lateral"
+					sys.exit()
+
+		if zHeight != None and ScanType == "Lateral": 
+			arrayz=[zHeight]
+
+		if ScanType == "Vertical":
+			arrayx=[TipPos[0]]
+			arrayy=[TipPos[1]]
+
+		if 'MinMaxz' in keys.keys():
+			MinMaxz = keys["MinMaxz"]
+			arrayz = linspace(MinMaxz[0], MinMaxz[1],res[2])
+
+		force=[]
+
+
+
+		
+		FF = open(FILENAME,'r')
+		Data = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+
+		for line in FF:	
+			i = int(line.split()[0])-1
+			j = int(line.split()[1])-1
+			k = int(line.split()[2])-1
+			Data[i][j][k]=float(line.split()[3])*convertion
+
+
+		counter = 0
+		linecounter =0
+		xpos = 0
+		ypos = 0
+		Resultsx = []
+		Resultsy = []
+		Resultsz = []
+		Resultsdf = []
+		ForceTest=[]
+
+
+		for ypos in arrayy:
+			linecounter+=1
+			print "Running line number "+str(linecounter)
+			
+			for xpos in arrayx:
+				
+				for z in arrayz:
+					#Solve the integral from 0 to 2pi
+					Integral = 0
+					size = OscRes
+					x = linspace(0, 2*pi, size)
+
+
+					#Find x_0
+					pos = float(z+A*cos(x[0]))
+					Force= tools.interpolate(Data,step,xpos,ypos,pos)
+					#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
+					
+					Integral += cos(x[0])*Force
+
+
+					#x_1 tp x _ size-1
+					for i in range(1,size -1):
+
+						pos = float(z+A*cos(x[i]))
+						Force= tools.interpolate(Data,step,xpos,ypos,pos)
+						#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
+
+						if i%2 == 0: #Is even
+							Integral += 2* cos(x[i])*Force
+
+						if i%2 != 0: #Is odd
+							Integral += 4* cos(x[i])*Force	
+					
+
+					#Find x_size_n
+					pos = float(z+A*cos(x[size-1]))
+					Force= tools.interpolate(Data,step,xpos,ypos,pos)
+					#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
+					Integral += cos(x[size-1])*Force
+
+
+
+					Integral = Integral * ((x[0]-x[size-1])/ (len(x)-1)  )/3
+
+					FreqShift =Integral * f0 / (2*pi * K*A) 
+					Resultsx.append(xpos)
+					Resultsy.append(ypos)
+					Resultsz.append(z)
+					Resultsdf.append(FreqShift)
+
+
+
+		W = open(OutputFile, 'w')
+		counter = 0
+		for i in range(0,len(Resultsx)):
+			W.write(str(Resultsx[i]) +" "+str(Resultsy[i]) + " "+str(Resultsz[i]) + " " + str(Resultsdf[i]) +"\n")
+			oldy= Resultsy[i]
+			counter +=1
+		W.close()
+
+		self.SetInputs(**keys);

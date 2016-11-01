@@ -2,7 +2,7 @@ from vafmbase import Circuit
 import math
 import ctypes
 import numpy
-from mpl_toolkits.mplot3d import Axes3D
+#from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 import time

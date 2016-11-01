@@ -218,7 +218,10 @@ class output(Circuit):
 		plt.yticks(tick_locs, tick_lbls)
 		plt.savefig(self.filename.split('.')[0]+'.png')
 
+	def CloseFile(self):
+		self.cCore.output_close(self.cCoreID)
 
+		
 	def Update (self):
 
 

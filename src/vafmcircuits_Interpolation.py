@@ -10,7 +10,8 @@ from vafmbase import Circuit
 from scipy.interpolate import LinearNDInterpolator
 import ctypes
 import sys
-
+import os
+import glob
 ## \brief Tri-linear interpolation circuit.
 #
 # \image html i3dlin.png "schema"
@@ -613,3 +614,131 @@ class i4Dlin(Circuit):
 				self.data[c][index] = words[c+4]
 		
 		f.close()
+
+## \brief MechAfmToPyVafm circuit.
+# 
+# This circuit takes as an input a set of force files produced by the MechAFM then converts them to a PyVAFM compatible force field
+# This requires a fodler to be in the same location as your input script that contains all the force field files from the MechAFM
+#
+# This circuit extracts the step size and number of points from the force files and stores them in the MaxInd and Step variable within the class
+#
+# If the file already exists in the folder then the conversion is skipped and only the step and number of points are extracted.
+# To override this behaviour use the overide = True command
+#
+# - \b Initialisation \b parameters:.
+# 	- \a foldername = Name of the folder that contains all the MechAFM force files.
+#	- \a filename = Filename of the converted file
+#   - \a overide = Overide the safey function to ensure we dont overwrite a file
+# 	- \a pushed True|False
+#
+#
+# \b Example:
+# \code
+#FFdata = machine.AddCircuit(type='MechAfmToPyVafm',name='MtoP',foldername = "Cl_tip" ) 
+#inter = machine.AddCircuit(type='i3Dlin',name='inter', components=3, pushed=True) 
+#inter.Configure(steps=FFdata.step, npoints=FFdata.MaxInd)
+#inter.Configure(pbc=[True,True,False])
+#inter.ReadData(FFdata.filename)
+# \endcode
+
+class MechAfmToPyVafm(Circuit):
+
+
+	def __init__(self, machine, name, **keys):        
+		
+		super(self.__class__, self).__init__( machine, name )
+
+		Folder=None
+		self.filename = "ff.dat"
+		overide=False
+		self.step=None
+		self.MaxInd=None
+
+		if 'foldername' in keys.keys():
+			Folder=keys['foldername']
+		else:
+			raise NameError ("Error: No folder specified")
+
+		if 'filename' in keys.keys():
+			self.filename=keys['filename']
+		if "overide" in keys.keys():
+			overide=keys['overide']
+
+
+		#Check if ff.dat exists so we can easily debug
+		import os.path
+		FileExist = os.path.isfile(self.filename)
+		if FileExist == True  and overide==False:
+			print "####################################################################################"
+			print "File already exists, skipping conversion, delete the file or change the filename"		
+			print "####################################################################################"
+
+		orignaldir = os.getcwd()+"/"
+		os.chdir(orignaldir+Folder)
+
+		#List of files
+		files = glob.glob('*.dat')
+		print "Found " + str(len(files)) + " files in folder " + Folder
+		#open one file and check the x y size
+		f = open(files[-1],'r')
+		x=[]
+		y=[]
+		z=[]
+		Realx=[]
+		Realy=[]
+		Realz=[]
+
+		for line in f: 
+			x.append( int ( line.split()[1] ) )
+			y.append( int ( line.split()[2] ) )
+			Realx.append( float ( line.split()[3] ) )
+			Realy.append( float ( line.split()[4] ) )
+
+		for Name in files:
+			Realz.append( float(Name.split('-')[-1][:-4] ))
+
+		self.MaxInd = [ max(x)+1,max(y)+1 , len(files)]
+		self.step = [ round(sorted(set(Realx))[-1],4) - sorted(set(Realx))[-2] , round(sorted(set(Realy))[-1],4) - sorted(set(Realy))[-2] , round( sorted(Realz)[-1] - sorted(Realz)[-2],4) ]
+		print "Number of Points = " + str(self.MaxInd)
+		print "Step Size = " + str(self.step)
+
+		offset = int( min(Realz)/self.step[2] )
+
+
+		if FileExist == False or overide==True:
+
+			print "Converting MechAFM Force file to PyVAFM file"
+			Fx = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
+			Fy = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
+			Fz = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
+
+			f.close()
+			print "Reading in Files"
+			counter = 0
+			for FileName in files:
+				if counter % 10 == 0:
+					print  str ( round ( float ( counter) / float( self.MaxInd[2] ) * 100.0 , 2 ) ) + "% done"
+
+				f = open(FileName,'r')
+				for line in f:
+					x= int ( line.split()[1] ) 
+					y= int ( line.split()[2] ) 
+					z= int ( line.split()[0] ) 
+					Fx[x][y][z] = float ( line.split()[6] ) 
+					Fy[x][y][z] = float ( line.split()[7] ) 
+					Fz[x][y][z] = float ( line.split()[8] ) 
+				counter +=1
+			print "100% done"
+	
+		os.chdir(orignaldir)	
+
+		if FileExist == False or overide==True:
+
+			f = open(self.filename,'w')
+			print "Writing force field file " + str(self.filename)
+			for X in range(0,self.MaxInd[0]):
+				for Y in range(0,self.MaxInd[1]):
+					for Z in range(0,self.MaxInd[2]):
+						f.write(str(X+1) + " " + str(Y+1) + " " + str(Z+1 + offset) + " " +  str(Fx[X][Y][self.MaxInd[2]-1 - Z]) + " " + str(Fy[X][Y][self.MaxInd[2]-1 - Z]) + " " + str(Fz[X][Y][self.MaxInd[2]-1 - Z]) + "\n" )
+			f.close()
+		self.MaxInd[2] += offset
