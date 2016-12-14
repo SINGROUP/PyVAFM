@@ -393,8 +393,8 @@ unsigned long long int SinScan(int index, double freq, double amp, int cycles)
 void DoSinScan(circuit *c)
 {
    c->iparams[1] ++;
-   
-    GlobalBuffers[c->outputs[2]] = c->params[9] +  cos(2*M_PI*c->iparams[1]*dt*c->params[10])*c->params[11];
+   float PIE = 3.14159265359;
+    GlobalBuffers[c->outputs[2]] = c->params[9] +  cos(2*PIE*c->iparams[1]*dt*c->params[10])*c->params[11];
 }
 
 
