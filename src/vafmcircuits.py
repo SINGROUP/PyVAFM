@@ -24,6 +24,9 @@ import vafmcircuits_GaussSmear
 import vafmcircuits_DFTVDW
 import vafmcircuits_TutCircuit
 
+
+
+
 ## \package vafmcircuits
 # \brief This file contains the main Machine circuit.
 #
@@ -88,11 +91,18 @@ class Machine(Circuit):
 		
 		if(Machine.singleton == False and machine == None):
 			#if this is the absolute first machine to be added
-			print "Init main machine..."
+
 			Machine.singleton = True
 			Machine.main = self
 			isMain = 1
 			
+			if isMain==1:
+				print "Python Virtual Atomic Force Microscope  Copyright (C) 2015  Aalto University"
+				print "This program comes with ABSOLUTELY NO WARRANTY"
+				print "This is free software, and you are welcome to redistribute it"
+				print "For complete licence details please vist: http://singroup.github.io/PyVAFM/page_Licence.html"
+				print "       "
+			print "Init main machine..."
 
 		print "adding circuit",name,": machine == None =>",machine == None
 		
@@ -822,6 +832,9 @@ class Machine(Circuit):
 		if self.pushed:
 			for key in self._MetaO.keys(): self.O[key].Push()
 
+			idx = circ.I.keys().index(key) #find the position of the key
+			Circuit.cCore.SetInput(circ.cCoreID, idx, c_double(value))
+
 		
 
 		for kw in self.circuits.keys():
@@ -864,6 +877,30 @@ class Machine(Circuit):
 			self.UpdateOLD()
 	
 
+	def ClearCircuits(self,Exceptions):
+		
+		CircuitExceptions=[]
+		for Channel in Exceptions:
+			if '.' not in Channel:
+				CircuitExceptions.append( Channel)
 
+
+		for CIRCUIT in self.circuits.keys():
+			if CIRCUIT not in CircuitExceptions:
+				channels=self.circuits[CIRCUIT].I.keys()
+				for Channel in channels:
+					if CIRCUIT+"."+Channel not in Exceptions:
+						value = 0.0
+						ch = self.GetChannel(CIRCUIT+"."+Channel)
+						ch.Set(value)
+						circ = ch.owner
+						key = ch.name
+
+						if ch.isInput == True:
+							idx = circ.I.keys().index(key) #find the position of the key
+						else:
+							idx = circ.O.keys().index(key)
+						print "Resetting channel "+circ.name+"."+key
+						Circuit.cCore.SetInput(circ.cCoreID, idx, c_double(value))
 
 
