@@ -75,7 +75,7 @@ function toggleMenu(objID, button) {
 </div><!-- fragment --><p>Lets add our <a class="el" href="classvafmcircuits__Cantilever_1_1Cantilever.html">Cantilever </a> circuit, the parameters are described in the documentation but for now lets use these values;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;canti = machine.AddCircuit(type=<span class="stringliteral">&#39;Cantilever&#39;</span>,name=<span class="stringliteral">&#39;canti&#39;</span>, startingz=0.5,Q=10000, k=167.0, f0=150000, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>Since we need to be able to measure amplitude we should include the amplitude detector composite circuit;</p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;amp&#39;</span>, fcut=10000, assembly=aAMPD, pushed=<span class="keyword">True</span>)</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;amp&#39;</span>, fcut=[10000], assembly=aAMPD, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>We need to know just how much we must excite the cantilever so we can do this using a PI circuit;</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;PI&#39;</span>, name=<span class="stringliteral">&#39;agc&#39;</span>, Kp=1.1, Ki=800, set=1, pushed=<span class="keyword">True</span>)</div>
 </div><!-- fragment --><p>It often safe practice to limit the agc signal so it doesn't get to high or negative so to do this we will implement a limiter circuit.</p>
@@ -144,7 +144,7 @@ function toggleMenu(objID, button) {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;canti = machine.AddCircuit(type=<span class="stringliteral">&#39;Cantilever&#39;</span>,name=<span class="stringliteral">&#39;canti&#39;</span>, startingz=0.5,Q=10000, k=167.0, f0=150000, pushed=<span class="keyword">True</span>)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;amp&#39;</span>, fcut=10000, assembly=aAMPD, pushed=<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;Machine&quot;</span>,name=<span class="stringliteral">&#39;amp&#39;</span>, fcut=[10000], assembly=aAMPD, pushed=<span class="keyword">True</span>)</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&#39;PI&#39;</span>, name=<span class="stringliteral">&#39;agc&#39;</span>, Kp=1.1, Ki=800, set=1, pushed=<span class="keyword">True</span>)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;machine.AddCircuit(type=<span class="stringliteral">&quot;limiter&quot;</span>,name=<span class="stringliteral">&#39;agclim&#39;</span>, min=0,max=10, pushed=<span class="keyword">True</span>)</div>
@@ -235,7 +235,7 @@ function toggleMenu(objID, button) {
 <div class="float-left">Documentation for pyVAFM </div>
 <div class="float-right">
 <small>
-Generated on Tue Feb 7 2017 11:29:18 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.9.1</small></address>
+Generated on Tue Feb 7 2017 16:07:43 for pyVAFM by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.8.9.1</small></address>
 </div>
 <!-- top ends here -->
 <!-- </div> -->
