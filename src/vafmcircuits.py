@@ -97,7 +97,7 @@ class Machine(Circuit):
 			isMain = 1
 			
 			if isMain==1:
-				print "Python Virtual Atomic Force Microscope  Copyright (C) 2015  Aalto University"
+				print "Python Virtual Atomic Force Microscope  Copyright (C) 2015 John Tracey, Filippo Federici, Adam S. Foster and  Aalto University"
 				print "This program comes with ABSOLUTELY NO WARRANTY"
 				print "This is free software, and you are welcome to redistribute it"
 				print "For complete licence details please vist: http://singroup.github.io/PyVAFM/page_Licence.html"
