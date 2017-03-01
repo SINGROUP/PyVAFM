@@ -35,11 +35,11 @@ inter.ReadData('NaClforces.dat')
 #Outputs
 out1 = machine.AddCircuit(type='output',name='output',file='testafm.out', dump=2)
 out1.Register('global.time', 'canti.zabs','amp.amp','pll.cos','pll.sin','exc.in2')
-#out1.Stop()
+out1.Stop()
  
 out2 = machine.AddCircuit(type='output',name='output2',file='testafm2.out', dump=10000)
 out2.Register('global.time', 'canti.ztip','agc.out','pll.df',"canti.fz",'amp.amp')
-#out2.Stop()
+out2.Stop()
  
 #Imaging output
 imager = machine.AddCircuit(type='output',name='image',file='NaCl.dat', dump=0)
