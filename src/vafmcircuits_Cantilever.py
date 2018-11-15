@@ -12,13 +12,13 @@ from scipy.interpolate import griddata
 import sys
 import tools
 
-## \package vafmcircuits_Cantilever
+# \package vafmcircuits_Cantilever
 # This file contains the cantilever circuit
 
-## \brief Simple cantilever circuit.
-#	
+# \brief Simple cantilever circuit.
+#
 # \image html cantilever.png "schema"
-# 
+#
 # Simple cantilever capable of simulating 1 vertical mode.
 #
 # \b Initialisation \b parameters:
@@ -38,68 +38,70 @@ import tools
 # 	- \a zabs = absoloute vertical position of the tip
 # 	- \a vz = Vertical speed of the tip
 #
-#\b Examples:
+# \b Examples:
 # \code{.py}
 #	canti = machine.AddCircuit(type='Cantilever',name='canti', startingz=0.5, Q=10000, k=167.0, f0=f0, pushed=True)
 # \endcode
 #
+
+
 class Cantilever(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
-		
-		if 'Q' in list(keys.keys()):
-			Q = keys['Q']
-			print("Q = " +str(Q))
-		else:
-			raise NameError("No Q entered ")
+        super(self.__class__, self).__init__(machine, name)
 
-		if 'k' in list(keys.keys()):
-			k = keys['k']
-			print("k = "+str(k))
-		else:
-			raise NameError("No k entered ")
+        if 'Q' in list(keys.keys()):
+            Q = keys['Q']
+            print("Q = " + str(Q))
+        else:
+            raise NameError("No Q entered ")
 
-		if 'M' in list(keys.keys()):
-			M = keys['M']
-			print("M = "+str(M))
-		else:
-			M = 0
+        if 'k' in list(keys.keys()):
+            k = keys['k']
+            print("k = "+str(k))
+        else:
+            raise NameError("No k entered ")
 
-		if 'f0' in list(keys.keys()):
-			F = keys['f0']
-			print("f0 = "+str(F))
-		else:
-			raise NameError("No F entered ")
-		
-		startingz = 0
-		if 'startingz' in list(keys.keys()):
-			startingz = keys['startingz']
-			print("startingz = "+str(startingz))
-		else:
-			print("PY WARNING: starting tip z not specified, assuming 0")
+        if 'M' in list(keys.keys()):
+            M = keys['M']
+            print("M = "+str(M))
+        else:
+            M = 0
 
-		
-		self.AddInput("holderz")
-		self.AddInput("fz")
-		self.AddInput("exciter")
+        if 'f0' in list(keys.keys()):
+            F = keys['f0']
+            print("f0 = "+str(F))
+        else:
+            raise NameError("No F entered ")
 
-		self.AddOutput("ztip")
-		self.AddOutput("zabs")
-		self.AddOutput("vz")
+        startingz = 0
+        if 'startingz' in list(keys.keys()):
+            startingz = keys['startingz']
+            print("startingz = "+str(startingz))
+        else:
+            print("PY WARNING: starting tip z not specified, assuming 0")
 
-		self.cCoreID = Circuit.cCore.Add_Cantilever(self.machine.cCoreID,        #CAREFUL HERE!
-			ctypes.c_double(Q),ctypes.c_double(k),ctypes.c_double(M),
-			ctypes.c_double(F),ctypes.c_double(startingz),ctypes.c_double(0.0) )
+        self.AddInput("holderz")
+        self.AddInput("fz")
+        self.AddInput("exciter")
 
-		self.SetInputs(**keys);
+        self.AddOutput("ztip")
+        self.AddOutput("zabs")
+        self.AddOutput("vz")
+
+        self.cCoreID = Circuit.cCore.Add_Cantilever(self.machine.cCoreID,  # CAREFUL HERE!
+                                                    ctypes.c_double(Q), ctypes.c_double(
+                                                        k), ctypes.c_double(M),
+                                                    ctypes.c_double(F), ctypes.c_double(startingz), ctypes.c_double(0.0))
+
+        self.SetInputs(**keys)
 
 
-## \brief Advanced cantilever circuit.
-#	
+# \brief Advanced cantilever circuit.
+#
 # \image html advcanti.png "schema"
-# 
+#
 # Advanced cantilever capable of simulating infinite vertical mode and lateral modes.
 #
 # \b Initialisation \b parameters:
@@ -110,7 +112,7 @@ class Cantilever(Circuit):
 # \b Initialisation \b commands:
 #	- \a .AddMode(Vertical=True|False, k=float, Q=float, M=float, f0 =float)- this is how you add a mode to the cantilever, Vertical = True means a vertical mode, Vertical = False is a lateral.
 #						k is the spring constant for that mode, Q is the Q factor, M is the mass although if tis is not included the simulation will calculate a mass for you and f0 is the eigenfrequency of the mode.
-# 	- \a .StartingPos(x,y,z) - Assigns the starting position from equilibrium for the cantilever. 
+# 	- \a .StartingPos(x,y,z) - Assigns the starting position from equilibrium for the cantilever.
 #	- \a .CantileverReady() - use this command after you are done setting up the cantilever.
 #
 # \b Input \b channels:
@@ -133,7 +135,7 @@ class Cantilever(Circuit):
 # 	- \a zVx = Z position of a vertical mode, replace x with the mode number for example zV1.
 # 	- \a YLx = Y position of a lateral mode, replace x with the mode number for example yV1.
 #
-#\b Examples:
+# \b Examples:
 # \code{.py}
 #	canti = machine.AddCircuit(type='AdvancedCantilever',name='canti',NumberOfModesV=2,NumberOfModesL=0, pushed=True)
 #	canti.AddMode(Vertical=True, k = 1, Q=100, M=1, f0 =1)
@@ -145,344 +147,327 @@ class Cantilever(Circuit):
 #
 
 class AdvancedCantilever(Circuit):
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
 
+        if 'NumberOfModesV' in list(keys.keys()):
+            NumberOfModesV = keys['NumberOfModesV']
+            print("Number of Vertical Modes = " + str(NumberOfModesV))
+        else:
+            raise NameError("No NumberOfModesV entered ")
 
-		if 'NumberOfModesV' in list(keys.keys()):
-			NumberOfModesV = keys['NumberOfModesV']
-			print("Number of Vertical Modes = " +str(NumberOfModesV))
-		else:
-			raise NameError("No NumberOfModesV entered ")
+        if 'NumberOfModesL' in list(keys.keys()):
+            NumberOfModesL = keys['NumberOfModesL']
+            print("Number of Lateral Modes = " + str(NumberOfModesL))
+        else:
+            raise NameError("No NumberOfModesL entered ")
 
-		if 'NumberOfModesL' in list(keys.keys()):
-			NumberOfModesL = keys['NumberOfModesL']
-			print("Number of Lateral Modes = " +str(NumberOfModesL))
-		else:
-			raise NameError("No NumberOfModesL entered ")
-		
+        self.AddInput("exciterz")  # 0
+        self.AddInput("excitery")  # 1
 
-		self.AddInput("exciterz") #0
-		self.AddInput("excitery") #1
+        self.AddInput("Holderx")  # 2
+        self.AddInput("Holdery")  # 3
+        self.AddInput("Holderz")  # 4
 
-		self.AddInput("Holderx") #2
-		self.AddInput("Holdery") #3
-		self.AddInput("Holderz") #4
+        self.AddInput("ForceV")  # 5
+        self.AddInput("ForceL")  # 6
 
-		self.AddInput("ForceV") #5
-		self.AddInput("ForceL") #6
-		
-		self.AddOutput("zPos") #0
-		self.AddOutput("yPos") #1
+        self.AddOutput("zPos")  # 0
+        self.AddOutput("yPos")  # 1
 
-		self.AddOutput("xABS") #2
-		self.AddOutput("yABS") #3
-		self.AddOutput("zABS") #4
+        self.AddOutput("xABS")  # 2
+        self.AddOutput("yABS")  # 3
+        self.AddOutput("zABS")  # 4
 
-		self.NumberOfModesL = NumberOfModesL
-		self.NumberOfModesV = NumberOfModesV
+        self.NumberOfModesL = NumberOfModesL
+        self.NumberOfModesV = NumberOfModesV
 
+        for i in range(1, NumberOfModesV+2):
+            self.AddOutput("vV" + str(i))  # 5 to #5 + NumberOfModesV
 
-		for i in range(1 ,NumberOfModesV+2):
-			self.AddOutput("vV" + str(i) ) #5 to #5 + NumberOfModesV
+        for i in range(1, NumberOfModesV+2):
+            # 5 + NumberOfModesV  to #5 + NumberOfModesV*2
+            self.AddOutput("zV" + str(i))
 
-		for i in range(1 ,NumberOfModesV+2):			
-			self.AddOutput("zV" + str(i) ) #5 + NumberOfModesV  to #5 + NumberOfModesV*2
+        for i in range(1, NumberOfModesL+2):
+            # 5 + NumberOfModesV*2 to #5 + NumberOfModesV*2 + NumberOfModesL
+            self.AddOutput("vL" + str(i))
 
-		for i in range(1 ,NumberOfModesL+2):
-			self.AddOutput("vL" + str(i) ) #5 + NumberOfModesV*2 to #5 + NumberOfModesV*2 + NumberOfModesL
-			
-		for i in range(1 ,NumberOfModesL+2):			
-			self.AddOutput("yL" + str(i) ) #5 + NumberOfModesV*2 + NumberOfModesL + #5 + NumberOfModesV*2 + NumberOfModesL*2
-		#required vars
-		self.vertical = True
+        for i in range(1, NumberOfModesL+2):
+            # 5 + NumberOfModesV*2 + NumberOfModesL + #5 + NumberOfModesV*2 + NumberOfModesL*2
+            self.AddOutput("yL" + str(i))
+        # required vars
+        self.vertical = True
 
-		self.counterV=0
-		self.counterL=0
+        self.counterV = 0
+        self.counterL = 0
 
-		self.Kv=[]
-		self.Kl=[]
+        self.Kv = []
+        self.Kl = []
 
-		self.Qv=[]
-		self.Ql=[]
+        self.Qv = []
+        self.Ql = []
 
-		self.Mv=[]
-		self.Ml=[]
+        self.Mv = []
+        self.Ml = []
 
-		self.fov=[]
-		self.fol=[]
+        self.fov = []
+        self.fol = []
 
+        self.cCoreID = Circuit.cCore.Add_AdvancedCantilever(
+            self.machine.cCoreID, NumberOfModesV, NumberOfModesL)
+        self.SetInputs(**keys)
 
-		
-		self.cCoreID = Circuit.cCore.Add_AdvancedCantilever(self.machine.cCoreID, NumberOfModesV,NumberOfModesL)
-		self.SetInputs(**keys);
+    def StartingPos(self, *args):
+        if (len(args) != 3):
+            raise NameError("Incorrect number of starting values entered")
 
-	def StartingPos(self, *args):
-		if (len(args) != 3):
-			raise NameError("Incorrect number of starting values entered")
+        Circuit.cCore.StartingPoint.argtypes = [
+            ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
+        StartingPoint = []
+        for i in args:
+            StartingPoint.append(i)
+        StartingPointarray = (
+            ctypes.c_double * len(StartingPoint))(*StartingPoint)
+        Circuit.cCore.StartingPoint(self.cCoreID, StartingPointarray)
 
+    def AddMode(self, **kw):
 
-		Circuit.cCore.StartingPoint.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_double)]
-		StartingPoint=[]
-		for i in args:
-			StartingPoint.append(i)
-		StartingPointarray = (ctypes.c_double * len(StartingPoint))(*StartingPoint)
-		Circuit.cCore.StartingPoint(self.cCoreID,StartingPointarray)
+        if 'k' not in list(kw.keys()):
+            raise NameError("Missing k from AddMode")
 
+        if 'Q' not in list(kw.keys()):
+            raise NameError("Missing Q from AddMode")
 
-	def AddMode(self, **kw):
+        if 'M' not in list(kw.keys()):
+            kw["M"] = 0
+            print("Warning Missing Mass will caulcuate from omega and k")
 
-		if 'k' not in list(kw.keys()):
-			raise NameError("Missing k from AddMode")
+        if 'f0' not in list(kw.keys()):
+            raise NameError("Missing f0 from AddMode")
 
-		if 'Q' not in list(kw.keys()):
-			raise NameError("Missing Q from AddMode")
+        if kw["Vertical"] == True:
+            if "k" in list(kw.keys()):
+                self.Kv.append(float(kw["k"]))
+            if "Q" in list(kw.keys()):
+                self.Qv.append(float(kw["Q"]))
+            if "M" in list(kw.keys()):
+                self.Mv.append(float(kw["M"]))
+            if "f0" in list(kw.keys()):
+                self.fov.append(float(kw["f0"]))
+            self.counterV = + 1
 
-		if 'M' not in list(kw.keys()):
-			kw["M"]=0		
-			print("Warning Missing Mass will caulcuate from omega and k")
+        if kw["Vertical"] == False:
+            if "k" in list(kw.keys()):
+                self.Kl.append(float(kw["k"]))
+            if "Q" in list(kw.keys()):
+                self.Ql.append(float(kw["Q"]))
+            if "M" in list(kw.keys()):
+                self.Ml.append(float(kw["M"]))
+            if "f0" in list(kw.keys()):
+                self.fol.append(float(kw["f0"]))
+            self.counterL = + 1
 
-		if 'f0' not in list(kw.keys()):
-			raise NameError("Missing f0 from AddMode")
+    def CantileverReady(self):
+        # combine arrays
+        k = self.Kv + self.Kl
+        Q = self.Qv + self.Ql
+        M = self.Mv + self.Ml
+        f = self.fov + self.fol
 
+        if self.counterV > self.NumberOfModesV:
+            raise NameError(
+                "Incorrect number of vertical modes added check initialisation parameters")
 
-		if kw["Vertical"] == True : 
-			if "k" in list(kw.keys()): self.Kv.append(float(kw["k"]))
-			if "Q" in list(kw.keys()): self.Qv.append(float(kw["Q"]))
-			if "M" in list(kw.keys()): self.Mv.append(float(kw["M"]))
-			if "f0" in list(kw.keys()): self.fov.append(float(kw["f0"]))
-			self.counterV =+ 1
+        if self.counterL > self.NumberOfModesL:
+            raise NameError(
+                "Incorrect number of lateral modes added check initialisation parameters")
 
-		if kw["Vertical"] == False : 
-			if "k" in list(kw.keys()): self.Kl.append(float(kw["k"]))
-			if "Q" in list(kw.keys()): self.Ql.append(float(kw["Q"]))
-			if "M" in list(kw.keys()): self.Ml.append(float(kw["M"]))
-			if "f0" in list(kw.keys()): self.fol.append(float(kw["f0"]))
-			self.counterL =+ 1
+        karray = (ctypes.c_double * len(k))(*k)
+        Circuit.cCore.AddK(self.cCoreID, karray)
 
+        Qarray = (ctypes.c_double * len(Q))(*Q)
+        Circuit.cCore.AddQ(self.cCoreID, Qarray)
 
-	def CantileverReady(self):
-		#combine arrays
-		k = self.Kv + self.Kl
-		Q = self.Qv + self.Ql
-		M = self.Mv + self.Ml
-		f = self.fov + self.fol
+        Marray = (ctypes.c_double * len(M))(*M)
+        Circuit.cCore.AddM(self.cCoreID, Marray)
 
-		if self.counterV > self.NumberOfModesV:
-			raise NameError("Incorrect number of vertical modes added check initialisation parameters")
+        farray = (ctypes.c_double * len(f))(*f)
 
-		if self.counterL > self.NumberOfModesL:
-			raise NameError("Incorrect number of lateral modes added check initialisation parameters")
-
-		karray = (ctypes.c_double * len(k))(*k)
-		Circuit.cCore.AddK(self.cCoreID, karray)
-
-		Qarray = (ctypes.c_double * len(Q))(*Q)
-		Circuit.cCore.AddQ(self.cCoreID, Qarray)
-
-		Marray = (ctypes.c_double * len(M))(*M)
-		Circuit.cCore.AddM(self.cCoreID, Marray)
-
-		farray = (ctypes.c_double * len(f))(*f)
-
-		Circuit.cCore.AddF(self.cCoreID,farray)		
-
-
-
-
+        Circuit.cCore.AddF(self.cCoreID, farray)
 
 
 class AnalyticalCantilever(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
 
+        A = 0.13
+        f0 = 1.553e6
+        K = 130
 
-		A = 0.13
-		f0 = 1.553e6
-		K = 130
+        if 'filename' in list(keys.keys()):
+            FILENAME = keys["filename"]
+        else:
+            raise NameError("Missing filename")
 
+        if 'NumberOfPoints' in list(keys.keys()):
+            NumberOfPoints = keys["NumberOfPoints"]
+        else:
+            raise NameError("Missing NumberOfPoints")
 
-		if 'filename' in list(keys.keys()):
-			FILENAME = keys["filename"]
-		else:
-			raise NameError("Missing filename")
+        if 'K' in list(keys.keys()):
+            K = keys["K"]
+        else:
+            raise NameError("Missing K")
 
-		if 'NumberOfPoints' in list(keys.keys()):
-			NumberOfPoints = keys["NumberOfPoints"]
-		else:
-			raise NameError("Missing NumberOfPoints")
+        if 'A' in list(keys.keys()):
+            A = keys["A"]
+        else:
+            raise NameError("Missing A")
 
-		if 'K' in list(keys.keys()):
-			K = keys["K"]
-		else:
-			raise NameError("Missing K")
+        if 'f0' in list(keys.keys()):
+            f0 = keys["f0"]
+        else:
+            raise NameError("Missing f0")
 
+        res = [51, 51, 201]
+        if 'res' in list(keys.keys()):
+            res = keys["res"]
 
-		if 'A' in list(keys.keys()):
-			A = keys["A"]
-		else:
-			raise NameError("Missing A")
+        step = []
+        if 'step' in list(keys.keys()):
+            step = keys["step"]
+        else:
+            raise NameError("Missing step")
 
-		if 'f0' in list(keys.keys()):
-			f0 = keys["f0"]
-		else:
-			raise NameError("Missing f0")
+        NumberOfUnitCells = [1, 1, 1]
+        if 'NumberOfFFCells' in list(keys.keys()):
+            NumberOfUnitCells = keys["NumberOfFFCells"]
 
+        convertion = 1
+        if 'convertion' in list(keys.keys()):
+            convertion = keys["convertion"]
 
+        zHeight = None
+        if 'zHeight' in list(keys.keys()):
+            zHeight = keys["zHeight"]
 
-		res = [51,51,201]
-		if 'res' in list(keys.keys()):
-			res = keys["res"]
+        OutputFile = ""
+        if 'OutputFile' in list(keys.keys()):
+            OutputFile = keys["OutputFile"]
+        else:
+            raise NameError("Missing OutputFile")
 
-		step = []
-		if 'step' in list(keys.keys()):
-			step = keys["step"]
-		else:
-			raise NameError("Missing step")
+        OscRes = 100
+        if 'OscRes' in list(keys.keys()):
+            OscRes = keys["OscRes"]
 
-		NumberOfUnitCells = [1,1,1]
-		if 'NumberOfFFCells' in list(keys.keys()):
-			NumberOfUnitCells = keys["NumberOfFFCells"]
+        if 'TipPos' in list(keys.keys()):
+            TipPos = keys["TipPos"]
 
+        arrayx = linspace(
+            TipPos[0],  (step[0]*NumberOfPoints[0]*NumberOfUnitCells[0])+TipPos[0], res[0])
+        arrayy = linspace(
+            TipPos[1],  (step[1]*NumberOfPoints[1]*NumberOfUnitCells[1])+TipPos[1], res[1])
+        arrayz = linspace(
+            A, (step[2]*NumberOfPoints[2]*NumberOfUnitCells[2])+TipPos[2], res[2])
 
-		convertion=1
-		if 'convertion' in list(keys.keys()):
-			convertion = keys["convertion"]
+        if 'ScanType' in list(keys.keys()):
+            ScanType = keys["ScanType"]
+            if ScanType != "Vertical":
+                if ScanType != "Lateral":
+                    print("ERROR: Scan type can only be Vertical or Lateral")
+                    sys.exit()
 
+        if zHeight != None and ScanType == "Lateral":
+            arrayz = [zHeight]
 
-		zHeight = None
-		if 'zHeight' in list(keys.keys()):
-			zHeight = keys["zHeight"]
+        if ScanType == "Vertical":
+            arrayx = [TipPos[0]]
+            arrayy = [TipPos[1]]
 
+        if 'MinMaxz' in list(keys.keys()):
+            MinMaxz = keys["MinMaxz"]
+            arrayz = linspace(MinMaxz[0], MinMaxz[1], res[2])
 
-		OutputFile = ""
-		if 'OutputFile' in list(keys.keys()):
-			OutputFile = keys["OutputFile"]
-		else:
-			raise NameError("Missing OutputFile")
+        force = []
 
+        FF = open(FILENAME, 'r')
+        Data = [[[0 for k in range(int(NumberOfPoints[2]))] for j in range(
+            int(NumberOfPoints[1]))] for i in range(int(NumberOfPoints[0]))]
 
-		OscRes=100
-		if 'OscRes' in list(keys.keys()):
-			OscRes = keys["OscRes"]
+        for line in FF:
+            i = int(line.split()[0])-1
+            j = int(line.split()[1])-1
+            k = int(line.split()[2])-1
+            Data[i][j][k] = float(line.split()[3])*convertion
 
-		if 'TipPos' in list(keys.keys()):
-			TipPos = keys["TipPos"]
+        counter = 0
+        linecounter = 0
+        xpos = 0
+        ypos = 0
+        Resultsx = []
+        Resultsy = []
+        Resultsz = []
+        Resultsdf = []
+        ForceTest = []
 
+        for ypos in arrayy:
+            linecounter += 1
+            print("Running line number "+str(linecounter))
 
+            for xpos in arrayx:
 
-		arrayx = linspace(TipPos[0],  (step[0]*NumberOfPoints[0]*NumberOfUnitCells[0])+TipPos[0],res[0])
-		arrayy = linspace(TipPos[1],  (step[1]*NumberOfPoints[1]*NumberOfUnitCells[1])+TipPos[1],res[1])
-		arrayz = linspace(A, (step[2]*NumberOfPoints[2]*NumberOfUnitCells[2])+TipPos[2],res[2])
+                for z in arrayz:
+                    # Solve the integral from 0 to 2pi
+                    Integral = 0
+                    size = OscRes
+                    x = linspace(0, 2*pi, size)
 
+                    # Find x_0
+                    pos = float(z+A*cos(x[0]))
+                    Force = tools.interpolate(Data, step, xpos, ypos, pos)
+                    #Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
 
+                    Integral += cos(x[0])*Force
 
-		if 'ScanType' in list(keys.keys()):
-			ScanType = keys["ScanType"]
-			if ScanType != "Vertical":
-				if ScanType != "Lateral":
-					print("ERROR: Scan type can only be Vertical or Lateral")
-					sys.exit()
+                    # x_1 tp x _ size-1
+                    for i in range(1, size - 1):
 
-		if zHeight != None and ScanType == "Lateral": 
-			arrayz=[zHeight]
+                        pos = float(z+A*cos(x[i]))
+                        Force = tools.interpolate(Data, step, xpos, ypos, pos)
+                        #Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
 
-		if ScanType == "Vertical":
-			arrayx=[TipPos[0]]
-			arrayy=[TipPos[1]]
+                        if i % 2 == 0:  # Is even
+                            Integral += 2 * cos(x[i])*Force
 
-		if 'MinMaxz' in list(keys.keys()):
-			MinMaxz = keys["MinMaxz"]
-			arrayz = linspace(MinMaxz[0], MinMaxz[1],res[2])
+                        if i % 2 != 0:  # Is odd
+                            Integral += 4 * cos(x[i])*Force
 
-		force=[]
+                    # Find x_size_n
+                    pos = float(z+A*cos(x[size-1]))
+                    Force = tools.interpolate(Data, step, xpos, ypos, pos)
+                    #Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
+                    Integral += cos(x[size-1])*Force
 
+                    Integral = Integral * ((x[0]-x[size-1]) / (len(x)-1))/3
 
+                    FreqShift = Integral * f0 / (2*pi * K*A)
+                    Resultsx.append(xpos)
+                    Resultsy.append(ypos)
+                    Resultsz.append(z)
+                    Resultsdf.append(FreqShift)
 
-		
-		FF = open(FILENAME,'r')
-		Data = [[[0 for k in range( int (NumberOfPoints[2]) ) ] for j in range( int (NumberOfPoints[1]) )] for i in range(int (NumberOfPoints[0]) )]
+        W = open(OutputFile, 'w')
+        counter = 0
+        for i in range(0, len(Resultsx)):
+            W.write(str(Resultsx[i]) + " "+str(Resultsy[i]) + " " +
+                    str(Resultsz[i]) + " " + str(Resultsdf[i]) + "\n")
+            oldy = Resultsy[i]
+            counter += 1
+        W.close()
 
-		for line in FF:	
-			i = int(line.split()[0])-1
-			j = int(line.split()[1])-1
-			k = int(line.split()[2])-1
-			Data[i][j][k]=float(line.split()[3])*convertion
-
-
-		counter = 0
-		linecounter =0
-		xpos = 0
-		ypos = 0
-		Resultsx = []
-		Resultsy = []
-		Resultsz = []
-		Resultsdf = []
-		ForceTest=[]
-
-
-		for ypos in arrayy:
-			linecounter+=1
-			print("Running line number "+str(linecounter))
-			
-			for xpos in arrayx:
-				
-				for z in arrayz:
-					#Solve the integral from 0 to 2pi
-					Integral = 0
-					size = OscRes
-					x = linspace(0, 2*pi, size)
-
-
-					#Find x_0
-					pos = float(z+A*cos(x[0]))
-					Force= tools.interpolate(Data,step,xpos,ypos,pos)
-					#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
-					
-					Integral += cos(x[0])*Force
-
-
-					#x_1 tp x _ size-1
-					for i in range(1,size -1):
-
-						pos = float(z+A*cos(x[i]))
-						Force= tools.interpolate(Data,step,xpos,ypos,pos)
-						#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
-
-						if i%2 == 0: #Is even
-							Integral += 2* cos(x[i])*Force
-
-						if i%2 != 0: #Is odd
-							Integral += 4* cos(x[i])*Force	
-					
-
-					#Find x_size_n
-					pos = float(z+A*cos(x[size-1]))
-					Force= tools.interpolate(Data,step,xpos,ypos,pos)
-					#Force= tools.interpolate(Data,[0.705,0.705,0.1],xpos,ypos,pos)
-					Integral += cos(x[size-1])*Force
-
-
-
-					Integral = Integral * ((x[0]-x[size-1])/ (len(x)-1)  )/3
-
-					FreqShift =Integral * f0 / (2*pi * K*A) 
-					Resultsx.append(xpos)
-					Resultsy.append(ypos)
-					Resultsz.append(z)
-					Resultsdf.append(FreqShift)
-
-
-
-		W = open(OutputFile, 'w')
-		counter = 0
-		for i in range(0,len(Resultsx)):
-			W.write(str(Resultsx[i]) +" "+str(Resultsy[i]) + " "+str(Resultsz[i]) + " " + str(Resultsdf[i]) +"\n")
-			oldy= Resultsy[i]
-			counter +=1
-		W.close()
-
-		self.SetInputs(**keys);
+        self.SetInputs(**keys)

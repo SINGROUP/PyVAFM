@@ -1,10 +1,10 @@
-## \package vafmcircuits_Logic
+# \package vafmcircuits_Logic
 # This file contains the basic logic operator circuits.
 
 from vafmbase import Circuit
 import math
 
-## \brief Not Gate
+# \brief Not Gate
 # \image html Not.png "schema"
 #
 # Truth Table for a Not Gate
@@ -12,7 +12,7 @@ import math
 # signal        |out
 # ------------- | -------------
 # 1                         | 0
-# 0                         | 1                                
+# 0                         | 1
 #
 # - \b Initialisation \b parameters:
 # 	- \a pushed = True|False push the output buffer immediately if True
@@ -28,27 +28,30 @@ import math
 # machine.AddCircuit(type='NOT', name='not', pushed=True)
 # \endcode
 #
+
+
 class NOT(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
 
-		self.AddInput("signal")
-		self.AddOutput("out")
+        self.AddInput("signal")
+        self.AddOutput("out")
 
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opNOT",1)
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opNOT", 1)
 
-		self.SetInputs(**keys)
+        self.SetInputs(**keys)
 
-	def Initialize (self):
-		pass
+    def Initialize(self):
+        pass
 
-	def Update (self):
-		pass
+    def Update(self):
+        pass
 
 
-## And Gate
+# And Gate
 # \image html And.png "schema"
 #
 # Truth table for an And Gate
@@ -78,61 +81,60 @@ class NOT(Circuit):
 #
 class AND(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
 
-		# ## Amount of input channels to put in the AND. Default is 2.
-		self.factors = 2
+        # ## Amount of input channels to put in the AND. Default is 2.
+        self.factors = 2
 
-		#check if the amount of factors was given        
-		if 'factors' in list(keys.keys()):
-			self.factors = keys['factors']
-		
-		
-		#create input channels
-		for i in range(self.factors):
-			self.AddInput("in"+str(i+1))
-		
-		self.AddOutput("out")
+        # check if the amount of factors was given
+        if 'factors' in list(keys.keys()):
+            self.factors = keys['factors']
 
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opAND",self.factors)
+        # create input channels
+        for i in range(self.factors):
+            self.AddInput("in"+str(i+1))
 
-		self.SetInputs(**keys)
+        self.AddOutput("out")
 
-	def Initialize (self):
-		pass        
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opAND", self.factors)
 
-	def Update (self):
-		pass
+        self.SetInputs(**keys)
+
+    def Initialize(self):
+        pass
+
+    def Update(self):
+        pass
 
 
 class NAND(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
+
+        # create input channels
+        self.AddInput("in1")
+        self.AddInput("in2")
+
+        self.AddOutput("out")
+
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opNAND", 2)
+
+        self.SetInputs(**keys)
+
+    def Initialize(self):
+        pass
+
+    def Update(self):
+        pass
 
 
-		
-		#create input channels
-		self.AddInput("in1")
-		self.AddInput("in2")
-		
-		self.AddOutput("out")
-
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opNAND",2)
-
-		self.SetInputs(**keys)
-
-	def Initialize (self):
-		pass        
-
-	def Update (self):
-		pass
-
-
-## Or Gate
+# Or Gate
 # \image html OrGate.png "schema"
 #
 # Truth table for a Or Gate
@@ -161,39 +163,38 @@ class NAND(Circuit):
 #
 class OR(Circuit):
 
-	def __init__(self, machine, name, **keys):
-	
-		super(self.__class__, self).__init__( machine, name )
+    def __init__(self, machine, name, **keys):
 
-		# ## Amount of input channels to put in the AND. Default is 2.
-		self.factors = 2
+        super(self.__class__, self).__init__(machine, name)
+
+        # ## Amount of input channels to put in the AND. Default is 2.
+        self.factors = 2
+
+        # check if the amount of factors was given
+        if 'factors' in list(keys.keys()):
+            self.factors = keys['factors']
+
+        # create input channels
+        for i in range(self.factors):
+            self.AddInput("in"+str(i+1))
+
+        self.AddOutput("out")
+
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opOR", self.factors)
+
+        self.SetInputs(**keys)
+
+        self.result = 0
+
+    def Initialize(self):
+        pass
+
+    def Update(self):
+        pass
 
 
-		#check if the amount of factors was given        
-		if 'factors' in list(keys.keys()):
-			self.factors = keys['factors']
-	
-		
-		#create input channels
-		for i in range(self.factors):
-			self.AddInput("in"+str(i+1))
-
-		self.AddOutput("out")
-
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opOR",self.factors)
-
-		self.SetInputs(**keys)
-
-		self.result = 0
-
-	def Initialize (self):
-		pass        
-
-	def Update (self):
-		pass             
-
-
-## XOr Gate
+# XOr Gate
 # \image html XOrGate.png "schema"
 #
 # Truth table for a XOr Gate
@@ -222,38 +223,38 @@ class OR(Circuit):
 #
 class XOR(Circuit):
 
-	def __init__(self, machine, name, **keys):
-	
-		super(self.__class__, self).__init__( machine, name )
+    def __init__(self, machine, name, **keys):
 
-		# ## Amount of input channels to put in the AND. Default is 2.
-		self.factors = 2
+        super(self.__class__, self).__init__(machine, name)
 
-		#check if the amount of factors was given        
-		if 'factors' in list(keys.keys()):
-			self.factors = keys['factors']
-		
-		#create input channels
-		for i in range(self.factors):
-			self.AddInput("in"+str(i+1))
-		
-		self.AddOutput("out")
+        # ## Amount of input channels to put in the AND. Default is 2.
+        self.factors = 2
 
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opXOR",self.factors)
+        # check if the amount of factors was given
+        if 'factors' in list(keys.keys()):
+            self.factors = keys['factors']
 
-		self.SetInputs(**keys)
+        # create input channels
+        for i in range(self.factors):
+            self.AddInput("in"+str(i+1))
 
-		self.result = 0
+        self.AddOutput("out")
+
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opXOR", self.factors)
+
+        self.SetInputs(**keys)
+
+        self.result = 0
+
+    def Initialize(self):
+        pass
+
+    def Update(self):
+        pass
 
 
-	def Initialize (self):
-		pass        
-
-	def Update (self):
-		pass
-
-
-## NOR Gate
+# NOR Gate
 # \image html NOrGate.png "schema"
 #
 # Truth table for a NOr Gate
@@ -282,33 +283,30 @@ class XOR(Circuit):
 #
 class NOR(Circuit):
 
-	def __init__(self, machine, name, **keys):
+    def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+        super(self.__class__, self).__init__(machine, name)
 
-		# ## Amount of input channels to put in the AND. Default is 2.
-		self.factors = 2
+        # ## Amount of input channels to put in the AND. Default is 2.
+        self.factors = 2
 
-		#check if the amount of factors was given        
-		if 'factors' in list(keys.keys()):
-			self.factors = keys['factors']
-		
-		
-		#create input channels
-		for i in range(self.factors):
-			self.AddInput("in"+str(i+1))
+        # check if the amount of factors was given
+        if 'factors' in list(keys.keys()):
+            self.factors = keys['factors']
 
-		self.AddOutput("out")
+        # create input channels
+        for i in range(self.factors):
+            self.AddInput("in"+str(i+1))
 
-		self.cCoreID = Circuit.cCore.Add_Logic(self.machine.cCoreID,"opNOR",self.factors)
+        self.AddOutput("out")
 
-		self.SetInputs(**keys)
+        self.cCoreID = Circuit.cCore.Add_Logic(
+            self.machine.cCoreID, "opNOR", self.factors)
 
+        self.SetInputs(**keys)
 
-	def Initialize (self):
-		pass        
+    def Initialize(self):
+        pass
 
-	def Update (self):
-		pass
-
-
+    def Update(self):
+        pass

@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 from vafmcircuits import Machine
 
+
 def main():
 
-        machine = Machine(machine=None, name='machine', dt=0.01)
-        
-        inter = machine.AddCircuit(type='CubeFileInter',name='inter', components=1, pushed=True)
-        #inter.Configure(pbc=[True,True,False])
-        #inter.ReadData("cosalen.cube")
+    machine = Machine(machine=None, name='machine', dt=0.01)
 
+    inter = machine.AddCircuit(
+        type='CubeFileInter', name='inter', components=1, pushed=True)
+    # inter.Configure(pbc=[True,True,False])
+    # inter.ReadData("cosalen.cube")
 
-
-        '''
+    '''
 
         scanner = machine.AddCircuit(type='Scanner',name='scan', pushed=True )
 
@@ -40,5 +40,7 @@ def main():
         #scan
         scanner.ScanArea()
         '''
+
+
 if __name__ == '__main__':
-        main()
+    main()

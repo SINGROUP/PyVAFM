@@ -5,11 +5,11 @@ from vafmbase import Channel
 import math
 
 
-## \package vafmcircuits_signal_gens
+# \package vafmcircuits_signal_gens
 # This module contains signal generator circuits (automatically imported).
 
 
-## \brief Oscillator circuit.
+# \brief Oscillator circuit.
 #
 # \image html waver.png "schema"
 # Creates sine and cosine waves with the specifics given by the inputs.
@@ -28,7 +28,7 @@ import math
 # - \a cos = \f$amp\cdot \cos(2 \pi freq\cdot t) + offset \f$  cosine wave
 # - \a saw = \f$amp\cdot( freq*f(t) - floor(freq*f(t) ) + offset \f$  sawtooth wave
 #
-# 
+#
 # \b Example:
 # \code{.py}
 # machine.AddCircuit(type='waver', name='wgen')
@@ -36,41 +36,35 @@ import math
 # \endcode
 #
 class waver(Circuit):
-    
-    
-	def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+    def __init__(self, machine, name, **keys):
 
-		self.AddInput("freq")
-		self.AddInput("amp")
-		self.AddInput("phi")
-		self.AddInput("offset")
-		
+        super(self.__class__, self).__init__(machine, name)
 
-		self.AddOutput("sin")
-		self.AddOutput("cos")
-		self.AddOutput("saw")
+        self.AddInput("freq")
+        self.AddInput("amp")
+        self.AddInput("phi")
+        self.AddInput("offset")
 
-		self.cCoreID = self.machine.cCore.Add_waver(self.machine.cCoreID)
+        self.AddOutput("sin")
+        self.AddOutput("cos")
+        self.AddOutput("saw")
 
-		self.SetInputs(**keys)
+        self.cCoreID = self.machine.cCore.Add_waver(self.machine.cCoreID)
 
+        self.SetInputs(**keys)
 
-		self.phase = 0
+        self.phase = 0
 
-	def Initialize (self):
+    def Initialize(self):
 
-		pass
+        pass
 
-
+    def Update(self):
+        pass
 
 
-	def Update (self):
-		pass
-
-
-## Digital square wave generator circuit.
+# Digital square wave generator circuit.
 #
 # \image html square.png "schema"
 # Creates sine and cosine waves with the specifics given by the inputs.
@@ -88,7 +82,7 @@ class waver(Circuit):
 # \b Output \b channels:
 # - \a out = square wave
 #
-# 
+#
 # \b Example:
 # \code{.py}
 # machine.AddCircuit(type='square', name='sqw')
@@ -96,32 +90,27 @@ class waver(Circuit):
 # \endcode
 #
 class square(Circuit):
-    
-    
-	def __init__(self, machine, name, **keys):
 
-		super(self.__class__, self).__init__( machine, name )
+    def __init__(self, machine, name, **keys):
 
-		self.AddInput("freq")
-		self.AddInput("amp")
-		self.AddInput("offset")
-		self.AddInput("duty")
+        super(self.__class__, self).__init__(machine, name)
 
-		self.AddOutput("out")
+        self.AddInput("freq")
+        self.AddInput("amp")
+        self.AddInput("offset")
+        self.AddInput("duty")
 
-		self.cCoreID = self.machine.cCore.Add_square(self.machine.cCoreID)
+        self.AddOutput("out")
 
-		self.SetInputs(**keys)
-		
-		self.phase = 0
+        self.cCoreID = self.machine.cCore.Add_square(self.machine.cCoreID)
 
-	def Initialize (self):
+        self.SetInputs(**keys)
 
-		pass
+        self.phase = 0
 
+    def Initialize(self):
 
+        pass
 
-
-	def Update (self):
-		pass
-
+    def Update(self):
+        pass
