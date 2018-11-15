@@ -40,7 +40,7 @@ class gain(Circuit):
 		self.AddInput("signal")
 		self.AddOutput("out")
 
-		if 'gain' in keys.keys():
+		if 'gain' in list(keys.keys()):
 			self.gain = keys['gain']
 		else:
 			raise NameError("Missing gain parameter!")
@@ -92,7 +92,7 @@ class minmax(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 		#check if checktime is used in the input file
-		if 'CheckTime' in keys.keys():
+		if 'CheckTime' in list(keys.keys()):
 			self.checktime = keys['CheckTime']
 		else:
 			raise NameError("Missing CheckTime input!")
@@ -251,7 +251,7 @@ class delay(Circuit):
 		self.AddInput("signal")
 		self.AddOutput("out")
 
-		if 'DelayTime' in keys.keys():
+		if 'DelayTime' in list(keys.keys()):
 			self.delaytime = keys['DelayTime']
 		else:
 			raise NameError("Missing DelayTime input!")
@@ -302,7 +302,7 @@ class peaker(Circuit):
 		
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'up' in keys.keys():
+		if 'up' in list(keys.keys()):
 			self.up = keys['up']
 			if self.up == 1:
 				self.upordown=True

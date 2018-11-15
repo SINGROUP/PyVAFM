@@ -86,7 +86,7 @@ class AND(Circuit):
 		self.factors = 2
 
 		#check if the amount of factors was given        
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 		
 		
@@ -170,7 +170,7 @@ class OR(Circuit):
 
 
 		#check if the amount of factors was given        
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 	
 		
@@ -230,7 +230,7 @@ class XOR(Circuit):
 		self.factors = 2
 
 		#check if the amount of factors was given        
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 		
 		#create input channels
@@ -290,7 +290,7 @@ class NOR(Circuit):
 		self.factors = 2
 
 		#check if the amount of factors was given        
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 		
 		

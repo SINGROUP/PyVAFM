@@ -12,9 +12,9 @@ def gauss(real_dir2cart, grid_dim, real_grid_data, sigma) :
 
 	shift_filt_matrix = np.zeros(grid_dim)
 
-	i = np.subtract(np.array(range(0, grid_dim[0])), cent_point_grid[0])
-	j = np.subtract(np.array(range(0, grid_dim[1])), cent_point_grid[1])
-	k = np.subtract(np.array(range(0, grid_dim[2])), cent_point_grid[2])
+	i = np.subtract(np.array(list(range(0, grid_dim[0]))), cent_point_grid[0])
+	j = np.subtract(np.array(list(range(0, grid_dim[1]))), cent_point_grid[1])
+	k = np.subtract(np.array(list(range(0, grid_dim[2]))), cent_point_grid[2])
 
 	jj, ii, kk = np.meshgrid(j, i, k) # NOTE STUPID ORDERING OF 3D MESHGRID OUTPUT !
 
@@ -41,18 +41,18 @@ class GausSmear(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )	
 
-		if 'Filename' in keys.keys():
+		if 'Filename' in list(keys.keys()):
 			self.Filename=  str(keys['Filename'])
 		else:
 			raise ValueError("Input Filename Required")
 
-		if 'Sigma' in keys.keys():
+		if 'Sigma' in list(keys.keys()):
 			self.Sigma=  float(keys['Sigma'])
 		else:
 			raise ValueError("Sigma Required")
 
 
-		if 'OutputFilename' in keys.keys():
+		if 'OutputFilename' in list(keys.keys()):
 			self.OFilename=  str(keys['OutputFilename'])
 		else:
 			raise ValueError("Output filename Required")
@@ -67,13 +67,13 @@ class GausSmear(Circuit):
 
 
 
-		if 'ForcefieldSize' in keys.keys():
+		if 'ForcefieldSize' in list(keys.keys()):
 			ForcefieldSize = keys['ForcefieldSize']
 		else:
 			check = True
 			ForcefieldSize = [15.562592,13.4776,25.413607]
 
-		if 'ForcefieldStepSize' in keys.keys():
+		if 'ForcefieldStepSize' in list(keys.keys()):
 			STEPSIZE = keys['ForcefieldStepSize']
 		else:
 			raise ValueError("ERROR: No Force field step size specified")
@@ -82,24 +82,24 @@ class GausSmear(Circuit):
 		stepy = STEPSIZE[1]
 		stepz = STEPSIZE[2]
 
-		if 'LatticeVectora' in keys.keys():
+		if 'LatticeVectora' in list(keys.keys()):
 			LatticeVectora = keys['LatticeVectora']
 		else:
 			checka = True
 	
-		if 'LatticeVectorb' in keys.keys():
+		if 'LatticeVectorb' in list(keys.keys()):
 			LatticeVectorb = keys['LatticeVectorb']
 		else:
 			checkb = True		
 		
-		if 'LatticeVectorc' in keys.keys():
+		if 'LatticeVectorc' in list(keys.keys()):
 			LatticeVectorc = keys['LatticeVectorc']
 		else:
 			checkc = True
 
 
 
-		if 'ZCutOff' in keys.keys():
+		if 'ZCutOff' in list(keys.keys()):
 			ZCutOff = keys['ZCutOff']
 		else:
 			ZCutOff = [0,0]
@@ -107,7 +107,7 @@ class GausSmear(Circuit):
 
 
 		MakeSquare = False
-		if 'MakeSquare' in keys.keys():
+		if 'MakeSquare' in list(keys.keys()):
 			MakeSquare = keys['MakeSquare']
 		else:
 			MakeSquare = False
@@ -120,7 +120,7 @@ class GausSmear(Circuit):
 		f = open(self.Filename, "r")
 
 
-		print "Reading in file: "+ self.Filename
+		print("Reading in file: "+ self.Filename)
 
 
 		size=[0,0,0]
@@ -178,7 +178,7 @@ class GausSmear(Circuit):
 				NumberOfPoints[0]= int(line.split()[0])
 				NumberOfPoints[1]= int(line.split()[1])
 				NumberOfPoints[2]= int(line.split()[2])		
-				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+				V = [[[0 for k in range( int (NumberOfPoints[2]) ) ] for j in range( int (NumberOfPoints[1]) )] for i in range(int (NumberOfPoints[0]) )]
 	
 			
 			if linenumber > NumberOfAtoms+9:
@@ -219,7 +219,7 @@ class GausSmear(Circuit):
 
 
 
-		print "File read in"
+		print("File read in")
 		f.close()
 		#Find step size
 		dx = float(size[0]/NumberOfPoints[0])
@@ -278,7 +278,7 @@ class GausSmear(Circuit):
 		magb = math.sqrt (LatticeVectorb[0]*LatticeVectorb[0] + LatticeVectorb[1]*LatticeVectorb[1] + LatticeVectorb[2]*LatticeVectorb[2])
 		magc = math.sqrt (LatticeVectorc[0]*LatticeVectorc[0] + LatticeVectorc[1]*LatticeVectorc[1] + LatticeVectorc[2]*LatticeVectorc[2])
 
-		print "Interpolating"
+		print("Interpolating")
 
 
 
@@ -295,7 +295,7 @@ class GausSmear(Circuit):
 
 		
 
-		U = [[[0 for k in xrange( int (sizez) ) ] for j in xrange( int (sizey) )] for i in xrange(int (sizex) )]
+		U = [[[0 for k in range( int (sizez) ) ] for j in range( int (sizey) )] for i in range(int (sizex) )]
 
 	 	xarray = []
 	 	yarray = []
@@ -337,7 +337,7 @@ class GausSmear(Circuit):
 
 		
 		#Output the Potential
-		print "Writing to File"
+		print("Writing to File")
 		for x in range(0, int (sizex) ):
 			for y in range(0,int(sizey) ):
 				for z in range(0+ZCutOff[0],int(sizez-ZCutOff[1]) ):

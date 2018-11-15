@@ -22,4 +22,4 @@ for ztip in range(100, 1000):
 	vdw = (TipHamak*TR2)*(1.0-sing)*(TRS-ztip*sing-TipRadius-ztip);
 	vdw/= (6.0*(ztip*ztip)*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
 	vdw-= (TipHamak*tang*(ztip*sing+TRS+TRC))/(6.0*cosg*(TipRadius+ztip-TRS)*(TipRadius+ztip-TRS));
-	print ztip, vdw
+	print(ztip, vdw)

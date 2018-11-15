@@ -45,11 +45,11 @@ class output(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if not('file' in keys.keys()):
+		if not('file' in list(keys.keys())):
 			raise SyntaxError("Output circuit file not specified!")
 		self.filename = keys['file']
 
-		if not('dump' in keys.keys()):
+		if not('dump' in list(keys.keys())):
 			raise SyntaxError("Output circuit dump rate not specified!")
 
 		##\internal
@@ -97,7 +97,7 @@ class output(Circuit):
 		self.channels.extend(cclist)
 		
 		for ch in cclist:
-			print 'PY: registering channel:',ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput
+			print('PY: registering channel:',ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput)
 
 			Circuit.cCore.output_register(self.cCoreID,ch.owner.cCoreID,ch.cCoreCHID, ch.cisInput)
 

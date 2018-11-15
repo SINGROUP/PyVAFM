@@ -9,17 +9,17 @@ class DFTD3(Circuit):
 		
 		super(self.__class__, self).__init__( machine, name )
 		
-		if 'TipFilename' in keys.keys():
+		if 'TipFilename' in list(keys.keys()):
 			TipFilename = keys['TipFilename']
 		else: 
 			raise NameError('Missing Tip Filename')
 		
-		if 'SurfaceFilename' in keys.keys():
+		if 'SurfaceFilename' in list(keys.keys()):
 			SurfaceFilename = keys['SurfaceFilename']
 		else: 
 			raise NameError('Missing Surface Filename')
 
-		if 'TipStartingXYZ' in keys.keys():
+		if 'TipStartingXYZ' in list(keys.keys()):
 			TipStartingXYZ = keys['TipStartingXYZ']
 		else: 
 			raise NameError('Missing Tip Starting XYZ ')
@@ -28,26 +28,26 @@ class DFTD3(Circuit):
 
 
 		DFTD3InstallPath = "./"
-		if 'DFTD3InstallPath' in keys.keys():
+		if 'DFTD3InstallPath' in list(keys.keys()):
 			DFTD3InstallPath = keys['SurfaceFilename']
 
 
 		JustBuildXYZFile = False
-		if 'JustBuildXYZFile' in keys.keys():
+		if 'JustBuildXYZFile' in list(keys.keys()):
 			JustBuildXYZFile = keys['JustBuildXYZFile']
 
 
-		if 'TipFinalZ' in keys.keys():
+		if 'TipFinalZ' in list(keys.keys()):
 			TipFinalZ = keys['TipFinalZ']
 		else: 
 			raise NameError('Missing Tip Final Z Position')
 
-		if 'TipZStep' in keys.keys():
+		if 'TipZStep' in list(keys.keys()):
 			TipZStep = keys['TipZStep']
 		else: 
 			raise NameError('Missing Tip Z Step')
 
-		if 'OutputFileName' in keys.keys():
+		if 'OutputFileName' in list(keys.keys()):
 			OutputFileName = keys['OutputFileName']
 		else: 
 			raise NameError('Missing Output File Name')
@@ -55,17 +55,17 @@ class DFTD3(Circuit):
 
 		options = "-func pbe -bj"
 
-		if 'options' in keys.keys():
+		if 'options' in list(keys.keys()):
 			options = keys['options']
 
 
-		if 'TipFinalZ' in keys.keys():
+		if 'TipFinalZ' in list(keys.keys()):
 			TipFinalZ = keys['TipFinalZ']
 		else: 
 			raise NameError('Missing Tip Final Z Position')
 
 		RealitiveToSurface=False
-		if 'RealitiveToSurface' in keys.keys():
+		if 'RealitiveToSurface' in list(keys.keys()):
 			RealitiveToSurface = keys['RealitiveToSurface']
 
 
@@ -82,8 +82,8 @@ class DFTD3(Circuit):
 
 
 		with open(TipFilename,'r') as f:
-		    f.next() # skip 1 line
-		    f.next() # skip another one.
+		    next(f) # skip 1 line
+		    next(f) # skip another one.
 		    for line in f:
 		        TipAtom.append(  line.split()[0] )
 		        Tipx.append(  float (line.split()[1] ) )
@@ -93,8 +93,8 @@ class DFTD3(Circuit):
 		NumberofTipAtoms= len(Tipx)
 
 		with open(SurfaceFilename,'r') as f:
-		    f.next() # skip 1 line
-		    f.next() # skip another one.
+		    next(f) # skip 1 line
+		    next(f) # skip another one.
 		    for line in f:
 		        SurfaceAtom.append(  line.split()[0] )
 		        Surfacex.append(  float (line.split()[1] ) )
@@ -103,7 +103,7 @@ class DFTD3(Circuit):
 
 
 		SurfaceHeight = max(Surfacez)
-		if 'SurfaceHeight' in keys.keys():
+		if 'SurfaceHeight' in list(keys.keys()):
 			SurfaceHeight = keys['SurfaceHeight']
 
 		NumberofSurfaceAtoms= len(Surfacex)
@@ -163,14 +163,14 @@ class DFTD3(Circuit):
 			z = z + TipZStep	
 
 			if JustBuildXYZFile == True:
-				print "XYZ File Written for starting height"
+				print("XYZ File Written for starting height")
 				sys.exit()
 			
 			
 
 
 		fBash.close()
-		print "Bash script and xyz files written"
+		print("Bash script and xyz files written")
 
 
 

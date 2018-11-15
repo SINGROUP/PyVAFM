@@ -20,9 +20,9 @@ def gauss(real_dir2cart, grid_dim, real_grid_data, sigma) :
 
 	shift_filt_matrix = np.zeros(grid_dim)
 
-	i = np.subtract(np.array(range(0, grid_dim[0])), cent_point_grid[0])
-	j = np.subtract(np.array(range(0, grid_dim[1])), cent_point_grid[1])
-	k = np.subtract(np.array(range(0, grid_dim[2])), cent_point_grid[2])
+	i = np.subtract(np.array(list(range(0, grid_dim[0]))), cent_point_grid[0])
+	j = np.subtract(np.array(list(range(0, grid_dim[1]))), cent_point_grid[1])
+	k = np.subtract(np.array(list(range(0, grid_dim[2]))), cent_point_grid[2])
 
 	jj, ii, kk = np.meshgrid(i, j, k) # NOTE STUPID ORDERING OF 3D MESHGRID OUTPUT !
 

@@ -21,104 +21,104 @@ class MechAFM(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'xyzfile' in keys.keys():
+		if 'xyzfile' in list(keys.keys()):
 			self.xyzfilename = str(keys['xyzfile'])
 		else:
 			raise NameError("Missing xyz file name!")
 		
-		if 'paramfile' in keys.keys():
+		if 'paramfile' in list(keys.keys()):
 			self.paramfile = str(keys['paramfile'])
 		else:
 			raise NameError("Missing parameter file name!")
 
-		if 'TipAtom' in keys.keys():
+		if 'TipAtom' in list(keys.keys()):
 			self.TipAtom = str(keys['TipAtom'])
 		else:
 			raise NameError("Missing TipAtom!")
 
 
-		if 'DummyAtom' in keys.keys():
+		if 'DummyAtom' in list(keys.keys()):
 			self.DummyAtom = str(keys['DummyAtom'])
 		else:
 			raise NameError("Missing dummyatom!")					
 
-		if 'PlaneAtom' in keys.keys():
+		if 'PlaneAtom' in list(keys.keys()):
 			self.PlaneAtom = str(keys['PlaneAtom'])
 		else:
 			raise NameError("Missing planeatom!")
 
-		if 'MinTerm' in keys.keys():
+		if 'MinTerm' in list(keys.keys()):
 			self.MinTerm = str(keys['MinTerm'])
 		else:
 			raise NameError("Missing minimsation term!")				
 
-		if 'etol' in keys.keys():
+		if 'etol' in list(keys.keys()):
 			self.etol = str(keys['etol'])
 		else:
 			raise NameError("Missing Energy Tolerance!")	
 
-		if 'ftol' in keys.keys():
+		if 'ftol' in list(keys.keys()):
 			self.ftol = str(keys['ftol'])
 		else:
 			raise NameError("Missing Force Tolerance!")	
 
-		if 'cfac' in keys.keys():
+		if 'cfac' in list(keys.keys()):
 			self.cfac = str(keys['cfac'])
 		else:
 			raise NameError("Missing cfac(Find out what this means again)")	
 
-		if 'cfac' in keys.keys():
+		if 'cfac' in list(keys.keys()):
 			self.cfac = str(keys['cfac'])
 		else:
 			raise NameError("Missing cfac(Find out what this means again)")	
 
-		if 'coulomb' in keys.keys():
+		if 'coulomb' in list(keys.keys()):
 			self.coulomb = str(keys['coulomb'])
 		else:
 			raise NameError("Missing coulomb option")	
 
-		if 'zhigh' in keys.keys():
+		if 'zhigh' in list(keys.keys()):
 			self.zhigh = str(keys['zhigh'])
 		else:
 			raise NameError("Missing zhigh")
 
-		if 'zlow' in keys.keys():
+		if 'zlow' in list(keys.keys()):
 			self.zlow = str(keys['zlow'])
 		else:
 			raise NameError("Missing zlow")			
 
-		if 'dx' in keys.keys():
+		if 'dx' in list(keys.keys()):
 			self.dx = str(keys['dx'])
 		else:
 			raise NameError("Missing dx")		
 
-		if 'dy' in keys.keys():
+		if 'dy' in list(keys.keys()):
 			self.dy = str(keys['dy'])
 		else:
 			raise NameError("Missing dy")
 
-		if 'dz' in keys.keys():
+		if 'dz' in list(keys.keys()):
 			self.dz = str(keys['dz'])
 		else:
 			raise NameError("Missing dz")			
 
-		if 'bufsize' in keys.keys():
+		if 'bufsize' in list(keys.keys()):
 			self.bufsize = str(keys['bufsize'])
 		else:
 			raise NameError("Missing buffer size")
 
-		if 'InputFileName' in keys.keys():
+		if 'InputFileName' in list(keys.keys()):
 			self.InputFileName = str(keys['InputFileName'])
 		else:
 			raise NameError("Missing Input File Name")
 
-		if 'MaxSteps' in keys.keys():
+		if 'MaxSteps' in list(keys.keys()):
 			self.maxsteps = str(keys['MaxSteps'])
 		else:
 			raise NameError("Missing MaxSteps")
 		
 
-		if 'MPICommand' in keys.keys():
+		if 'MPICommand' in list(keys.keys()):
 			self.MPICommand = str(keys['MPICommand'])
 		else:
 			raise NameError("Missing MPICommand")
@@ -179,17 +179,17 @@ class SimpleAFM(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'xyzfile' in keys.keys():
+		if 'xyzfile' in list(keys.keys()):
 			self.xyzfile = str(keys['xyzfile'])
 		else:
 			raise NameError("Missing xyz file name!")
 		
-		if 'frcfiles' in keys.keys():
+		if 'frcfiles' in list(keys.keys()):
 			self.frcfiles = str(keys['frcfiles'])
 		else:
 			raise NameError("Missing frcfiles !")
 
-		if 'inpfile' in keys.keys():
+		if 'inpfile' in list(keys.keys()):
 			self.inpfile = str(keys['inpfile'])
 		else:
 			raise NameError("Missing inpfile!")
@@ -197,7 +197,7 @@ class SimpleAFM(Circuit):
 
 
 		# Talk to me
-		print 'Setting some initial things'
+		print('Setting some initial things')
 
 		# Some basic settings
 		xyzfile = self.xyzfile
@@ -219,25 +219,25 @@ class SimpleAFM(Circuit):
 
 		# Retrieve the force files
 		files = sorted(glob.glob(frcfiles))
-		zpos = map(lambda x: float('.'.join(x.split('-')[1].split('.')[:2])), files)
+		zpos = [float('.'.join(x.split('-')[1].split('.')[:2])) for x in files]
 
 		# Figure out the dimensions in x, y and z and the spacing as well
 		if files[0][-2:] == 'gz': f = gzip.open(files[0],'r')
 		else: f = open(files[0],'r')
 		d = f.readlines()
 		f.close()
-		data = filter(lambda x: x[0] != '%' ,d)
-		nx = numpy.array(map(lambda x: int(x.split()[1]),data)).max() + 1
-		ny = numpy.array(map(lambda x: int(x.split()[2]),data)).max() + 1
+		data = [x for x in d if x[0] != '%']
+		nx = numpy.array([int(x.split()[1]) for x in data]).max() + 1
+		ny = numpy.array([int(x.split()[2]) for x in data]).max() + 1
 		nz = len(zpos)
-		tmp = numpy.array(sorted(uniquify(map(lambda x: float(x.split()[3]),data))))
+		tmp = numpy.array(sorted(uniquify([float(x.split()[3]) for x in data])))
 		dx = (tmp[1:]-tmp[:-1]).mean()
-		tmp = numpy.array(sorted(uniquify(map(lambda x: float(x.split()[4]),data))))
+		tmp = numpy.array(sorted(uniquify([float(x.split()[4]) for x in data])))
 		dy = (tmp[1:]-tmp[:-1]).mean()
 		dz = (numpy.array(zpos)[1:]-numpy.array(zpos)[:-1]).mean()
 
 		# Talk to me
-		print 'Setting Giessibl parameters'
+		print('Setting Giessibl parameters')
 
 		# Use the Giessibl approach to create frequency shift image (Beilstein J. Nanotechnol. 3:238, 2012)
 		Nm2kcalAA = 1.438978
@@ -262,7 +262,7 @@ class SimpleAFM(Circuit):
 		nosc = len(W)
 
 		# Talk to me
-		print 'Initializing storage arrays'
+		print('Initializing storage arrays')
 
 		# Initialize storage arrays
 		FX = numpy.zeros([nx,ny])
@@ -281,7 +281,7 @@ class SimpleAFM(Circuit):
 		diffz = numpy.zeros(nz)
 
 		# Talk to me
-		print 'Compute frequency shift (A = %.2f , k = %.1f , f0 = %.3f)' % (amplitude,k_cantilever/Nm2kcalAA,frequency0/1000)
+		print('Compute frequency shift (A = %.2f , k = %.1f , f0 = %.3f)' % (amplitude,k_cantilever/Nm2kcalAA,frequency0/1000))
 
 		# Number of contour levels in contourf plot
 		Nlevels = 60
@@ -290,13 +290,13 @@ class SimpleAFM(Circuit):
 		headerfontsize = 6
 
 		# Talk to me
-		print 'Working...'
+		print('Working...')
 
 		# Make the frequency shift plots
 		for pl in range(nshifts):
 
 		    # Talk to me
-		    print  '... on step %d' % pl
+		    print('... on step %d' % pl)
 
 		    # Load the relevant data
 		    if (pl==0):
@@ -307,7 +307,7 @@ class SimpleAFM(Circuit):
 		            d = f.readlines()
 		            f.close()
 		            # Skip comment line
-		            data = filter(lambda x: x[0] != '%' ,d)
+		            data = [x for x in d if x[0] != '%']
 		            # Read data
 		            for d in data:
 		                line = d.split()
@@ -330,7 +330,7 @@ class SimpleAFM(Circuit):
 		        d = f.readlines()
 		        f.close()
 		        # Skip comment line
-		        data = filter(lambda x: x[0] != '%' ,d)
+		        data = [x for x in d if x[0] != '%']
 		        # Read data
 		        for d in data:
 		            line = d.split()
@@ -356,7 +356,7 @@ class SimpleAFM(Circuit):
 		        d = f.readlines()
 		        f.close()
 		        # Skip comment line
-		        data = filter(lambda x: x[0] != '%' ,d)
+		        data = [x for x in d if x[0] != '%']
 		        # Read data
 		        for d in data:
 		            line = d.split()
@@ -386,13 +386,13 @@ class SimpleAFM(Circuit):
 		    # Set some axis/ticks properties
 		    ax.xaxis.set_major_locator(MultipleLocator(2.0))
 		    ax.yaxis.set_major_locator(MultipleLocator(2.0))
-		    ax.set_xlabel(ur'x (\u00c5)')
+		    ax.set_xlabel(r'x (\u00c5)')
 		    ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
-		    ax.set_ylabel(ur'y (\u00c5)')
+		    ax.set_ylabel(r'y (\u00c5)')
 		    ax.yaxis.set_major_formatter(FormatStrFormatter('%d'))        
 		    ax.title.set_visible(False)
 		    # Set some text
-		    txt = ur'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f | A = %.2f \u00c5 | k = %.1f N/m | f0 = %.2f kHz' % (realz[pl],diffz[pl],resx,resy,resz,ftol,amplitude,k_cantilever/Nm2kcalAA,frequency0/1000)
+		    txt = r'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f | A = %.2f \u00c5 | k = %.1f N/m | f0 = %.2f kHz' % (realz[pl],diffz[pl],resx,resy,resz,ftol,amplitude,k_cantilever/Nm2kcalAA,frequency0/1000)
 		    ax.text(0.015*dx*nx,1.005*dy*ny,txt,color='k',fontsize=headerfontsize)
 		    # Save figure
 		    plt.savefig('deltaf-%06.3f.png' % zpos[pl],dpi=200,bbox_inches='tight',pad_inches=0)
@@ -414,13 +414,13 @@ class SimpleAFM(Circuit):
 		    # Set some axis/ticks properties
 		    ax.xaxis.set_major_locator(MultipleLocator(2.0))
 		    ax.yaxis.set_major_locator(MultipleLocator(2.0))
-		    ax.set_xlabel(ur'x (\u00c5)')
+		    ax.set_xlabel(r'x (\u00c5)')
 		    ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
-		    ax.set_ylabel(ur'y (\u00c5)')
+		    ax.set_ylabel(r'y (\u00c5)')
 		    ax.yaxis.set_major_formatter(FormatStrFormatter('%d'))        
 		    ax.title.set_visible(False)
 		    # Set some text
-		    txt = ur'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f | min_angle = %.1f | max_angle = %.1f' % (realz[pl],diffz[pl],resx,resy,resz,ftol,angle.min(),angle.max())
+		    txt = r'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f | min_angle = %.1f | max_angle = %.1f' % (realz[pl],diffz[pl],resx,resy,resz,ftol,angle.min(),angle.max())
 		    ax.text(0.015*dx*nx,1.005*dy*ny,txt,color='k',fontsize=headerfontsize)
 		    # Save figure
 		    plt.savefig('angle-%06.3f.png' % zpos[pl],dpi=200,bbox_inches='tight',pad_inches=0)
@@ -440,13 +440,13 @@ class SimpleAFM(Circuit):
 		    # Set some axis/ticks properties
 		    ax.xaxis.set_major_locator(MultipleLocator(2.0))
 		    ax.yaxis.set_major_locator(MultipleLocator(2.0))
-		    ax.set_xlabel(ur'x (\u00c5)')
+		    ax.set_xlabel(r'x (\u00c5)')
 		    ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
-		    ax.set_ylabel(ur'y (\u00c5)')
+		    ax.set_ylabel(r'y (\u00c5)')
 		    ax.yaxis.set_major_formatter(FormatStrFormatter('%d'))        
 		    ax.title.set_visible(False)
 		    # Set some text
-		    txt = ur'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f' % (realz[pl],diffz[pl],resx,resy,resz,ftol)
+		    txt = r'z = %.3f \u00b1 %.3f \u00c5 | \u0394x = %.3f \u00c5 | \u0394y = %.3f \u00c5 | \u0394z = %.3f \u00c5 | ftol = %.7f' % (realz[pl],diffz[pl],resx,resy,resz,ftol)
 		    ax.text(0.015*dx*nx,1.005*dy*ny,txt,color='k',fontsize=headerfontsize)
 		    # Save figure
 		    plt.savefig('displ-%06.3f.png' % zpos[pl],dpi=200,bbox_inches='tight',pad_inches=0)
@@ -459,7 +459,7 @@ class SimpleAFM(Circuit):
 		os.system('convert -resize 800x -loop 0 displ-0*.png movie-displ.gif')
 		'''
 		# Talk to me
-		print 'Done'
+		print('Done')
 
 
 	def Initialize (self):

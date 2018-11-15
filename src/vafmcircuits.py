@@ -97,16 +97,16 @@ class Machine(Circuit):
 			isMain = 1
 			
 			if isMain==1:
-				print "Python Virtual Atomic Force Microscope  Copyright (C) 2015 John Tracey, Filippo Federici, Adam S. Foster and  Aalto University"
-				print "This program comes with ABSOLUTELY NO WARRANTY"
-				print "This is free software, and you are welcome to redistribute it"
-				print "For complete licence details please vist: http://singroup.github.io/PyVAFM/page_Licence.html"
-				print "       "
-			print "Init main machine..."
+				print("Python Virtual Atomic Force Microscope  Copyright (C) 2015 John Tracey, Filippo Federici, Adam S. Foster and  Aalto University")
+				print("This program comes with ABSOLUTELY NO WARRANTY")
+				print("This is free software, and you are welcome to redistribute it")
+				print("For complete licence details please vist: http://singroup.github.io/PyVAFM/page_Licence.html")
+				print("       ")
+			print("Init main machine...")
 
-		print "adding circuit",name,": machine == None =>",machine == None
+		print("adding circuit",name,": machine == None =>",machine == None)
 		
-		print "init of Machine..."
+		print("init of Machine...")
 		
 		super(self.__class__, self).__init__( machine, name )
 
@@ -125,12 +125,12 @@ class Machine(Circuit):
 
 		## Integration timestep
 		self.dt = 0.0
-		if not ('dt' in keys.keys()):
+		if not ('dt' in list(keys.keys())):
 			if(machine!=None):
 				self.dt = machine.dt
-				print 'WARNING! No timestep dt was given, using main machine one!'
+				print('WARNING! No timestep dt was given, using main machine one!')
 			else:
-				print 'WARNING! No timestep dt was given in the initialisation parameters.'
+				print('WARNING! No timestep dt was given in the initialisation parameters.')
 		else:
 			self.dt = keys['dt']
 		
@@ -163,7 +163,7 @@ class Machine(Circuit):
 			self.AddOutput('time')
 		
 
-		if 'assembly' in keys.keys():
+		if 'assembly' in list(keys.keys()):
 			self.Assemble = keys['assembly']
 			self.Assemble(self,**keys)
 
@@ -196,8 +196,8 @@ class Machine(Circuit):
 			feedin = getins(dummyins[i])[0]
 			feedout= getouts(dummyins[i])[0]
 			
-			self.I.values()[i].signal.cCoreFEED = feedin
-			self._MetaI.values()[i].signal.cCoreFEED = feedout
+			list(self.I.values())[i].signal.cCoreFEED = feedin
+			list(self._MetaI.values())[i].signal.cCoreFEED = feedout
 		
 		# --------------------------------------------------------------
 		
@@ -208,32 +208,32 @@ class Machine(Circuit):
 			feedin = getins(dummyouts[i])[0]
 			feedout= getouts(dummyouts[i])[0]
 			
-			self.O.values()[i].signal.cCoreFEED = feedout
-			self._MetaO.values()[i].signal.cCoreFEED = feedin
+			list(self.O.values())[i].signal.cCoreFEED = feedout
+			list(self._MetaO.values())[i].signal.cCoreFEED = feedin
 			
 		
-		print 'PY: SetCCoreChannels done!'
+		print('PY: SetCCoreChannels done!')
 
 	def SetInputs_fromKeys(self, **kwargs):
 		
-		for key in kwargs.keys():
+		for key in list(kwargs.keys()):
 			
-			if key in self.I.keys():
+			if key in list(self.I.keys()):
 				
 				
 				self.I[key].Set(kwargs[key]) #deprecated... sets the value in python!
 				
-				idx = self.I.keys().index(key) #find the position of the key
-				print "PY: "+key+" is an input channel, calling cCore(c):",idx,c_double(kwargs[key])
+				idx = list(self.I.keys()).index(key) #find the position of the key
+				print("PY: "+key+" is an input channel, calling cCore(c):",idx,c_double(kwargs[key]))
 				
 				Circuit.cCore.SetContainerInput(self.cCoreID, idx, c_double(kwargs[key]))
 				
 				
-				print "   input "+key+" -> "+str(kwargs[key])
+				print("   input "+key+" -> "+str(kwargs[key]))
 				
 			else:
 				#print the init parameter even if not an input flag
-				print " ??" + key + " " + str(kwargs[key])
+				print(" ??" + key + " " + str(kwargs[key]))
 				pass
 
 
@@ -310,7 +310,7 @@ class Machine(Circuit):
 	#
 	def AddInput(self, name):
 		
-		if name in self.I.keys() or name in self.O.keys():
+		if name in list(self.I.keys()) or name in list(self.O.keys()):
 			raise NameError("A channel named "+name+" already exists in composite circuit "+ str(self))
 
 		self.I[name] = Channel(name,self,True)
@@ -319,7 +319,7 @@ class Machine(Circuit):
 		# add the channel also on the cCore
 		self.cCoreI.append(Circuit.cCore.Add_ChannelToContainer(self.cCoreID, 1)) #1 for input
 
-		print "Circuit ",self.name," added channel",name
+		print("Circuit ",self.name," added channel",name)
 
 	## Create an output channel with the given name.
 	#
@@ -340,7 +340,7 @@ class Machine(Circuit):
 		
 		
 		
-		if name in self.I.keys() or name in self.O.keys():
+		if name in list(self.I.keys()) or name in list(self.O.keys()):
 			raise NameError("A channel named "+name+" already exists in composite circuit "+ str(self))
 
 		self.O[name] = Channel(name,self,False)
@@ -383,19 +383,19 @@ class Machine(Circuit):
 		
 		
 		
-		lst = sys.modules.keys()
+		lst = list(sys.modules.keys())
 		classobj = None
 
 		#check for mandatory arguments, type and name
-		if not ("type" in argkw.keys()):
+		if not ("type" in list(argkw.keys())):
 			raise SyntaxError("The circuit type was not specified.")
 		ctype = argkw["type"]
 		
-		if not ("name" in argkw.keys()):
+		if not ("name" in list(argkw.keys())):
 			raise SyntaxError("The circuit name was not specified.")
 		cname = argkw["name"]
 
-		print "new circuit: " + ctype + "  " + cname
+		print("new circuit: " + ctype + "  " + cname)
 		for i in range(len(lst)): #loop over the modules
 
 			if lst[i].startswith('vafmcircuits'): #if the module is a vafmcircuits module
@@ -412,7 +412,7 @@ class Machine(Circuit):
 			raise NotImplementedError("Circuit "+ctype+" was not implemented or imported!")
 
 		#check if the name was good
-		if cname in self.circuits.keys():
+		if cname in list(self.circuits.keys()):
 			raise NameError("A circuit named '"+cname+"' already exists in the setup!")
 
 		#instantiate
@@ -456,7 +456,7 @@ class Machine(Circuit):
 			raise SyntaxError ("GetInternalChannel error: the VAFM can only perform connections between internal circuits")
 
 		#check the name of the circuit
-		if not(cname in self.circuits.keys()):
+		if not(cname in list(self.circuits.keys())):
 			raise NameError( "GetInternalChannel error: circuit "+cname+" not found." )
 
 		#get the circuit
@@ -522,7 +522,7 @@ class Machine(Circuit):
 			circ = self #if the tag is global, the circuit is the machine itself
 		else:
 			circ = self.circuits
-			if not (cname in circ.keys()):
+			if not (cname in list(circ.keys())):
 				raise NameError( "Machine.GetChannel error: circuit "+cname+" not found." )
 			circ = circ[cname]
 
@@ -533,7 +533,7 @@ class Machine(Circuit):
 
 
 
-		if not( chname in allch.keys() ):
+		if not( chname in list(allch.keys()) ):
 			raise NameError( "Machine.GetChannel error: channel "+chname+" not found." )
 
 		return allch[chname]
@@ -554,7 +554,7 @@ class Machine(Circuit):
 			circ = self #if the tag is global, the circuit is the machine itself
 		else:
 			circ = self.circuits
-			if not (cname in circ.keys()):
+			if not (cname in list(circ.keys())):
 				raise NameError( "Machine.GetOutputChannel error: circuit "+cname+" not found." )
 			circ = circ[cname]
 			
@@ -562,7 +562,7 @@ class Machine(Circuit):
 		allch.update(circ.O)
 
 
-		if not( chname in allch.keys() ):
+		if not( chname in list(allch.keys()) ):
 			raise NameError( "Machine.GetOutputChannel error: channel "+chname+" not found." )
 
 		return allch[chname]
@@ -619,48 +619,48 @@ class Machine(Circuit):
 			#look in MetaI
 			outsignal = self._GetMetaChannel(args[0], ChannelType.Input)
 			
-			print 'PY: connect src - out channel name ',outsignal.name
-			print 'PY: connect src - index ',self.I.keys().index(outsignal.name)
-			ccSrcID = self.cCoreI[self.I.keys().index(outsignal.name)]
+			print('PY: connect src - out channel name ',outsignal.name)
+			print('PY: connect src - index ',list(self.I.keys()).index(outsignal.name))
+			ccSrcID = self.cCoreI[list(self.I.keys()).index(outsignal.name)]
 			ccSrcCH = 1 #dummy has only one in and one out!
-			print 'PY: connect src - dummyidx ',ccSrcID
-			print self.cCoreI
+			print('PY: connect src - dummyidx ',ccSrcID)
+			print(self.cCoreI)
 			#the global output is the dummy output
 			
 		else:
 			#otherwise, just look for the channel in the normal circuits
 			outsignal = self._GetInternalChannel(args[0], ChannelType.Output)
 			ccSrcID = outsignal.owner.cCoreID
-			ccSrcCH = outsignal.owner.O.keys().index(outsignal.name)
+			ccSrcCH = list(outsignal.owner.O.keys()).index(outsignal.name)
 			
 		
 		
 
 		for tag in args[1:]: #for each target input tag
 			
-			print "PY: connecting " + args[0] + " -> " + tag
+			print("PY: connecting " + args[0] + " -> " + tag)
 			
 			# find the target channel
 			if self._IsGlobal(tag):
 				target = self._GetMetaChannel(tag, ChannelType.Output)
 
-				ccDstID = self.cCoreO[self.O.keys().index(target.name)]
+				ccDstID = self.cCoreO[list(self.O.keys()).index(target.name)]
 				ccDstCH = 0 #dummy has only one in and one out!
 
 			else:
 				target = self._GetInternalChannel(tag, ChannelType.Input)
 				ccDstID = target.owner.cCoreID
-				ccDstCH = target.owner.I.keys().index(target.name)
+				ccDstCH = list(target.owner.I.keys()).index(target.name)
 
-			print "  -> " + tag
+			print("  -> " + tag)
 			target.signal = outsignal.signal
 			
 
-			print 'PY: connecting ',ccSrcID,ccSrcCH,ccDstID,ccDstCH
+			print('PY: connecting ',ccSrcID,ccSrcCH,ccDstID,ccDstCH)
 			
 			Circuit.cCore.Connect(ccSrcID,ccSrcCH, ccDstID, ccDstCH)
 
-			print 'PY: connection done!'
+			print('PY: connection done!')
 
 	def Connect(self, *args):
 
@@ -679,14 +679,14 @@ class Machine(Circuit):
 		if self._IsGlobal(args[0]):
 			
 			ccSrcID = self.cCoreID
-			ccSrcCH = self.I.keys().index(chname)
+			ccSrcCH = list(self.I.keys()).index(chname)
 			outsignal = self._MetaI[chname]
 			metaSrc = 1
 		else:
 			#otherwise, just look for the channel in the normal circuits
 			outsignal = self._GetInternalChannel(args[0], ChannelType.Output)
 			ccSrcID = outsignal.owner.cCoreID
-			ccSrcCH = outsignal.owner.O.keys().index(outsignal.name)
+			ccSrcCH = list(outsignal.owner.O.keys()).index(outsignal.name)
 
 		for tag in args[1:]: #for each target input tag
 			
@@ -696,13 +696,13 @@ class Machine(Circuit):
 			chname = tag.split('.',2)[1];
 			if self._IsGlobal(tag):
 				ccDstID = self.cCoreID
-				ccDstCH = self.O.keys().index(chname)
+				ccDstCH = list(self.O.keys()).index(chname)
 				target = self._MetaO[chname]
 				metaDst = 1
 			else:
 				target = self._GetInternalChannel(tag, ChannelType.Input)
 				ccDstID = target.owner.cCoreID
-				ccDstCH = target.owner.I.keys().index(chname)
+				ccDstCH = list(target.owner.I.keys()).index(chname)
 
 
 			
@@ -759,10 +759,10 @@ class Machine(Circuit):
 		key = ch.name
 		
 		if ch.isInput == True:
-			idx = circ.I.keys().index(key) #find the position of the key
+			idx = list(circ.I.keys()).index(key) #find the position of the key
 		else:
-			idx = circ.O.keys().index(key)
-		print "PY: setinput "+circ.name+"."+key+": "+str(value),circ.cCoreID,idx
+			idx = list(circ.O.keys()).index(key)
+		print("PY: setinput "+circ.name+"."+key+": "+str(value),circ.cCoreID,idx)
 		Circuit.cCore.SetInput(circ.cCoreID, idx, c_double(value))
 		
 		
@@ -774,7 +774,7 @@ class Machine(Circuit):
 	# Calls the initialize on each circuit... this is actually useless at the moment!
 	def Initialize(self):
 
-		for kw in self.circuits.keys():
+		for kw in list(self.circuits.keys()):
 			self.circuits[kw].Initialize()
 
 	## \internal
@@ -785,14 +785,14 @@ class Machine(Circuit):
 	def UpdateOLD(self):
 
 
-		for key in self.O.keys(): self.O[key].Push()
+		for key in list(self.O.keys()): self.O[key].Push()
 
 		# pass the global inputs to metainput
-		for key in self.I.keys():
+		for key in list(self.I.keys()):
 			self._MetaI[key].Set(self.I[key].value)
 	
 
-		for kw in self.circuits.keys():
+		for kw in list(self.circuits.keys()):
 			
 			if(self.circuits[kw].enabled):
 				self.circuits[kw].Update()
@@ -822,7 +822,7 @@ class Machine(Circuit):
 	def _PostUpdate(self):
 
 		# pass the metaoutput value to the global output
-		for key in self._MetaO.keys():
+		for key in list(self._MetaO.keys()):
 			self.O[key].value = self._MetaO[key].value
 			self._MetaO[key].Push()
 
@@ -830,14 +830,14 @@ class Machine(Circuit):
 
 		#push the output in the global output if pushed
 		if self.pushed:
-			for key in self._MetaO.keys(): self.O[key].Push()
+			for key in list(self._MetaO.keys()): self.O[key].Push()
 
-			idx = circ.I.keys().index(key) #find the position of the key
+			idx = list(circ.I.keys()).index(key) #find the position of the key
 			Circuit.cCore.SetInput(circ.cCoreID, idx, c_double(value))
 
 		
 
-		for kw in self.circuits.keys():
+		for kw in list(self.circuits.keys()):
 			if(self.circuits[kw].enabled):
 				self.circuits[kw].Push()
 
@@ -860,7 +860,7 @@ class Machine(Circuit):
 		
 	def Wait2(self, dtime):
 		
-		for i in xrange(int(math.floor(dtime/self.dt))):
+		for i in range(int(math.floor(dtime/self.dt))):
 			Circuit.cCore.Update(1)
 	
 	def WaitPY(self, dtime):
@@ -873,7 +873,7 @@ class Machine(Circuit):
 			
 	def WaitPY2(self, dtime):
 		
-		for i in xrange(int(math.floor(dtime/self.dt))):
+		for i in range(int(math.floor(dtime/self.dt))):
 			self.UpdateOLD()
 	
 
@@ -885,9 +885,9 @@ class Machine(Circuit):
 				CircuitExceptions.append( Channel)
 
 
-		for CIRCUIT in self.circuits.keys():
+		for CIRCUIT in list(self.circuits.keys()):
 			if CIRCUIT not in CircuitExceptions:
-				channels=self.circuits[CIRCUIT].I.keys()
+				channels=list(self.circuits[CIRCUIT].I.keys())
 				for Channel in channels:
 					if CIRCUIT+"."+Channel not in Exceptions:
 						value = 0.0
@@ -897,10 +897,10 @@ class Machine(Circuit):
 						key = ch.name
 
 						if ch.isInput == True:
-							idx = circ.I.keys().index(key) #find the position of the key
+							idx = list(circ.I.keys()).index(key) #find the position of the key
 						else:
-							idx = circ.O.keys().index(key)
-						print "Resetting channel "+circ.name+"."+key
+							idx = list(circ.O.keys()).index(key)
+						print("Resetting channel "+circ.name+"."+key)
 						Circuit.cCore.SetInput(circ.cCoreID, idx, c_double(value))
 
 

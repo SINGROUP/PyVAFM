@@ -38,16 +38,16 @@ class STM(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'WorkFunction' in keys.keys():
+		if 'WorkFunction' in list(keys.keys()):
 			self.WF= keys['WorkFunction']
 		else:
-			print "WARNING: Using default workfunction of 4 eV"
+			print("WARNING: Using default workfunction of 4 eV")
 			self.WF=4
 
-		if 'WaveFunctionOverlap' in keys.keys():
+		if 'WaveFunctionOverlap' in list(keys.keys()):
 			self.WaveFunctionOverlap= keys['WaveFunctionOverlap']
 		else:
-			print "WARNING: Using default Wave Function Overlap of 2 Angstrom"
+			print("WARNING: Using default Wave Function Overlap of 2 Angstrom")
 			self.WaveFunctionOverlap=2
 
 

@@ -32,30 +32,30 @@ class VDW(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'alpha' in keys.keys():
+		if 'alpha' in list(keys.keys()):
 			alpha = keys['alpha']
-			print "alpha = " +str(alpha)
+			print("alpha = " +str(alpha))
 		else:
 			raise NameError("No alpha entered ")
 
 
-		if 'hamaker' in keys.keys():
+		if 'hamaker' in list(keys.keys()):
 			hamaker = keys['hamaker']
-			print "hamaker = " +str(hamaker)
+			print("hamaker = " +str(hamaker))
 		else:
 			raise NameError("No hamaker entered ")
 
 
-		if 'radius' in keys.keys():
+		if 'radius' in list(keys.keys()):
 			radius = keys['radius']
-			print "radius = " +str(radius)
+			print("radius = " +str(radius))
 		else:
 			raise NameError("No radius entered ")			
 
 
-		if 'offset' in keys.keys():
+		if 'offset' in list(keys.keys()):
 			offset = keys['offset']
-			print "offset = " +str(offset)
+			print("offset = " +str(offset))
 		else:
 			raise NameError("No offset entered ")	
 
@@ -89,45 +89,45 @@ class VDWtorn(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 
-		if 'A1' in keys.keys():
+		if 'A1' in list(keys.keys()):
 			A1 = keys['A1']
-			print "A1 = " +str(A1)
+			print("A1 = " +str(A1))
 		else:
 			raise NameError("No A1 entered ")
 
-		if 'A2' in keys.keys():
+		if 'A2' in list(keys.keys()):
 			A2 = keys['A2']
-			print "A2 = " +str(A2)
+			print("A2 = " +str(A2))
 		else:
 			raise NameError("No A2 entered ")
 
-		if 'A3' in keys.keys():
+		if 'A3' in list(keys.keys()):
 			A3 = keys['A3']
-			print "A3 = " +str(A3)
+			print("A3 = " +str(A3))
 		else:
 			raise NameError("No A3 entered ")			
 
-		if 'A4' in keys.keys():
+		if 'A4' in list(keys.keys()):
 			A4 = keys['A4']
-			print "A4 = " +str(A4)
+			print("A4 = " +str(A4))
 		else:
 			raise NameError("No A4 entered ")	
 
-		if 'A5' in keys.keys():
+		if 'A5' in list(keys.keys()):
 			A5 = keys['A5']
-			print "A5 = " +str(A5)
+			print("A5 = " +str(A5))
 		else:
 			raise NameError("No A5 entered ")	
 
-		if 'A6' in keys.keys():
+		if 'A6' in list(keys.keys()):
 			A6 = keys['A6']
-			print "A6 = " +str(A6)
+			print("A6 = " +str(A6))
 		else:
 			A6=0
 
-		if 'tipoffset' in keys.keys():
+		if 'tipoffset' in list(keys.keys()):
 			tipoffset = keys['tipoffset']
-			print "tipoffset = " +str(tipoffset)
+			print("tipoffset = " +str(tipoffset))
 		else:
 			raise NameError("No tipoffset entered ")	
 
@@ -195,13 +195,13 @@ class LJ(Circuit):
 		
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'epsilon' in keys.keys():
+		if 'epsilon' in list(keys.keys()):
 			ep = keys['epsilon']
 		else:
 			raise NameError("No epsilon entered ")
 
 
-		if 'sigma' in keys.keys():
+		if 'sigma' in list(keys.keys()):
 			sig = keys['sigma']
 		else:
 			raise NameError("No sigma entered ")

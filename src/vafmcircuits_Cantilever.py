@@ -49,36 +49,36 @@ class Cantilever(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 		
-		if 'Q' in keys.keys():
+		if 'Q' in list(keys.keys()):
 			Q = keys['Q']
-			print "Q = " +str(Q)
+			print("Q = " +str(Q))
 		else:
 			raise NameError("No Q entered ")
 
-		if 'k' in keys.keys():
+		if 'k' in list(keys.keys()):
 			k = keys['k']
-			print "k = "+str(k)
+			print("k = "+str(k))
 		else:
 			raise NameError("No k entered ")
 
-		if 'M' in keys.keys():
+		if 'M' in list(keys.keys()):
 			M = keys['M']
-			print "M = "+str(M)
+			print("M = "+str(M))
 		else:
 			M = 0
 
-		if 'f0' in keys.keys():
+		if 'f0' in list(keys.keys()):
 			F = keys['f0']
-			print "f0 = "+str(F)
+			print("f0 = "+str(F))
 		else:
 			raise NameError("No F entered ")
 		
 		startingz = 0
-		if 'startingz' in keys.keys():
+		if 'startingz' in list(keys.keys()):
 			startingz = keys['startingz']
-			print "startingz = "+str(startingz)
+			print("startingz = "+str(startingz))
 		else:
-			print "PY WARNING: starting tip z not specified, assuming 0"
+			print("PY WARNING: starting tip z not specified, assuming 0")
 
 		
 		self.AddInput("holderz")
@@ -150,15 +150,15 @@ class AdvancedCantilever(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 
-		if 'NumberOfModesV' in keys.keys():
+		if 'NumberOfModesV' in list(keys.keys()):
 			NumberOfModesV = keys['NumberOfModesV']
-			print "Number of Vertical Modes = " +str(NumberOfModesV)
+			print("Number of Vertical Modes = " +str(NumberOfModesV))
 		else:
 			raise NameError("No NumberOfModesV entered ")
 
-		if 'NumberOfModesL' in keys.keys():
+		if 'NumberOfModesL' in list(keys.keys()):
 			NumberOfModesL = keys['NumberOfModesL']
-			print "Number of Lateral Modes = " +str(NumberOfModesL)
+			print("Number of Lateral Modes = " +str(NumberOfModesL))
 		else:
 			raise NameError("No NumberOfModesL entered ")
 		
@@ -233,32 +233,32 @@ class AdvancedCantilever(Circuit):
 
 	def AddMode(self, **kw):
 
-		if 'k' not in kw.keys():
+		if 'k' not in list(kw.keys()):
 			raise NameError("Missing k from AddMode")
 
-		if 'Q' not in kw.keys():
+		if 'Q' not in list(kw.keys()):
 			raise NameError("Missing Q from AddMode")
 
-		if 'M' not in kw.keys():
+		if 'M' not in list(kw.keys()):
 			kw["M"]=0		
-			print "Warning Missing Mass will caulcuate from omega and k"
+			print("Warning Missing Mass will caulcuate from omega and k")
 
-		if 'f0' not in kw.keys():
+		if 'f0' not in list(kw.keys()):
 			raise NameError("Missing f0 from AddMode")
 
 
 		if kw["Vertical"] == True : 
-			if "k" in kw.keys(): self.Kv.append(float(kw["k"]))
-			if "Q" in kw.keys(): self.Qv.append(float(kw["Q"]))
-			if "M" in kw.keys(): self.Mv.append(float(kw["M"]))
-			if "f0" in kw.keys(): self.fov.append(float(kw["f0"]))
+			if "k" in list(kw.keys()): self.Kv.append(float(kw["k"]))
+			if "Q" in list(kw.keys()): self.Qv.append(float(kw["Q"]))
+			if "M" in list(kw.keys()): self.Mv.append(float(kw["M"]))
+			if "f0" in list(kw.keys()): self.fov.append(float(kw["f0"]))
 			self.counterV =+ 1
 
 		if kw["Vertical"] == False : 
-			if "k" in kw.keys(): self.Kl.append(float(kw["k"]))
-			if "Q" in kw.keys(): self.Ql.append(float(kw["Q"]))
-			if "M" in kw.keys(): self.Ml.append(float(kw["M"]))
-			if "f0" in kw.keys(): self.fol.append(float(kw["f0"]))
+			if "k" in list(kw.keys()): self.Kl.append(float(kw["k"]))
+			if "Q" in list(kw.keys()): self.Ql.append(float(kw["Q"]))
+			if "M" in list(kw.keys()): self.Ml.append(float(kw["M"]))
+			if "f0" in list(kw.keys()): self.fol.append(float(kw["f0"]))
 			self.counterL =+ 1
 
 
@@ -305,28 +305,28 @@ class AnalyticalCantilever(Circuit):
 		K = 130
 
 
-		if 'filename' in keys.keys():
+		if 'filename' in list(keys.keys()):
 			FILENAME = keys["filename"]
 		else:
 			raise NameError("Missing filename")
 
-		if 'NumberOfPoints' in keys.keys():
+		if 'NumberOfPoints' in list(keys.keys()):
 			NumberOfPoints = keys["NumberOfPoints"]
 		else:
 			raise NameError("Missing NumberOfPoints")
 
-		if 'K' in keys.keys():
+		if 'K' in list(keys.keys()):
 			K = keys["K"]
 		else:
 			raise NameError("Missing K")
 
 
-		if 'A' in keys.keys():
+		if 'A' in list(keys.keys()):
 			A = keys["A"]
 		else:
 			raise NameError("Missing A")
 
-		if 'f0' in keys.keys():
+		if 'f0' in list(keys.keys()):
 			f0 = keys["f0"]
 		else:
 			raise NameError("Missing f0")
@@ -334,42 +334,42 @@ class AnalyticalCantilever(Circuit):
 
 
 		res = [51,51,201]
-		if 'res' in keys.keys():
+		if 'res' in list(keys.keys()):
 			res = keys["res"]
 
 		step = []
-		if 'step' in keys.keys():
+		if 'step' in list(keys.keys()):
 			step = keys["step"]
 		else:
 			raise NameError("Missing step")
 
 		NumberOfUnitCells = [1,1,1]
-		if 'NumberOfFFCells' in keys.keys():
+		if 'NumberOfFFCells' in list(keys.keys()):
 			NumberOfUnitCells = keys["NumberOfFFCells"]
 
 
 		convertion=1
-		if 'convertion' in keys.keys():
+		if 'convertion' in list(keys.keys()):
 			convertion = keys["convertion"]
 
 
 		zHeight = None
-		if 'zHeight' in keys.keys():
+		if 'zHeight' in list(keys.keys()):
 			zHeight = keys["zHeight"]
 
 
 		OutputFile = ""
-		if 'OutputFile' in keys.keys():
+		if 'OutputFile' in list(keys.keys()):
 			OutputFile = keys["OutputFile"]
 		else:
 			raise NameError("Missing OutputFile")
 
 
 		OscRes=100
-		if 'OscRes' in keys.keys():
+		if 'OscRes' in list(keys.keys()):
 			OscRes = keys["OscRes"]
 
-		if 'TipPos' in keys.keys():
+		if 'TipPos' in list(keys.keys()):
 			TipPos = keys["TipPos"]
 
 
@@ -380,11 +380,11 @@ class AnalyticalCantilever(Circuit):
 
 
 
-		if 'ScanType' in keys.keys():
+		if 'ScanType' in list(keys.keys()):
 			ScanType = keys["ScanType"]
 			if ScanType != "Vertical":
 				if ScanType != "Lateral":
-					print "ERROR: Scan type can only be Vertical or Lateral"
+					print("ERROR: Scan type can only be Vertical or Lateral")
 					sys.exit()
 
 		if zHeight != None and ScanType == "Lateral": 
@@ -394,7 +394,7 @@ class AnalyticalCantilever(Circuit):
 			arrayx=[TipPos[0]]
 			arrayy=[TipPos[1]]
 
-		if 'MinMaxz' in keys.keys():
+		if 'MinMaxz' in list(keys.keys()):
 			MinMaxz = keys["MinMaxz"]
 			arrayz = linspace(MinMaxz[0], MinMaxz[1],res[2])
 
@@ -404,7 +404,7 @@ class AnalyticalCantilever(Circuit):
 
 		
 		FF = open(FILENAME,'r')
-		Data = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+		Data = [[[0 for k in range( int (NumberOfPoints[2]) ) ] for j in range( int (NumberOfPoints[1]) )] for i in range(int (NumberOfPoints[0]) )]
 
 		for line in FF:	
 			i = int(line.split()[0])-1
@@ -426,7 +426,7 @@ class AnalyticalCantilever(Circuit):
 
 		for ypos in arrayy:
 			linecounter+=1
-			print "Running line number "+str(linecounter)
+			print("Running line number "+str(linecounter))
 			
 			for xpos in arrayx:
 				

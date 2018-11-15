@@ -17,7 +17,7 @@ def compomaker(compo,**keys):
   	compo.Connect("global.signal2","adder.in2")
   	compo.Connect("adder.out","global.out")
 	
-	print "ADC assemb led!"
+	print("ADC assemb led!")
 
 
 def main():

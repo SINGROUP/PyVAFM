@@ -58,9 +58,9 @@ class i3Dlin(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'components' in keys.keys():
+		if 'components' in list(keys.keys()):
 			self.components = keys['components']
-			print "components = " +str(self.components)
+			print("components = " +str(self.components))
 		else:
 			raise NameError("No components entered ")
 		
@@ -91,35 +91,35 @@ class i3Dlin(Circuit):
 	def Configure(self, **keys):
 		
 		#check for npoints
-		if 'npoints' in keys.keys():
+		if 'npoints' in list(keys.keys()):
 			if len(keys['npoints']) != 3:
 				raise ValueError("ERROR! the number of points is not a triplet!")
 			else:
 				self.npts = [int(n) for n in keys['npoints']]
-				print "i3Dlin: npoints",self.npts
+				print("i3Dlin: npoints",self.npts)
 				self.nptsSET = True
 				#send the changes to cCore
 				self.data = Circuit.cCore.i3Dlin_npts(self.cCoreID, self.npts[0], self.npts[1], self.npts[2])
 				
 				
 		#check for steps
-		if 'steps' in keys.keys():
+		if 'steps' in list(keys.keys()):
 			if len(keys['steps']) != 3:
 				raise ValueError("ERROR! the grid steps is not a triplet!")
 			else:
 				self.step = keys['steps']
-				print "i3Dlin: steps",self.step
+				print("i3Dlin: steps",self.step)
 				self.stepSET = True
 				#call a cCore function to save the values
 				Circuit.cCore.i3Dlin_step(self.cCoreID, self.step[0], self.step[1], self.step[2])
 			
 		#check for pbc
-		if 'pbc' in keys.keys():
+		if 'pbc' in list(keys.keys()):
 			if len(keys['pbc']) != 3:
 				raise ValueError("ERROR! the PBC is not a triplet!")
 			else:
 				self.pbc = [0,0,0]
-				for i in xrange(len(keys['pbc'])):
+				for i in range(len(keys['pbc'])):
 					if keys['pbc'][i] == True:
 						self.pbc[i] = 1
 					else:
@@ -128,9 +128,9 @@ class i3Dlin(Circuit):
 				Circuit.cCore.i3Dlin_pbc(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2])
 				self.pbcSET = True
 
-		if 'ForceMultiplier' in keys.keys():
+		if 'ForceMultiplier' in list(keys.keys()):
 			self.ForceMultiplier = keys['ForceMultiplier']
-			print "ForceMultiplier = " +str(self.ForceMultiplier)
+			print("ForceMultiplier = " +str(self.ForceMultiplier))
 		else:
 			self.ForceMultiplier = 1
 
@@ -154,7 +154,7 @@ class i3Dlin(Circuit):
 			j = int(words[1])-1
 			k = int(words[2])-1
 			index = i*yzsize + j*zsize + k
-			for c in xrange(self.components): #convert the components to float
+			for c in range(self.components): #convert the components to float
 				words[c+3] = ctypes.c_double(float(words[c+3]) * self.ForceMultiplier)
 				self.data[c][index] = words[c+3]
 		
@@ -201,20 +201,20 @@ class i1Dlin(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 		self.components = 0
-		if 'comp' in keys.keys():
+		if 'comp' in list(keys.keys()):
 			self.components = int(keys['comp'])
-			print "components = " +str(self.components)
+			print("components = " +str(self.components))
 		else:
 			raise NameError("No components entered ")
 
-		if 'step' in keys.keys():
+		if 'step' in list(keys.keys()):
 			step = keys['step']
-			print "step = " +str(step)
+			print("step = " +str(step))
 		else:
 			raise NameError("No step entered ")
 		
 		
-		if 'pbc' in keys.keys():
+		if 'pbc' in list(keys.keys()):
 			if keys['pbc'] == True:
 				pbc = 1
 			else:
@@ -222,7 +222,7 @@ class i1Dlin(Circuit):
 		else:
 			raise NameError("No pbc entered ")
 
-		if 'ForceUnits' in keys.keys():
+		if 'ForceUnits' in list(keys.keys()):
 			self.ForceUnits=float(keys['ForceUnits'])
 		else:
 			self.ForceUnits= 1.0
@@ -331,12 +331,12 @@ class i4DlinVasp(Circuit):
 
 	def ConfigureVASP(self, **keys):
 				#check for pbc
-		if 'pbc' in keys.keys():
+		if 'pbc' in list(keys.keys()):
 			if len(keys['pbc']) != 4:
 				raise ValueError("ERROR! the PBC is not a triplet!")
 			else:
 				self.pbc = [0,0,0,0]
-				for i in xrange(len(keys['pbc'])):
+				for i in range(len(keys['pbc'])):
 					if keys['pbc'][i] == True:
 						self.pbc[i] = 1
 					else:
@@ -369,7 +369,7 @@ class i4DlinVasp(Circuit):
 
 		for j in range(0,len(filename)):
 			f = open(filename[j], "r")
-			print "Reading in file: "+ filename[j]
+			print("Reading in file: "+ filename[j])
 			size=[0,0,0]
 
 			NumberOfPoints=[0,0,0]
@@ -501,9 +501,9 @@ class i4Dlin(Circuit):
 			
 		super(self.__class__, self).__init__( machine, name )
 		
-		if 'components' in keys.keys():
+		if 'components' in list(keys.keys()):
 			self.components = keys['components']
-			print "components = " +str(self.components)
+			print("components = " +str(self.components))
 		else:
 			raise NameError("No components entered ")
 	
@@ -527,12 +527,12 @@ class i4Dlin(Circuit):
 
 	def Configure(self, **keys):
 				#check for pbc
-		if 'pbc' in keys.keys():
+		if 'pbc' in list(keys.keys()):
 			if len(keys['pbc']) != 4:
 				raise ValueError("ERROR! the PBC requires 4 argments!")
 			else:
 				self.pbc = [0,0,0,0]
-				for i in xrange(len(keys['pbc'])):
+				for i in range(len(keys['pbc'])):
 					if keys['pbc'][i] == True:
 						self.pbc[i] = 1
 					else:
@@ -541,14 +541,14 @@ class i4Dlin(Circuit):
 				Circuit.cCore.i4DLinPBC(self.cCoreID, self.pbc[0], self.pbc[1], self.pbc[2], self.pbc[3])
 				self.pbcSET = True
 
-		if 'points' in keys.keys():
+		if 'points' in list(keys.keys()):
 			if len(keys['points']) != 4:
 				raise ValueError("ERROR! the number of points requires 4 arguments! (nx,ny,nz,nv)")
 			else:
 				self.NPoints = [keys['points'][0],keys['points'][1],keys['points'][2],keys['points'][3]]
 
 
-		if 'step' in keys.keys():
+		if 'step' in list(keys.keys()):
 			if len(keys['step']) != 4:
 				raise ValueError("ERROR! the step size requires 4 arguments! (nx,ny,nz,nv)")
 			else:
@@ -609,7 +609,7 @@ class i4Dlin(Circuit):
 			k = int(words[2])-1
 			v = int(words[3])-1
 			index = i + j*nx + k*nx*ny + v*nx*ny*nz
-			for c in xrange(self.components): #convert the components to float
+			for c in range(self.components): #convert the components to float
 				words[c+4] = ctypes.c_double(float(words[c+4]) * self.ForceMultiplier)
 				self.data[c][index] = words[c+4]
 		
@@ -654,14 +654,14 @@ class MechAfmToPyVafm(Circuit):
 		self.step=None
 		self.MaxInd=None
 
-		if 'foldername' in keys.keys():
+		if 'foldername' in list(keys.keys()):
 			Folder=keys['foldername']
 		else:
 			raise NameError ("Error: No folder specified")
 
-		if 'filename' in keys.keys():
+		if 'filename' in list(keys.keys()):
 			self.filename=keys['filename']
-		if "overide" in keys.keys():
+		if "overide" in list(keys.keys()):
 			overide=keys['overide']
 
 
@@ -669,16 +669,16 @@ class MechAfmToPyVafm(Circuit):
 		import os.path
 		FileExist = os.path.isfile(self.filename)
 		if FileExist == True  and overide==False:
-			print "####################################################################################"
-			print "File already exists, skipping conversion, delete the file or change the filename"		
-			print "####################################################################################"
+			print("####################################################################################")
+			print("File already exists, skipping conversion, delete the file or change the filename")		
+			print("####################################################################################")
 
 		orignaldir = os.getcwd()+"/"
 		os.chdir(orignaldir+Folder)
 
 		#List of files
 		files = glob.glob('*.dat')
-		print "Found " + str(len(files)) + " files in folder " + Folder
+		print("Found " + str(len(files)) + " files in folder " + Folder)
 		#open one file and check the x y size
 		f = open(files[-1],'r')
 		x=[]
@@ -699,25 +699,25 @@ class MechAfmToPyVafm(Circuit):
 
 		self.MaxInd = [ max(x)+1,max(y)+1 , len(files)]
 		self.step = [ round(sorted(set(Realx))[-1],4) - sorted(set(Realx))[-2] , round(sorted(set(Realy))[-1],4) - sorted(set(Realy))[-2] , round( sorted(Realz)[-1] - sorted(Realz)[-2],4) ]
-		print "Number of Points = " + str(self.MaxInd)
-		print "Step Size = " + str(self.step)
+		print("Number of Points = " + str(self.MaxInd))
+		print("Step Size = " + str(self.step))
 
 		offset = int( min(Realz)/self.step[2] )
 
 
 		if FileExist == False or overide==True:
 
-			print "Converting MechAFM Force file to PyVAFM file"
-			Fx = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
-			Fy = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
-			Fz = [[[0 for k in xrange(self.MaxInd[2])] for j in xrange(self.MaxInd[1])] for i in xrange(self.MaxInd[0])]
+			print("Converting MechAFM Force file to PyVAFM file")
+			Fx = [[[0 for k in range(self.MaxInd[2])] for j in range(self.MaxInd[1])] for i in range(self.MaxInd[0])]
+			Fy = [[[0 for k in range(self.MaxInd[2])] for j in range(self.MaxInd[1])] for i in range(self.MaxInd[0])]
+			Fz = [[[0 for k in range(self.MaxInd[2])] for j in range(self.MaxInd[1])] for i in range(self.MaxInd[0])]
 
 			f.close()
-			print "Reading in Files"
+			print("Reading in Files")
 			counter = 0
 			for FileName in files:
 				if counter % 10 == 0:
-					print  str ( round ( float ( counter) / float( self.MaxInd[2] ) * 100.0 , 2 ) ) + "% done"
+					print(str ( round ( float ( counter) / float( self.MaxInd[2] ) * 100.0 , 2 ) ) + "% done")
 
 				f = open(FileName,'r')
 				for line in f:
@@ -728,14 +728,14 @@ class MechAfmToPyVafm(Circuit):
 					Fy[x][y][z] = float ( line.split()[7] ) 
 					Fz[x][y][z] = float ( line.split()[8] ) 
 				counter +=1
-			print "100% done"
+			print("100% done")
 	
 		os.chdir(orignaldir)	
 
 		if FileExist == False or overide==True:
 
 			f = open(self.filename,'w')
-			print "Writing force field file " + str(self.filename)
+			print("Writing force field file " + str(self.filename))
 			for X in range(0,self.MaxInd[0]):
 				for Y in range(0,self.MaxInd[1]):
 					for Z in range(0,self.MaxInd[2]):

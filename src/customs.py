@@ -61,7 +61,7 @@ def aPLL(compo,**keys):
 
   	
   	filters = keys['filters']
-  	print "prefilters cutoffs: ",filters
+  	print("prefilters cutoffs: ",filters)
   	
   	compo.AddCircuit(type='opMul',name='pfd', pushed=True)
   	for i in range(len(filters)):
@@ -93,7 +93,7 @@ def aPLL(compo,**keys):
 	#compo.Connect("pfd.out",   "global.dbg")
 	
 
-	print "analog PLL assembled!" 
+	print("analog PLL assembled!") 
 
 
 ## \brief Digital PLL composite circuit.
@@ -184,7 +184,7 @@ def dPFD(compo,**keys):
     compo.Connect("pi.out",   "global.dbg")
     
 
-    print "digital PFD assembled!"
+    print("digital PFD assembled!")
 
 
 ## \brief Analogue amplitude detection circuit.

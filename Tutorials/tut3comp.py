@@ -13,4 +13,4 @@ def ADC(compo,**keys):
   	compo.Connect("global.signal2","adder.in2")
   	compo.Connect("adder.out","global.out")
 	
-  	print "ADC assembled!"
+  	print("ADC assembled!")

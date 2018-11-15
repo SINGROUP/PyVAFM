@@ -45,21 +45,21 @@ class SKLP(Circuit):
 
 
 		self.Gain=math.pi*0.5
-		if 'gain' in keys.keys():
+		if 'gain' in list(keys.keys()):
 			self.Gain = keys['gain']
 		else:
-			print "WARNING! No gain given, using default gain = "+str(self.Gain)
+			print("WARNING! No gain given, using default gain = "+str(self.Gain))
 
 
 		self.Q=math.sqrt(2.0)*0.5
-		if 'Q' in keys.keys():
+		if 'Q' in list(keys.keys()):
 			self.Q = keys['Q']
 		else:
-			print "WARNING! No Q give, using default Q = "+str(self.Q)
+			print("WARNING! No Q give, using default Q = "+str(self.Q))
 
 
 		self.fc=0
-		if 'fc' in keys.keys():
+		if 'fc' in list(keys.keys()):
 			self.fc = keys['fc']
 		else:
 			raise NameError("Missing fc!")
@@ -115,21 +115,21 @@ class SKHP(Circuit):
 
 
 		self.Gain=math.pi*0.5
-		if 'gain' in keys.keys():
+		if 'gain' in list(keys.keys()):
 			self.Gain = keys['gain']
 		else:
-			print "WARNING! No gain given, using default gain = "+str(self.Gain)
+			print("WARNING! No gain given, using default gain = "+str(self.Gain))
 
 
 		self.Q=math.sqrt(2.0)*0.5
-		if 'Q' in keys.keys():
+		if 'Q' in list(keys.keys()):
 			self.Q = keys['Q']
 		else:
-			print "WARNING! No Q give, using default Q = "+str(self.Q)
+			print("WARNING! No Q give, using default Q = "+str(self.Q))
 
 
 		self.Fcutoff=0
-		if 'fc' in keys.keys():
+		if 'fc' in list(keys.keys()):
 			self.fc = keys['fc']
 		else:
 			raise NameError("Missing fc!")
@@ -181,19 +181,19 @@ class SKBP(Circuit):
 
 
 		self.Gain=math.pi*0.5
-		if 'gain' in keys.keys():
+		if 'gain' in list(keys.keys()):
 			self.Gain = keys['gain']
 		else:
-			print "WARNING! No gain given, using default gain = "+str(self.Gain)
+			print("WARNING! No gain given, using default gain = "+str(self.Gain))
 
 		self.fc=0
-		if 'fc' in keys.keys():
+		if 'fc' in list(keys.keys()):
 			self.fc = keys['fc']
 		else:
 			raise NameError("Missing fc!")
 
 		self.band=0
-		if 'band' in keys.keys():
+		if 'band' in list(keys.keys()):
 			self.band = keys['band']
 		else:
 			raise NameError("Missing band!")
@@ -245,16 +245,16 @@ class RCLP(Circuit):
 
 		self.fc=0
 
-		if 'fc' in keys.keys():
+		if 'fc' in list(keys.keys()):
 			self.fc = keys['fc']
 		else:
 			raise NameError("Missing fc!")
 
 		self.Order=1
-		if 'order' in keys.keys():
+		if 'order' in list(keys.keys()):
 			self.Order = keys['order']
 		else:
-			print "WARNING! Filter order not specified, using default order = "+str(self.Order)
+			print("WARNING! Filter order not specified, using default order = "+str(self.Order))
 
 		self.cCoreID = Circuit.cCore.Add_RCLP(self.machine.cCoreID,
 			c_double(self.fc), self.Order)
@@ -301,17 +301,17 @@ class RCHP(Circuit):
 
 
 		self.fc=0
-		if 'fc' in keys.keys():
+		if 'fc' in list(keys.keys()):
 			self.fc = keys['fc']
 		else:
 			raise NameError("Missing fc!")
 
 
 		self.Order=1
-		if 'order' in keys.keys():
+		if 'order' in list(keys.keys()):
 			self.Order = keys['order']
 		else:
-			print "WARNING! No order given, using default order = "+str(self.Order)
+			print("WARNING! No order given, using default order = "+str(self.Order))
 
 		self.cCoreID = Circuit.cCore.Add_RCHP(self.machine.cCoreID,
 			c_double(self.fc), self.Order)

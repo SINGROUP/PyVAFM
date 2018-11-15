@@ -8,7 +8,7 @@ import vafmcircuits_Logic
 
 def andchange(newvalue):
     
-    print "and changed to",newvalue
+    print("and changed to",newvalue)
 
 def main():
 	

@@ -43,7 +43,7 @@ class opAdd(Circuit):
 		self.factors = 2
 		
 		#check if the amount of factors was given	
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 		
 		
@@ -149,7 +149,7 @@ class opMul(Circuit):
 		
 		#check if the amount of factors was given	
 		self.factors = 2
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = int(keys['factors'])
 		
 		
@@ -254,7 +254,7 @@ class opLinC(Circuit):
 		
 		#check if the amount of factors was given	
 		self.factors = 2
-		if 'factors' in keys.keys():
+		if 'factors' in list(keys.keys()):
 			self.factors = keys['factors']
 		
 		
@@ -350,7 +350,7 @@ class opPow(Circuit):
 		
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'power' in keys.keys():
+		if 'power' in list(keys.keys()):
 			self.power = keys['power']
 		else:
 			raise SyntaxError("ERROR! power not specified.")
@@ -487,23 +487,23 @@ class Perlin(Circuit):
 		super(self.__class__, self).__init__( machine, name )
 
 		
-		if "octaves" in keys.keys():
+		if "octaves" in list(keys.keys()):
 			self.octaves = int(keys["octaves"])
 		else:
 			raise ValueError("ERROR: number of octaves not specified!")
 
 		self.amp = 1
-		if "amp" in keys.keys():
+		if "amp" in list(keys.keys()):
 			self.amp = float(keys["amp"])
 		else:
-			print "WARNING: Perlin amplitude not specified, assuming 1."
+			print("WARNING: Perlin amplitude not specified, assuming 1.")
 		
-		if "persist" in keys.keys():
+		if "persist" in list(keys.keys()):
 			self.persist = float(keys["persist"])
 		else:
 			raise ValueError("ERROR: persistance not specified!")
 
-		if "period" in keys.keys():
+		if "period" in list(keys.keys()):
 			self.period = float(keys["period"])
 		else:
 			raise ValueError("ERROR: period not specified!")

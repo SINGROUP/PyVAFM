@@ -92,7 +92,7 @@ class Scanner(Circuit):
 		steps = Circuit.cCore.Scanner_Move(self.cCoreID, c_double(x), c_double(y) ,c_double(z),c_double(v) )
 
 		self.machine.main.WaitSteps( (steps) )
-		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
+		print("Scanner moved by " +str(x) + "," + str(y)+ "," + str(z))
 
 	def Place(self,**kw): #all parameters required
 		
@@ -101,18 +101,18 @@ class Scanner(Circuit):
 		x = params[0]
 		y = params[1]
 		z = params[2]
-		print "original place: ",x,y,z
+		print("original place: ",x,y,z)
 		
-		if 'x' in kw.keys():
+		if 'x' in list(kw.keys()):
 			x = kw['x']
-		if 'y' in kw.keys():
+		if 'y' in list(kw.keys()):
 			y = kw['y']
-		if 'z' in kw.keys():
+		if 'z' in list(kw.keys()):
 			z = kw['z']
 		
 		steps = Circuit.cCore.Scanner_Place(self.cCoreID, c_double(x), c_double(y), c_double(z))
 		self.machine.main.WaitSteps(1)
-		print "Scanner Placed at ", x, y, z
+		print("Scanner Placed at ", x, y, z)
 
 	def MoveTo(self,**kw):
 		
@@ -123,11 +123,11 @@ class Scanner(Circuit):
 		z = params[2]
 		v = 0
 		
-		if "x" in kw.keys(): x = float(kw["x"])
-		if "y" in kw.keys(): y = float(kw["y"])
-		if "z" in kw.keys(): z = float(kw["z"])
+		if "x" in list(kw.keys()): x = float(kw["x"])
+		if "y" in list(kw.keys()): y = float(kw["y"])
+		if "z" in list(kw.keys()): z = float(kw["z"])
 
-		if ("v" in kw.keys()):
+		if ("v" in list(kw.keys())):
 			v = float(kw["v"])
 		else:
 			raise NameError ("ERROR! Scanner MoveTo requires v.")
@@ -135,7 +135,7 @@ class Scanner(Circuit):
 		Circuit.cCore.Scanner_MoveTo.restype = c_ulonglong
 		steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, c_double(x), c_double(y), c_double(z), c_double(v))
 		self.machine.main.WaitSteps(steps)                
-		print "Scanner moved to " +str(x) + "," + str(y)+ "," + str(z)
+		print("Scanner moved to " +str(x) + "," + str(y)+ "," + str(z))
 
 
 	## Used to set the fast scan direction
@@ -154,7 +154,7 @@ class Scanner(Circuit):
 		self._fastscan[0] = x/n
 		self._fastscan[1] = y/n
 		self._fastscan[2] = z/n
-		print "fastscan direction set: ",self._fastscan
+		print("fastscan direction set: ",self._fastscan)
 		
 	## Used to set the slow scan direction
 	#
@@ -173,15 +173,15 @@ class Scanner(Circuit):
 		self._slowscan[1] = y/n
 		self._slowscan[2] = z/n
 		
-		print "slowscan direction set: ",self._slowscan
+		print("slowscan direction set: ",self._slowscan)
 
 	## Set fast and/or slow scan directions
 	#
 	def Direction(self, **kw):
 		
-		if "fast" in kw.keys():
+		if "fast" in list(kw.keys()):
 			self.FastScan(kw["fast"])
-		if "slow" in kw.keys():
+		if "slow" in list(kw.keys()):
 			self.SlowScan(kw["slow"])
 		
 
@@ -193,7 +193,7 @@ class Scanner(Circuit):
 
 	def ScanArea(self):
 		
-		print "Scanning area..."
+		print("Scanning area...")
 		
 		params = self.GetParams(self.cCoreID);
 		x = params[0]; y = params[1]; z = params[2]
@@ -211,7 +211,7 @@ class Scanner(Circuit):
 		#loop for each scanline to take
 		for linenum in range(1,self.Resolution[1]+1):
 			
-			print "PY Scanner: starting line number "+str(linenum) + "..."
+			print("PY Scanner: starting line number "+str(linenum) + "...")
 			
 			#move to the end of fast scanline
 			Circuit.cCore.Scanner_Move_Record.restype = c_ulonglong
@@ -219,7 +219,7 @@ class Scanner(Circuit):
 				c_double(self.FastSpeed), c_int(self.Resolution[0]) )
 			self.machine.main.WaitSteps(steps)
 			
-			print "PY Scanner: done. Repositioning..."
+			print("PY Scanner: done. Repositioning...")
 			
 			if self.BlankLines == True and self.Recorder != None:
 				self.Recorder.DumpMessage("")
@@ -232,17 +232,17 @@ class Scanner(Circuit):
 			steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, repos[0], repos[1], repos[2],
 				c_double(self.SlowSpeed))
 			self.machine.main.WaitSteps(steps)
-			print "PY Scanner: done."
+			print("PY Scanner: done.")
 			
 		
 		#now go back to the original position
-		print "PY Scanner: Moving to starting location..."
+		print("PY Scanner: Moving to starting location...")
 		repos = [c_double(x0[i]) for i in range(3)]
 		steps = Circuit.cCore.Scanner_MoveTo(self.cCoreID, repos[0], repos[1], repos[2],
 				c_double(self.SlowSpeed))
 		self.machine.main.WaitSteps(steps)
 		
-		print "done!"
+		print("done!")
 
 
 	def MoveRecord(self, **kw):
@@ -253,14 +253,14 @@ class Scanner(Circuit):
 		z = params[2]
 		v = 1
 		npts=0
-		if "x" in kw.keys(): x = float(kw["x"])
-		if "y" in kw.keys(): y = float(kw["y"])
-		if "z" in kw.keys(): z = float(kw["z"])
-		if ("v" in kw.keys()):
+		if "x" in list(kw.keys()): x = float(kw["x"])
+		if "y" in list(kw.keys()): y = float(kw["y"])
+		if "z" in list(kw.keys()): z = float(kw["z"])
+		if ("v" in list(kw.keys())):
 			v = float(kw["v"])
 		else:
 			raise NameError ("ERROR! Scanner MoveRecord requires v.")
-		if ("points" in kw.keys()):
+		if ("points" in list(kw.keys())):
 			npts = int(kw["points"])
 		else:
 			raise NameError ("ERROR! Scanner MoveRecord requires number of points.")
@@ -268,22 +268,22 @@ class Scanner(Circuit):
 		Circuit.cCore.Scanner_Move_Record.restype = c_ulonglong
 		steps = Circuit.cCore.Scanner_Move_Record(self.cCoreID, c_double(x), c_double(y), c_double(z), c_double(v), c_int(npts)) 
 		self.machine.main.WaitSteps(steps)                
-		print "Scanner moved by " +str(x) + "," + str(y)+ "," + str(z)
+		print("Scanner moved by " +str(x) + "," + str(y)+ "," + str(z))
 
 
 	def SinScan(self,**kw):
 
-		if "freq" in kw.keys():
+		if "freq" in list(kw.keys()):
 			freq = float(kw["freq"])
 		else: 
 			raise NameError ("ERROR! enter a frequency.")
 		
-		if "amp" in kw.keys():
+		if "amp" in list(kw.keys()):
 			amp = float(kw["amp"])
 		else:
 			raise NameError ("ERROR! enter a amplitude.")
 		
-		if "cycles" in kw.keys():
+		if "cycles" in list(kw.keys()):
 			cycle = int(kw["cycles"])
 		else:
 			raise NameError ("ERROR! enter a number of cycles.")
@@ -338,17 +338,17 @@ class CoordTransform(Circuit):
 		self.AddOutput("yprime")
 		self.AddOutput("zprime")
 		
-		if 'LatticeVectorX' in keys.keys():
+		if 'LatticeVectorX' in list(keys.keys()):
 			self.LatticeVectorX = keys['LatticeVectorX']
 		else:
 			raise NameError("Missing LatticeVectorX parameter!")
 		
-		if 'LatticeVectorY' in keys.keys():
+		if 'LatticeVectorY' in list(keys.keys()):
 			self.LatticeVectorY = keys['LatticeVectorY']
 		else:
 			raise NameError("Missing LatticeVectorY parameter!")
 
-		if 'LatticeVectorZ' in keys.keys():
+		if 'LatticeVectorZ' in list(keys.keys()):
 			self.LatticeVectorZ = keys['LatticeVectorZ']
 		else:
 			raise NameError("Missing LatticeVectorX parameter!")					

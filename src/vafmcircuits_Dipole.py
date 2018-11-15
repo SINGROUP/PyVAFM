@@ -39,7 +39,7 @@ class PlotAtoms(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )	
 
-		if 'Filename' in keys.keys():
+		if 'Filename' in list(keys.keys()):
 			self.Filename=  str(keys['Filename'])
 		else:
 			raise ValueError("Input Filename Required")
@@ -95,7 +95,7 @@ class PlotAtoms(Circuit):
 
 		#Find Coordinates
 
-		ATOMS=[[0.0,0.0,0.0] for i in xrange(int (NumberOfAtoms) )]
+		ATOMS=[[0.0,0.0,0.0] for i in range(int (NumberOfAtoms) )]
 
 
 
@@ -206,20 +206,20 @@ class ExtractPotential(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'PotentialFilename' in keys.keys():
+		if 'PotentialFilename' in list(keys.keys()):
 			self.Filename=  str(keys['PotentialFilename'])
 		else:
 			raise ValueError("Input filename Required")
 
 
-		if 'OutputFilename' in keys.keys():
+		if 'OutputFilename' in list(keys.keys()):
 			self.OFilename=  str(keys['OutputFilename'])
 		else:
 			raise ValueError("Output filename Required")
 
 		check = False
 
-		if 'ZCutOff' in keys.keys():
+		if 'ZCutOff' in list(keys.keys()):
 			ZCutOff = keys['ZCutOff']
 		else:
 			ZCutOff = [0,0]
@@ -227,7 +227,7 @@ class ExtractPotential(Circuit):
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
-		print "Reading in file: "+ self.Filename
+		print("Reading in file: "+ self.Filename)
 
 
 		size=[0,0,0]
@@ -284,7 +284,7 @@ class ExtractPotential(Circuit):
 
 
 
-				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+				V = [[[0 for k in range( int (NumberOfPoints[2]) ) ] for j in range( int (NumberOfPoints[1]) )] for i in range(int (NumberOfPoints[0]) )]
 						
 
 			if linenumber > NumberOfAtoms+9:
@@ -308,7 +308,7 @@ class ExtractPotential(Circuit):
 				if len(line.split()) == 0:
 					break
 
-		print "File read in"
+		print("File read in")
 		#Find step size
 		dx = float(size[0]/NumberOfPoints[0])
 		dy = float(size[1]/NumberOfPoints[1])
@@ -323,7 +323,7 @@ class ExtractPotential(Circuit):
 
 
 
-		print "Writing to File"
+		print("Writing to File")
 		for x in range(0,Datax):
 			for y in range(0,Datay):				
 				for z in range(0,ZCutOff[1]):
@@ -331,22 +331,22 @@ class ExtractPotential(Circuit):
 					fo.write(str(x+1)+" "+str(y+1)+" "+str(z+1+ ZCutOff[0])+" "+str(V[x][y][z+ ZCutOff[0] ]) + "\n")		
 
 
-		print "####################################"
-		print "Potential Field Information "
-		print " "
-		print "Step size in x = " + str(dx)
-		print "Step size in y = " + str(dy)
-		print "Step size in z = " + str(dz)
-		print " "
-		print "Number of points in x is = " + str(NumberOfPoints[0])
-		print "Number of points in y is = " + str(NumberOfPoints[1])
-		print "Number of points in z is = " + str(ZCutOff[1]+ZCutOff[0])
-		print " "
-		print "Lattice x vector is " + str(Vx) + " and the magnitude is " + str(size[0])
-		print "Lattice y vector is " + str(Vy) + " and the magnitude is " + str(size[1])
-		print "Lattice z vector is " + str(Vz) + " and the magnitude is " + str(size[2])
-		print " "
-		print "####################################"
+		print("####################################")
+		print("Potential Field Information ")
+		print(" ")
+		print("Step size in x = " + str(dx))
+		print("Step size in y = " + str(dy))
+		print("Step size in z = " + str(dz))
+		print(" ")
+		print("Number of points in x is = " + str(NumberOfPoints[0]))
+		print("Number of points in y is = " + str(NumberOfPoints[1]))
+		print("Number of points in z is = " + str(ZCutOff[1]+ZCutOff[0]))
+		print(" ")
+		print("Lattice x vector is " + str(Vx) + " and the magnitude is " + str(size[0]))
+		print("Lattice y vector is " + str(Vy) + " and the magnitude is " + str(size[1]))
+		print("Lattice z vector is " + str(Vz) + " and the magnitude is " + str(size[2]))
+		print(" ")
+		print("####################################")
 
 	def Initialize (self):
 		pass
@@ -400,13 +400,13 @@ class LOCPOTShaping(Circuit):
 
 
 
-		if 'PotentialFilename' in keys.keys():
+		if 'PotentialFilename' in list(keys.keys()):
 			self.Filename=  str(keys['PotentialFilename'])
 		else:
 			raise ValueError("Input filename Required")
 
 
-		if 'OutputFilename' in keys.keys():
+		if 'OutputFilename' in list(keys.keys()):
 			self.OFilename=  str(keys['OutputFilename'])
 		else:
 			raise ValueError("Output filename Required")
@@ -416,19 +416,19 @@ class LOCPOTShaping(Circuit):
 		checkb = False
 		checkc = False
 
-		if 'ZCutOff' in keys.keys():
+		if 'ZCutOff' in list(keys.keys()):
 			ZCutOff = keys['ZCutOff']
 		else:
 			ZCutOff = [0,0]
 			
 
-		if 'ForcefieldSize' in keys.keys():
+		if 'ForcefieldSize' in list(keys.keys()):
 			ForcefieldSize = keys['ForcefieldSize']
 		else:
 			check = True
 			ForcefieldSize = [15.562592,13.4776,25.413607]
 
-		if 'ForcefieldStepSize' in keys.keys():
+		if 'ForcefieldStepSize' in list(keys.keys()):
 			STEPSIZE = keys['ForcefieldStepSize']
 		else:
 			raise ValueError("ERROR: No Force field step size specified")
@@ -437,17 +437,17 @@ class LOCPOTShaping(Circuit):
 		stepy = STEPSIZE[1]
 		stepz = STEPSIZE[2]
 
-		if 'LatticeVectora' in keys.keys():
+		if 'LatticeVectora' in list(keys.keys()):
 			LatticeVectora = keys['LatticeVectora']
 		else:
 			checka = True
 	
-		if 'LatticeVectorb' in keys.keys():
+		if 'LatticeVectorb' in list(keys.keys()):
 			LatticeVectorb = keys['LatticeVectorb']
 		else:
 			checkb = True		
 		
-		if 'LatticeVectorc' in keys.keys():
+		if 'LatticeVectorc' in list(keys.keys()):
 			LatticeVectorc = keys['LatticeVectorc']
 		else:
 			checkc = True
@@ -456,7 +456,7 @@ class LOCPOTShaping(Circuit):
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
-		print "Reading in file: "+ self.Filename
+		print("Reading in file: "+ self.Filename)
 		
 		size=[0,0,0]
 		index = [0,0,0]
@@ -512,7 +512,7 @@ class LOCPOTShaping(Circuit):
 
 
 
-				V = [[[0 for k in xrange( int (NumberOfPoints[2]) ) ] for j in xrange( int (NumberOfPoints[1]) )] for i in xrange(int (NumberOfPoints[0]) )]
+				V = [[[0 for k in range( int (NumberOfPoints[2]) ) ] for j in range( int (NumberOfPoints[1]) )] for i in range(int (NumberOfPoints[0]) )]
 						
 
 			if linenumber > NumberOfAtoms+9:
@@ -549,7 +549,7 @@ class LOCPOTShaping(Circuit):
 
 
 
-		print "File read in"
+		print("File read in")
 		#Find step size
 		dx = float(size[0]/NumberOfPoints[0])
 		dy = float(size[1]/NumberOfPoints[1])
@@ -563,8 +563,8 @@ class LOCPOTShaping(Circuit):
 
 
 
-		Force  = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
-		Forceb = [[[0 for k in xrange( int (Dataz) ) ] for j in xrange( int (Datay) )] for i in xrange(int (Datax) )]
+		Force  = [[[0 for k in range( int (Dataz) ) ] for j in range( int (Datay) )] for i in range(int (Datax) )]
+		Forceb = [[[0 for k in range( int (Dataz) ) ] for j in range( int (Datay) )] for i in range(int (Datax) )]
 
 		
 		#For coord transform find:
@@ -585,7 +585,7 @@ class LOCPOTShaping(Circuit):
 		magb = math.sqrt (LatticeVectorb[0]*LatticeVectorb[0] + LatticeVectorb[1]*LatticeVectorb[1] + LatticeVectorb[2]*LatticeVectorb[2])
 		magc = math.sqrt (LatticeVectorc[0]*LatticeVectorc[0] + LatticeVectorc[1]*LatticeVectorc[1] + LatticeVectorc[2]*LatticeVectorc[2])
 
-		print "Interpolating"
+		print("Interpolating")
 
 
 
@@ -602,7 +602,7 @@ class LOCPOTShaping(Circuit):
 
 		
 
-		U = [[[0 for k in xrange( int (sizez) ) ] for j in xrange( int (sizey) )] for i in xrange(int (sizex) )]
+		U = [[[0 for k in range( int (sizez) ) ] for j in range( int (sizey) )] for i in range(int (sizex) )]
 
 	 	xarray = []
 	 	yarray = []
@@ -644,7 +644,7 @@ class LOCPOTShaping(Circuit):
 
 		
 		#Output the Potential
-		print "Writing to File"
+		print("Writing to File")
 		for x in range(0, int (sizex) ):
 			for y in range(0,int(sizey) ):
 				for z in range(0+ZCutOff[0],int(sizez-ZCutOff[1]) ):
@@ -694,23 +694,23 @@ class Dipole(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'InputFile' in keys.keys():
+		if 'InputFile' in list(keys.keys()):
 			self.Filename=  str(keys['InputFile'])
 		else:
 			raise ValueError("Input filename Required")
 
 
-		if 'OutputFile' in keys.keys():
+		if 'OutputFile' in list(keys.keys()):
 			self.OFilename=  str(keys['OutputFile'])
 		else:
 			raise ValueError("Output filename Required")
 
-		if 'stepsize' in keys.keys():
+		if 'stepsize' in list(keys.keys()):
 			Step=keys['stepsize']
 		else:
 			raise ValueError("step size Required")
 
-		if 'Dz' in keys.keys():
+		if 'Dz' in list(keys.keys()):
 			Dz=keys['Dz']
 		else:
 			Dz=1
@@ -718,7 +718,7 @@ class Dipole(Circuit):
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
-		print "Reading in file: "+ self.Filename
+		print("Reading in file: "+ self.Filename)
 
 
 		for line in f:
@@ -733,8 +733,8 @@ class Dipole(Circuit):
 		J =  int(last.split()[1])
 		K =  int(last.split()[2])
 		
-		U  = [[[0 for k in xrange( int (K) ) ] for j in xrange( int (J) )] for i in xrange(int (I) )]
-		Force  = [[[0 for k in xrange( int (K) ) ] for j in xrange( int (J) )] for i in xrange(int (I) )]
+		U  = [[[0 for k in range( int (K) ) ] for j in range( int (J) )] for i in range(int (I) )]
+		Force  = [[[0 for k in range( int (K) ) ] for j in range( int (J) )] for i in range(int (I) )]
 
 
 		f = open(self.Filename, "r")

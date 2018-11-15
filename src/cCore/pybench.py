@@ -6,7 +6,7 @@ import math
 
 
 testlib = cdll.LoadLibrary("./vafmcore.so")
-print testlib
+print(testlib)
 
 #calls the function in the library
 testlib.INIT()

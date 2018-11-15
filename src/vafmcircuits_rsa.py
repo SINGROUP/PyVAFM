@@ -33,22 +33,22 @@ class RSA(Circuit):
 		self.cCoreID = Circuit.cCore.Add_RSA(machine.cCoreID)
 		
 		self.masses = [1,1,1]
-		if "masses" in keys.keys():
+		if "masses" in list(keys.keys()):
 			self.masses = keys["masses"]
 			self._SetMasses()
 		
 		self.springs = [1,1,1]
-		if "springs" in keys.keys():
+		if "springs" in list(keys.keys()):
 			self.springs = keys["springs"]
 			self._SetSprings()
 			
 		self.gammas = [0.1,0.1,0.1]
-		if "gammas" in keys.keys():
+		if "gammas" in list(keys.keys()):
 			self.gammas = keys["gammas"]
 			self._SetGammas()
 			
 		self.points = [1,1,-1]
-		if "points" in keys.keys():
+		if "points" in list(keys.keys()):
 			self.points = keys["points"]
 			self._SetPoints()
 		

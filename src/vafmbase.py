@@ -175,7 +175,7 @@ class Circuit(object):
 		
 		#init the cCore if itz the first time
 		if(Circuit.cCoreINIT == False):
-			print 'Initializing the cCore...'
+			print('Initializing the cCore...')
 
 			current_dir = os.path.dirname(os.path.realpath(__file__))
 			Circuit.cCore = cdll.LoadLibrary(current_dir + "/vafmcore.so")
@@ -195,15 +195,15 @@ class Circuit(object):
 	# @param **kwargs Keyworded arguments for circuit initialisation.
 	def SetInputs(self, **kwargs):
 		
-		print 'PY: circuit '+self.name+'('+self.__class__.__name__+') created.'
+		print('PY: circuit '+self.name+'('+self.__class__.__name__+') created.')
 		
 		# setup the cCore ID for the channels
-		for ch in self.I.keys():
-			idx = self.I.keys().index(ch)
+		for ch in list(self.I.keys()):
+			idx = list(self.I.keys()).index(ch)
 			self.I[ch].cCoreCHID = idx
 
-		for ch in self.O.keys():
-			idx = self.O.keys().index(ch)
+		for ch in list(self.O.keys()):
+			idx = list(self.O.keys()).index(ch)
 			self.O[ch].cCoreCHID = idx
 
 			
@@ -211,33 +211,33 @@ class Circuit(object):
 		self.SetInputs_fromKeys(**kwargs)
 		
 		
-		if 'pushed' in kwargs.keys():
+		if 'pushed' in list(kwargs.keys()):
 			self.pushed = bool(kwargs['pushed'])
 			if self.pushed:
 				Circuit.cCore.SetPushed(self.cCoreID, 1);
 			
-		print 'PY: circuit '+self.name+'('+self.__class__.__name__+') initiated.'
+		print('PY: circuit '+self.name+'('+self.__class__.__name__+') initiated.')
 	
 	def SetInputs_fromKeys(self, **kwargs):
 		
-		for key in kwargs.keys():
+		for key in list(kwargs.keys()):
 			
-			if key in self.I.keys():
+			if key in list(self.I.keys()):
 				
 				
 				self.I[key].Set(kwargs[key]) #deprecated... sets the value in python!
 				
-				idx = self.I.keys().index(key) #find the position of the key
-				print "PY: "+key+" is an input channel, calling cCore:",idx,c_double(kwargs[key])
+				idx = list(self.I.keys()).index(key) #find the position of the key
+				print("PY: "+key+" is an input channel, calling cCore:",idx,c_double(kwargs[key]))
 				
 				Circuit.cCore.SetInput(self.cCoreID, idx, c_double(kwargs[key]))
 				
 				
-				print "   input "+key+" -> "+str(kwargs[key])
+				print("   input "+key+" -> "+str(kwargs[key]))
 				
 			else:
 				#print the init parameter even if not an input flag
-				print " ??" + key + " " + str(kwargs[key])
+				print(" ??" + key + " " + str(kwargs[key]))
 				pass
 
 	
@@ -247,7 +247,7 @@ class Circuit(object):
 	#
 	def SetCCoreChannels(self):
 		
-		print 'PY: setccorechannels...'
+		print('PY: setccorechannels...')
 		
 		getins = Circuit.cCore.GetInputs
 		getins.restype = POINTER(c_int)
@@ -262,7 +262,7 @@ class Circuit(object):
 		
 			for i in range(len(self.I)):
 				#print i,self.cCoreI[i]
-				self.I.values()[i].signal.cCoreFEED = self.cCoreI[i]
+				list(self.I.values())[i].signal.cCoreFEED = self.cCoreI[i]
 		
 		# get the indexes of output channels
 		if len(self.O) > 0:
@@ -271,14 +271,14 @@ class Circuit(object):
 			
 			for i in range(len(self.O)):
 				
-				self.O.values()[i].signal.cCoreFEED = self.cCoreO[i]
+				list(self.O.values())[i].signal.cCoreFEED = self.cCoreO[i]
 	
 	##\internal
 	## Create an input channel with the given name.
 	# @param name Name of the new input channel.
 	def AddInput(self, name):
 		
-		if name in self.I.keys() or name in self.O.keys():
+		if name in list(self.I.keys()) or name in list(self.O.keys()):
 			raise NameError("A channel named "+name+" already exists in circuit "+ str(self))
 		
 		self.I[name] = Channel(name,self,True)
@@ -288,7 +288,7 @@ class Circuit(object):
 	# @param name Name of the new output channel.
 	def AddOutput(self, name):
 		
-		if name in self.I.keys() or name in self.O.keys():
+		if name in list(self.I.keys()) or name in list(self.O.keys()):
 			raise NameError("A channel named "+name+" already exists in circuit "+ str(self))
 		self.O[name] = Channel(name,self,False)
 	
@@ -298,8 +298,8 @@ class Circuit(object):
 	# @return Reference to the channel.
 	def GetChannel(self, chname):
 		
-		isout = chname in self.O.keys()
-		isin = chname in self.I.keys()
+		isout = chname in list(self.O.keys())
+		isin = chname in list(self.I.keys())
 		
 		if not( isout or isin ):
 			raise NameError( "Circuit.GetChannel error: channel "+chname+" not found." )
@@ -314,7 +314,7 @@ class Circuit(object):
 	# @return Reference to the channel.
 	def GetOutputChannel(self, chname):
 		
-		isout = chname in self.O.keys()
+		isout = chname in list(self.O.keys())
 		if not( isout or isin ):
 			raise NameError( "Circuit.GetOutputChannel error: channel "+chname+" not found." )
 		
@@ -325,7 +325,7 @@ class Circuit(object):
 	##\internal
 	## Push the buffered value for all output channels.
 	def Push(self):
-		for kw in self.O.keys():
+		for kw in list(self.O.keys()):
 			self.O[kw].Push()
 
 

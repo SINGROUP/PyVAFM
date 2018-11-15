@@ -7,7 +7,7 @@ def interpolate(Array,step,x,y,z):
 		return 0
 
 	if z < 0:
-		print "CRASHED INTO SURFACE"
+		print("CRASHED INTO SURFACE")
 		sys.exit()		
 	
 	#Find pos - pbc

@@ -10,8 +10,8 @@ z = []
 NumberofAtoms = 0;
 
 with open(filename,'r') as f:
-    f.next() # skip 1 line
-    f.next() # skip another one.
+    next(f) # skip 1 line
+    next(f) # skip another one.
     for line in f:
         Atom.append(  line.split()[0] )
         x.append(  float (line.split()[1] ) )

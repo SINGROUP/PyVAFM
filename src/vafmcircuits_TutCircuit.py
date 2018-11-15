@@ -9,14 +9,14 @@ class TutCircuit(Circuit):
 
 		gain=1
 
-		if 'gain' in keys.keys():
+		if 'gain' in list(keys.keys()):
 			gain = float(keys['gain'])
 
 		self.AddInput("in")
 		self.AddOutput("out")
 
 		self.cCoreID = Circuit.cCore.Add_TutCirc(self.machine.cCoreID,c_double(gain))
-		print self.cCoreID
+		print(self.cCoreID)
 		self.SetInputs(**keys)
 
 

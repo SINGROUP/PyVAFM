@@ -11,7 +11,7 @@ class PlotAtoms(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )	
 
-		if 'Filename' in keys.keys():
+		if 'Filename' in list(keys.keys()):
 			self.Filename=  str(keys['Filename'])
 		else:
 			raise ValueError("Input Filename Required")
@@ -77,54 +77,54 @@ class Dipole(Circuit):
 
 		super(self.__class__, self).__init__( machine, name )
 
-		if 'Dx' in keys.keys():
+		if 'Dx' in list(keys.keys()):
 			self.Dx= keys['Dx']
 		else:
 			raise ValueError("Dx Required")
 			
 
-		if 'Dy' in keys.keys():
+		if 'Dy' in list(keys.keys()):
 			self.Dy= keys['Dy']
 		else:
 			raise ValueError("Dy Required")			
 			
-		if 'Dz' in keys.keys():
+		if 'Dz' in list(keys.keys()):
 			self.Dz=  keys['Dz']
 		else:
 			raise ValueError("Dz Required")
 
-		if 'PotentialFilename' in keys.keys():
+		if 'PotentialFilename' in list(keys.keys()):
 			self.Filename=  str(keys['PotentialFilename'])
 		else:
 			raise ValueError("Input filename Required")
 
 
-		if 'OutputFilename' in keys.keys():
+		if 'OutputFilename' in list(keys.keys()):
 			self.OFilename=  str(keys['OutputFilename'])
 		else:
 			raise ValueError("Output filename Required")
 
-		if 'ZOffsetUpper' in keys.keys():
+		if 'ZOffsetUpper' in list(keys.keys()):
 			self.ZOffsetUpper = keys['ZOffsetUpper']
 		else:
 			self.ZOffsetUpper = 0
 
-		if 'ZOffsetLower' in keys.keys():
+		if 'ZOffsetLower' in list(keys.keys()):
 			self.ZOffsetLower = keys['ZOffsetLower']
 		else:
 			self.ZOffsetLower = 1
 
-		if 'ConvertionFactor' in keys.keys():
+		if 'ConvertionFactor' in list(keys.keys()):
 			self.ConvertionFactor = keys['ConvertionFactor']
 		else:
 			self.ConvertionFactor = 1
 
-		if 'DerivativeStep' in keys.keys():
+		if 'DerivativeStep' in list(keys.keys()):
 			self.DerivativeStep = keys['DerivativeStep']
 		else:
 			self.DerivativeStep = int(1)
 
-		if 'Step' in keys.keys():
+		if 'Step' in list(keys.keys()):
 			self.step = keys['Step']
 		else:
 			self.step = int(1)
@@ -136,7 +136,7 @@ class Dipole(Circuit):
 
 		f = open(self.Filename, "r")
 		fo = open(self.OFilename, "w")
-		print "Reading in file: "+ self.Filename
+		print("Reading in file: "+ self.Filename)
 		size=[0,0,0]
 		index = [1,1,1]
 		NumberOfPoints=[0,0,0]
@@ -171,7 +171,7 @@ class Dipole(Circuit):
 				NumberOfPoints[0]= float(line.split()[0])
 				NumberOfPoints[1]= float(line.split()[1])
 				NumberOfPoints[2]= float(line.split()[2])
-				V = [[[0 for k in xrange( int (NumberOfPoints[2]+1) ) ] for j in xrange( int (NumberOfPoints[1]+1) )] for i in xrange(int (NumberOfPoints[0]+1) )]
+				V = [[[0 for k in range( int (NumberOfPoints[2]+1) ) ] for j in range( int (NumberOfPoints[1]+1) )] for i in range(int (NumberOfPoints[0]+1) )]
 
 		
 			'''
@@ -198,7 +198,7 @@ class Dipole(Circuit):
 					break
 				'''
 	
-		print "File Read in preforming derivatives "
+		print("File Read in preforming derivatives ")
 
 
 		#Find step size
@@ -215,15 +215,15 @@ class Dipole(Circuit):
 		
 		step=self.step
 		# From 1 to n 
-		rangex=range(1,nx+1,step)
-		rangey=range(1,ny+1,step)
+		rangex=list(range(1,nx+1,step))
+		rangey=list(range(1,ny+1,step))
 
 		#from offset to n-1-offset
 		#eg: 0 to n-2 
-		rangez=range(self.ZOffsetLower,nz-self.ZOffsetUpper+1-self.DerivativeStep,step)
+		rangez=list(range(self.ZOffsetLower,nz-self.ZOffsetUpper+1-self.DerivativeStep,step))
 
 		#Do the derviatives
-		dzV = [[[0 for k in xrange( int (NumberOfPoints[2]+1) ) ] for j in xrange( int (NumberOfPoints[1]+1) )] for i in xrange(int (NumberOfPoints[0]+1) )]
+		dzV = [[[0 for k in range( int (NumberOfPoints[2]+1) ) ] for j in range( int (NumberOfPoints[1]+1) )] for i in range(int (NumberOfPoints[0]+1) )]
 
 
 		'''
@@ -238,7 +238,7 @@ class Dipole(Circuit):
 		f.close()
 
 
-		print "Force field calculated writing to filename: " + str(self.OFilename)
+		print("Force field calculated writing to filename: " + str(self.OFilename))
 
 		index = [1,1,1]
 
@@ -294,7 +294,7 @@ class Dipole(Circuit):
 		fo.close()
 
 
-		print counter
+		print(counter)
 		foo = open(self.OFilename + ".info", "w")
 		foo.write("Stepsze in x :" + " " + str (dx*self.DerivativeStep) + "\n")
 		foo.write("Stepsze in y :" + " " + str (dy*self.DerivativeStep) + "\n")

@@ -45,7 +45,7 @@ class avg(Circuit):
 		self._cnt = 0
 		self._moving = False
 		
-		if 'time' in keys.keys():
+		if 'time' in list(keys.keys()):
 			self._time = float(keys['time'])
 		else:
 			raise NameError("Missing time parameter!")
@@ -53,7 +53,7 @@ class avg(Circuit):
 		self._steps = math.floor(self._time/self.machine.dt)
 		self._buffer = numpy.zeros(self._steps)
 		
-		if 'moving' in keys.keys():
+		if 'moving' in list(keys.keys()):
 			self._moving = bool(keys['moving'])
 
 		m = c_int(0);
